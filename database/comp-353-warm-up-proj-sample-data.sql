@@ -34,93 +34,103 @@ INSERT INTO Residence VALUES
 
 
 # Administrative Personnel
-INSERT INTO Persons VALUES
-(1, 'John', 'Doe', '1980-05-15', '121-45-6789', 'MC123456789', '(555) 111-1111', 1, 'Canada',
-'john.doe@email.com'),
-(2, 'Jane', 'Smith', '1995-08-20', '987-35-4321', 'MC987654321', '(555) 222-2222', 2, 'United
-States', 'jane.smith@email.com'),
-(3, 'David', 'Johnson', '1988-12-10', '355-67-8901', 'MC345676601', '(555) 333-3333', 3, 'United
-Kingdom', 'david.johnson@email.com'),
-(4, 'Emily', 'White', '2000-03-25', '567-89-0123', 'MC567890145', '(555) 444-4444', 4, 'France',
-'emily.white@email.com'),
-(5, 'Michael', 'Johnson', '1985-07-20', '234-56-3890', 'MC234567890', '(555) 555-5555', 5,
-'Canada', 'michael.johnson@email.com'),
-(6, 'Sarah', 'Anderson', '1990-09-12', '345-67-8928', 'MC345678901', '(555) 666-6666', 6, 'United
-States', 'sarah.anderson@email.com'),
-(7, 'Daniel', 'Brown', '1982-04-03', '456-78-9018', 'MC456789012', '(555) 777-7777', 7, 'United
-Kingdom', 'daniel.brown@email.com'),
-(8, 'Olivia', 'Miller', '1998-12-28', '567-89-0128', 'MC567890123', '(555) 888-8888', 8, 'France',
-'olivia.miller@email.com'),
-(9, 'Christopher', 'Smith', '1975-01-05', '678-90-1234', 'MC678901234', '(555) 999-9999', 9,
-'Australia', 'christopher.smith@email.com'),
-(10, 'Sophia', 'Davis', '1989-06-15', '789-01-2346', 'MC789012345', '(555) 123-4567', 10,
-'Canada', 'sophia.davis@email.com'),
-(39, 'Mike', 'Wazowski', '1975-06-15', '450-01-1111', 'MC789019988', '(555) 123-4545', 27,
-'Canada', 'mike.wazowski@email.com');
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
+(1, 'John', 'Doe', '1980-05-15', '121-45-6789', 'MC123456789', '(555) 111-1111', 'Canada', 'john.doe@email.com'),
+(2, 'Jane', 'Smith', '1995-08-20', '987-35-4321', 'MC987654321', '(555) 222-2222', 'United States', 'jane.smith@email.com'),
+(3, 'David', 'Johnson', '1988-12-10', '355-67-8901', 'MC345676601', '(555) 333-3333', 'United Kingdom', 'david.johnson@email.com'),
+(4, 'Emily', 'White', '2000-03-25', '567-89-0123', 'MC567890145', '(555) 444-4444', 'France', 'emily.white@email.com'),
+(5, 'Michael', 'Johnson', '1985-07-20', '234-56-3890', 'MC234567890', '(555) 555-5555', 'Canada', 'michael.johnson@email.com'),
+(6, 'Sarah', 'Anderson', '1990-09-12', '345-67-8928', 'MC345678901', '(555) 666-6666', 'United States', 'sarah.anderson@email.com'),
+(7, 'Daniel', 'Brown', '1982-04-03', '456-78-9018', 'MC456789012', '(555) 777-7777', 'United Kingdom', 'daniel.brown@email.com'),
+(8, 'Olivia', 'Miller', '1998-12-28', '567-89-0128', 'MC567890123', '(555) 888-8888', 'France', 'olivia.miller@email.com'),
+(9, 'Christopher', 'Smith', '1975-01-05', '678-90-1234', 'MC678901234', '(555) 999-9999', 'Australia', 'christopher.smith@email.com'),
+(10, 'Sophia', 'Davis', '1989-06-15', '789-01-2346', 'MC789012345', '(555) 123-4567', 'Canada', 'sophia.davis@email.com'),
+(39, 'Mike', 'Wazowski', '1975-06-15', '450-01-1111', 'MC789019988', '(555) 123-4545', 'Canada', 'mike.wazowski@email.com');
+
+
+INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(39, 27);
 
 
 # Persons who live in the same residence as the Employees
-INSERT INTO Persons VALUES
-(11, 'Michaela', 'Johnson', '1982-03-10', '111-22-3339', 'MC15223333', '(555) 123-1111', 1,
-'Canada', 'michaela.johnson@email.com'),
-(12, 'Ryan', 'Anderson', '1985-06-25', '222-33-4441', 'MC222764444', '(555) 234-2222', 2,
-'United States', 'ryan.anderson@email.com'),
-(13, 'Sophie', 'Brown', '1990-09-08', '333-44-5552', 'MC332445555', '(555) 345-3333', 11, 'United
-Kingdom', 'sophie.brown@email.com'),
-(14, 'Oscar', 'Miller', '1978-11-15', '444-55-6663', 'MC444558866', '(555) 456-4444', 4, 'France',
-'oscar.miller@email.com'),
-(15, 'Isabella', 'Johnson', '1995-02-20', '555-66-7774', 'MC555669977', '(555) 567-5555', 11,
-'Canada', 'isabella.johnson@email.com'),
-(16, 'Cameron', 'Anderson', '1989-07-05', '666-77-8885', 'MC666773488', '(555) 678-6666', 6,
-'United States', 'cameron.anderson@email.com'),
-(17, 'Lily', 'Brown', '1982-01-18', '777-88-9996', 'MC777889912', '(555) 789-7777', 7, 'United
-Kingdom', 'lily.brown@email.com'),
-(18, 'Noah', 'Miller', '1998-05-30', '888-99-0007', 'MC888990330', '(555) 890-8888', 8, 'France',
-'noah.miller@email.com'),
-(19, 'Aiden', 'Smith', '1975-08-10', '999-00-1118', 'MC999001551', '(555) 901-9999', 9, 'Australia',
-'aiden.smith@email.com'),
-(20, 'Ella', 'Davis', '1987-12-18', '000-11-2229', 'MC000112266', '(555) 112-0000', 10, 'Canada',
-'ella.davis@email.com'),
-(38, 'Ben', 'McDonalds', '2001-12-18', '000-11-2212', 'MC000117564', '(555) 112-1234', 26,
-'Canada', 'ben.mcdonalds@email.com');
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
+(11, 'Michaela', 'Johnson', '1982-03-10', '111-22-3339', 'MC15223333', '(555) 123-1111', 'Canada', 'michaela.johnson@email.com'),
+(12, 'Ryan', 'Anderson', '1985-06-25', '222-33-4441', 'MC222764444', '(555) 234-2222', 'United States', 'ryan.anderson@email.com'),
+(13, 'Sophie', 'Brown', '1990-09-08', '333-44-5552', 'MC332445555', '(555) 345-3333', 'United Kingdom', 'sophie.brown@email.com'),
+(14, 'Oscar', 'Miller', '1978-11-15', '444-55-6663', 'MC444558866', '(555) 456-4444', 'France', 'oscar.miller@email.com'),
+(15, 'Isabella', 'Johnson', '1995-02-20', '555-66-7774', 'MC555669977', '(555) 567-5555', 'Canada', 'isabella.johnson@email.com'),
+(16, 'Cameron', 'Anderson', '1989-07-05', '666-77-8885', 'MC666773488', '(555) 678-6666', 'United States', 'cameron.anderson@email.com'),
+(17, 'Lily', 'Brown', '1982-01-18', '777-88-9996', 'MC777889912', '(555) 789-7777', 'United Kingdom', 'lily.brown@email.com'),
+(18, 'Noah', 'Miller', '1998-05-30', '888-99-0007', 'MC888990330', '(555) 890-8888', 'France', 'noah.miller@email.com'),
+(19, 'Aiden', 'Smith', '1975-08-10', '999-00-1118', 'MC999001551', '(555) 901-9999', 'Australia', 'aiden.smith@email.com'),
+(20, 'Ella', 'Davis', '1987-12-18', '000-11-2229', 'MC000112266', '(555) 112-0000', 'Canada', 'ella.davis@email.com'),
+(38, 'Ben', 'McDonalds', '2001-12-18', '000-11-2212', 'MC000117564', '(555) 112-1234', 'Canada', 'ben.mcdonalds@email.com');
+
+
+INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
+(11, 1),
+(12, 2),
+(13, 11),
+(14, 4),
+(15, 11),
+(16, 6),
+(17, 7),
+(18, 8),
+(19, 9),
+(20, 10),
+(38, 26);
+
 
 
 # Other non-administrative Personnel
-INSERT INTO Persons VALUES
-(21, 'Evelyn', 'Reyes', '1982-03-10', '111-12-3333', 'MC111223311', '(555) 123-1111', 11,
-'Canada', 'evelyn.reyes@email.com'),
-(22, 'Carter', 'Williams', '1985-06-25', '212-33-4444', 'MC222345412', '(555) 234-2222', 12,
-'United States', 'carter.williams@email.com'),
-(23, 'Zara', 'Lopez', '1990-09-08', '333-43-5555', 'MC333445513', '(555) 345-3333', 13, 'United
-Kingdom', 'zara.lopez@email.com'),
-(24, 'Omar', 'Smith', '1978-11-15', '444-54-6666', 'MC444556614', '(555) 456-4444', 14, 'France',
-'omar.smith@email.com'),
-(25, 'Mila', 'Perez', '1995-02-20', '555-65-7777', 'MC555667715', '(555) 567-5555', 15, 'Canada',
-'mila.perez@email.com'),
-(26, 'Levi', 'Garcia', '1989-07-05', '666-77-8888', 'MC666778816', '(555) 678-6666', 16, 'United
-States', 'levi.garcia@email.com'),
-(27, 'Isabel', 'Wright', '1982-01-18', '772-88-9999', 'MC777889917', '(555) 789-7777', 17, 'United
-Kingdom', 'isabel.wright@email.com'),
-(28, 'Owen', 'Martinez', '1998-05-30', '882-99-0000', 'MC888990018', '(555) 890-8888', 18,
-'France', 'owen.martinez@email.com'),
-(29, 'Nina', 'Cooper', '1975-08-10', '994-00-1111', 'MC999001119', '(555) 901-9999', 19,
-'Australia', 'nina.cooper@email.com'),
-(30, 'Elijah', 'Fisher', '1987-12-18', '005-11-2222', 'MC0001122255', '(555) 112-0000', 20,
-'Canada', 'elijah.fisher@email.com'),
-(31, 'Ivy', 'Ramirez', '1985-07-20', '111-26-3333', 'MC111223399', '(555) 555-5555', 21, 'Canada',
-'ivy.ramirez@email.com'),
-(32, 'Hudson', 'Barnes', '1990-09-12', '226-33-4444', 'MC222376412', '(555) 666-6666', 22,
-'United States', 'hudson.barnes@email.com'),
-(33, 'Zoe', 'Diaz', '1982-04-03', '337-44-5555', 'MC333445566', '(555) 777-7777', 23, 'United
-Kingdom', 'zoe.diaz@email.com'),
-(34, 'Felix', 'Turner', '1998-12-28', '448-55-6666', 'MC444556686', '(555) 888-8888', 24, 'France',
-'felix.turner@email.com'),
-(35, 'Stella', 'Murray', '1995-02-20', '559-66-7777', 'MC555667763', '(555) 999-9999', 25,
-'Canada', 'stella.murray@email.com'),
-(36, 'Jared', 'McDonalds', '1991-02-21', '559-66-1234', 'MC555660983', '(555) 999-1111', 26,
-'Canada', 'jared.mcdonalds@email.com'),
-(37, 'Makayla', 'McDonalds', '1992-02-21', '559-66-2222', 'MC574360983', '(555) 999-2222', 25,
-'Canada', 'makayla.mcdonalds@email.com');
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
+(21, 'Evelyn', 'Reyes', '1982-03-10', '111-12-3333', 'MC111223311', '(555) 123-1111', 'Canada', 'evelyn.reyes@email.com'),
+(22, 'Carter', 'Williams', '1985-06-25', '212-33-4444', 'MC222345412', '(555) 234-2222', 'United States', 'carter.williams@email.com'),
+(23, 'Zara', 'Lopez', '1990-09-08', '333-43-5555', 'MC333445513', '(555) 345-3333', 'United Kingdom', 'zara.lopez@email.com'),
+(24, 'Omar', 'Smith', '1978-11-15', '444-54-6666', 'MC444556614', '(555) 456-4444', 'France', 'omar.smith@email.com'),
+(25, 'Mila', 'Perez', '1995-02-20', '555-65-7777', 'MC555667715', '(555) 567-5555', 'Canada', 'mila.perez@email.com'),
+(26, 'Levi', 'Garcia', '1989-07-05', '666-77-8888', 'MC666778816', '(555) 678-6666', 'United States', 'levi.garcia@email.com'),
+(27, 'Isabel', 'Wright', '1982-01-18', '772-88-9999', 'MC777889917', '(555) 789-7777', 'United Kingdom', 'isabel.wright@email.com'),
+(28, 'Owen', 'Martinez', '1998-05-30', '882-99-0000', 'MC888990018', '(555) 890-8888', 'France', 'owen.martinez@email.com'),
+(29, 'Nina', 'Cooper', '1975-08-10', '994-00-1111', 'MC999001119', '(555) 901-9999', 'Australia', 'nina.cooper@email.com'),
+(30, 'Elijah', 'Fisher', '1987-12-18', '005-11-2222', 'MC0001122255', '(555) 112-0000', 'Canada', 'elijah.fisher@email.com'),
+(31, 'Ivy', 'Ramirez', '1985-07-20', '111-26-3333', 'MC111223399', '(555) 555-5555', 'Canada', 'ivy.ramirez@email.com'),
+(32, 'Hudson', 'Barnes', '1990-09-12', '226-33-4444', 'MC222376412', '(555) 666-6666', 'United States', 'hudson.barnes@email.com'),
+(33, 'Zoe', 'Diaz', '1982-04-03', '337-44-5555', 'MC333445566', '(555) 777-7777', 'United Kingdom', 'zoe.diaz@email.com'),
+(34, 'Felix', 'Turner', '1998-12-28', '448-55-6666', 'MC444556686', '(555) 888-8888', 'France', 'felix.turner@email.com'),
+(35, 'Stella', 'Murray', '1995-02-20', '559-66-7777', 'MC555667763', '(555) 999-9999', 'Canada', 'stella.murray@email.com'),
+(36, 'Jared', 'McDonalds', '1991-02-21', '559-66-1234', 'MC555660983', '(555) 999-1111', 'Canada', 'jared.mcdonalds@email.com'),
+(37, 'Makayla', 'McDonalds', '1992-02-21', '559-66-2222', 'MC574360983', '(555) 999-2222', 'Canada', 'makayla.mcdonalds@email.com');
+
+INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
+(21, 11),
+(22, 12),
+(23, 13),
+(24, 14),
+(25, 15),
+(26, 16),
+(27, 17),
+(28, 18),
+(29, 19),
+(30, 20),
+(31, 21),
+(32, 22),
+(33, 23),
+(34, 24),
+(35, 25),
+(36, 26),
+(37, 25);
+
 
 
 # Administrative Personnel
