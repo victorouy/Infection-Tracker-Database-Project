@@ -1,9 +1,11 @@
 // Import required modules
 const personsController = require("./api/PersonsController");
 const express = require("express");
+const cors = require("cors");
 
 // Create express app
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 

@@ -3,7 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HFESTS - vjc353_4</title>
+    <title>HFESTS</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="index.js"></script>
   </head>
-  <body></body>
+  <body>
+    <header>
+      <nav id="tabLinks">
+        <a href="#" onclick="openTab(event, 'Facilities')">Facilities</a>
+        <a href="#" onclick="openTab(event, 'Residences')">Residences</a>
+        <a href="#" onclick="openTab(event, 'Persons')">Persons</a>
+        <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
+        <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
+        <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+      </nav>
+    </header>
+
+    <div id="tabContainer">
+      <div id="Facilities" class="tab-content">
+        <h2>Facilities</h2>
+        <p>This tab contains information about facilities.</p>
+      </div>
+      <div id="Residences" class="tab-content">
+        <h2>Residences</h2>
+        <p>This tab contains information about residences.</p>
+      </div>
+      <div id="Persons" class="tab-content">
+        <h2>Persons</h2>
+        <p>This tab contains information about persons.</p>
+        <div id="personsTableContainer" class="tableContainer"></div>
+      </div>
+      <div id="Employees" class="tab-content">
+        <h2>Employees</h2>
+        <p>This tab contains information about employees.</p>
+      </div>
+      <div id="Vaccinations" class="tab-content">
+        <h2>Vaccinations</h2>
+        <p>This tab contains information about vaccinations.</p>
+      </div>
+      <div id="Infections" class="tab-content">
+        <h2>Infections</h2>
+        <p>This tab contains information about infections.</p>
+      </div>
+    </div>
+  </body>
 </html>
