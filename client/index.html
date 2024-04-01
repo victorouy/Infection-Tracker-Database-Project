@@ -6,21 +6,22 @@
     <title>HFESTS</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="index.js"></script>
+    <script src="personsController.js"></script>
   </head>
   <body>
-    <header>
-      <nav id="tabLinks">
-        <a href="#" onclick="openTab(event, 'Facilities')">Facilities</a>
-        <a href="#" onclick="openTab(event, 'Residences')">Residences</a>
-        <a href="#" onclick="openTab(event, 'Persons')">Persons</a>
-        <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
-        <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
-        <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
-      </nav>
-    </header>
+    <div class="topnav">
+      <a href="#" onclick="openTab(event, 'Facilities')" class="active"
+        >Facilities</a
+      >
+      <a href="#" onclick="openTab(event, 'Residences')">Residences</a>
+      <a href="#" onclick="openTab(event, 'Persons')">Persons</a>
+      <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
+      <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
+      <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+    </div>
 
     <div id="tabContainer">
-      <div id="Facilities" class="tab-content">
+      <div id="Facilities" class="tab-content" style="display: block">
         <h2>Facilities</h2>
         <p>This tab contains information about facilities.</p>
       </div>
@@ -30,8 +31,123 @@
       </div>
       <div id="Persons" class="tab-content">
         <h2>Persons</h2>
-        <p>This tab contains information about persons.</p>
         <div id="personsTableContainer" class="tableContainer"></div>
+
+        <hr />
+
+        <div id="formsContainer">
+          <div>
+            <h2>Create Person</h2>
+            <form id="createPersonForm" onsubmit="createPerson(event)">
+              <label for="firstName">First Name:</label><br />
+              <input type="text" name="FirstName" required /><br />
+
+              <label for="lastName">Last Name:</label><br />
+              <input type="text" name="LastName" required /><br />
+
+              <label for="dateOfBirth">Date of Birth:</label><br />
+              <input type="date" name="DateOfBirth" required /><br />
+
+              <label for="socialSecurityNumber">Social Security Number:</label
+              ><br />
+              <input type="text" name="SocialSecurityNumber" required /><br />
+
+              <label for="medicareCardNumber">Medicare Card Number:</label
+              ><br />
+              <input type="text" name="MedicareCardNumber" required /><br />
+
+              <label for="telephoneNumber">Telephone Number:</label><br />
+              <input type="tel" name="TelephoneNumber" /><br />
+
+              <label for="citizenship">Citizenship:</label><br />
+              <input type="text" name="Citizenship" required /><br />
+
+              <label for="emailAddress">Email Address:</label><br />
+              <input type="email" name="EmailAddress" /><br />
+
+              <input type="submit" value="Create" />
+            </form>
+          </div>
+
+          <div>
+            <h2>Update Person</h2>
+            <form id="updatePersonForm" onsubmit="updatePerson(event)">
+              <label for="personId">PersonID:</label><br />
+              <input
+                type="number"
+                id="personIdToUpdate"
+                name="PersonId"
+                required
+              /><br />
+
+              <label for="firstName">First Name:</label><br />
+              <input
+                type="text"
+                id="firstNameToUpdate"
+                name="FirstName"
+                required
+              /><br />
+
+              <label for="lastName">Last Name:</label><br />
+              <input
+                type="text"
+                id="lastNameToUpdate"
+                name="LastName"
+                required
+              /><br />
+
+              <label for="dateOfBirth">Date of Birth:</label><br />
+              <input
+                type="date"
+                id="dateOfBirthToUpdate"
+                name="DateOfBirth"
+                required
+              /><br />
+
+              <label for="socialSecurityNumber">Social Security Number:</label
+              ><br />
+              <input
+                type="text"
+                id="socialSecurityNumberToUpdate"
+                name="SocialSecurityNumber"
+                required
+              /><br />
+
+              <label for="medicareCardNumber">Medicare Card Number:</label
+              ><br />
+              <input
+                type="text"
+                id="medicareCardNumberToUpdate"
+                name="MedicareCardNumber"
+                required
+              /><br />
+
+              <label for="telephoneNumber">Telephone Number:</label><br />
+              <input
+                type="tel"
+                id="telephoneNumberToUpdate"
+                name="TelephoneNumber"
+              /><br />
+
+              <label for="citizenship">Citizenship:</label><br />
+              <input
+                type="text"
+                id="citizenshipToUpdate"
+                name="Citizenship"
+                required
+              /><br />
+
+              <label for="emailAddress">Email Address:</label><br />
+              <input
+                type="email"
+                id="emailAddressToUpdate"
+                name="EmailAddress"
+              /><br />
+
+              <input type="submit" value="Update" />
+            </form>
+          </div>
+        </div>
       </div>
       <div id="Employees" class="tab-content">
         <h2>Employees</h2>

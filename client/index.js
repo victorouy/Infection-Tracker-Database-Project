@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:5000";
+
 function openTab(event, tabName) {
   var i, tabContent, tabLinks;
   tabContent = document.getElementsByClassName("tab-content");
@@ -16,49 +18,4 @@ function openTab(event, tabName) {
   }
 
   event.preventDefault();
-}
-
-function getAllPersons() {
-  fetch("http://localhost:5000/persons")
-    .then((response) => response.json())
-    .then((data) => {
-      // Clear previous table content
-      var tableContainer = document.getElementById("personsTableContainer");
-      tableContainer.innerHTML = "";
-
-      // Create table header
-      var table = document.createElement("table");
-      var headerRow = table.insertRow();
-      var headers = [
-        "PersonID",
-        "FirstName",
-        "LastName",
-        "DateOfBirth",
-        "SocialSecurityNumber",
-        "MedicareCardNumber",
-        "TelephoneNumber",
-        "Citizenship",
-        "EmailAddress",
-      ]; // Example headers, replace with your actual data keys
-      headers.forEach((header) => {
-        var th = document.createElement("th");
-        th.textContent = header;
-        headerRow.appendChild(th);
-      });
-
-      // Populate table with data
-      data.persons.forEach((person) => {
-        var row = table.insertRow();
-        Object.values(person).forEach((value) => {
-          var cell = row.insertCell();
-          cell.textContent = value;
-        });
-      });
-
-      // Append table to table container
-      tableContainer.appendChild(table);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
 }
