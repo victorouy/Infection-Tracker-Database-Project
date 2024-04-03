@@ -18,10 +18,10 @@ app.get("/persons/:personId", personsController.getPerson);
 app.post("/persons", personsController.createPerson);
 app.delete("/persons/:personId", personsController.deletePerson);
 app.put("/persons/:personId", personsController.editPerson);
-app.get(
-  "/employees/schedule/:employeeId/:startDate/:endDate",
-  employeesController.getScheduleForEmployee
-);
+
+// #4. Create/Delete/Edit/Display a Employee.
+app.get("/employees", employeesController.getAllEmployees);
+app.delete("/employees/:employeeId", employeesController.deleteEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
@@ -36,6 +36,12 @@ app.get("/infections/:infectionId", infectionsController.getInfection);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
+
+// Queries
+app.get(
+  "/employees/schedule/:employeeId/:startDate/:endDate",
+  employeesController.getScheduleForEmployee
+);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

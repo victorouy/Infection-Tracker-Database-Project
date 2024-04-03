@@ -13,14 +13,20 @@ function openTab(event, tabName) {
   document.getElementById(tabName).style.display = "block"; // Show the content of the selected tab
   event.currentTarget.classList.add("active"); // Add active class to the clicked tab link
 
-  if (tabName === "Persons") {
-    getAllPersons();
-  } else if (tabName === "Vaccines") {
-    getAllVaccinations();
-  } else if (tabName === "Infections") {
-    getAllInfections();
+  switch (tabName) {
+    case "Persons":
+      getAllPersons();
+      break;
+    case "Employees":
+      getAllEmployees();
+      break;
+    case "Vaccines":
+      getAllVaccinations();
+      break;
+    case "Infections":
+      getAllInfections();
+      break;
   }
-
 
   event.preventDefault();
 }
