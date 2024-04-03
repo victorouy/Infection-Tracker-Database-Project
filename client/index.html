@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="index.js"></script>
     <script src="personsController.js"></script>
+    <script src="employeesController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -18,6 +19,7 @@
       <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
       <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+      <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>
 
     <div id="tabContainer">
@@ -151,7 +153,9 @@
       </div>
       <div id="Employees" class="tab-content">
         <h2>Employees</h2>
-        <p>This tab contains information about employees.</p>
+        <div id="employeesTableContainer" class="tableContainer"></div>
+
+        <hr />
       </div>
       <div id="Vaccinations" class="tab-content">
         <h2>Vaccinations</h2>
@@ -160,6 +164,27 @@
       <div id="Infections" class="tab-content">
         <h2>Infections</h2>
         <p>This tab contains information about infections.</p>
+      </div>
+      <div id="Queries" class="tab-content">
+        <h2>Queries</h2>
+        <p>This tab is for executing the queries</p>
+
+        <div id="queryTableContainer"></div>
+
+        <h4>
+          #10:For a given employee, get the details of all the schedules she/he
+          has been scheduled during a specific period of time. Details include
+          facility name, day of the year, start time and end time. Results
+          should be displayed sorted in ascending order by facility name, then
+          by day of the year, the by start time.
+        </h4>
+        <label>EmployeeId</label>
+        <input id="queryTenEmployeeId" type="number" required />
+        <label>From:</label>
+        <input id="queryTenStartDate" type="date" required />
+        <label>To:</label>
+        <input id="queryTenEndDate" type="date" required />
+        <button onclick="getSchedule(event)">Display</button>
       </div>
     </div>
   </body>

@@ -19,3 +19,40 @@ function openTab(event, tabName) {
 
   event.preventDefault();
 }
+
+function displayQueryResult(jsonData) {
+  clearTable();
+
+  const tableContainer = document.getElementById("queryTableContainer");
+
+  const headers = Object.keys(jsonData.results[0]);
+
+  const table = document.createElement("table");
+
+  const headerRow = document.createElement("tr");
+  headers.forEach((headerText) => {
+    const header = document.createElement("th");
+    header.textContent = headerText;
+    headerRow.appendChild(header);
+  });
+  table.appendChild(headerRow);
+
+  jsonData.results.forEach((result) => {
+    const row = document.createElement("tr");
+    headers.forEach((header) => {
+      const cell = document.createElement("td");
+      cell.textContent = result[header];
+      row.appendChild(cell);
+    });
+    table.appendChild(row);
+  });
+
+  tableContainer.appendChild(table);
+}
+
+function clearTable() {
+  const tableContainer = document.getElementById("queryTableContainer");
+  while (tableContainer.firstChild) {
+    tableContainer.removeChild(tableContainer.firstChild);
+  }
+}
