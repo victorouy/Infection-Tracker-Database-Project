@@ -15,7 +15,12 @@ function openTab(event, tabName) {
 
   if (tabName === "Persons") {
     getAllPersons();
+  } else if (tabName === "Vaccines") {
+    getAllVaccinations();
+  } else if (tabName === "Infections") {
+    getAllInfections();
   }
+
 
   event.preventDefault();
 }
