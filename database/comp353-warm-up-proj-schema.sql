@@ -14,6 +14,8 @@ ALTER TABLE EmployeePersonRelationship DROP CONSTRAINT FK_EmployeePersonRelation
 ALTER TABLE EmployeePersonRelationship DROP CONSTRAINT FK_EmployeePersonRelationships_Persons;
 ALTER TABLE PersonResidences DROP CONSTRAINT FK_PersonResidences_Persons;
 ALTER TABLE PersonResidences DROP CONSTRAINT FK_PersonResidences_Residence;
+ALTER TABLE PersonResidences DROP CONSTRAINT FK_Schedules_Employees;
+ALTER TABLE PersonResidences DROP CONSTRAINT FK_Schedules_Facilities;
 
 DROP TABLE IF EXISTS Facilities;
 DROP TABLE IF EXISTS Persons;
@@ -24,6 +26,7 @@ DROP TABLE IF EXISTS Vaccines;
 DROP TABLE IF EXISTS Infections;
 DROP TABLE IF EXISTS EmployeePersonRelationship;
 DROP TABLE IF EXISTS PersonResidences;
+DROP TABLE IF EXISTS Schedules
 */
 
 CREATE TABLE Facilities (
@@ -107,6 +110,16 @@ CREATE TABLE EmployeePersonRelationship (
     RelationshipType VARCHAR(50) -- Ex: Roommate, Partner, Parent, Dependent
 );
 
+CREATE TABLE Schedules (
+EmployeeID INT,
+FacilityID INT,
+Date DATE,
+StartTime TIME,
+EndTime TIME,
+FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+);
+
 ALTER TABLE Facilities ADD CONSTRAINT FK_Facilities_Employees FOREIGN KEY (GeneralManagerID) REFERENCES Employees(EmployeeID);
 ALTER TABLE Employees ADD CONSTRAINT FK_Employees_Persons FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ALTER TABLE Employees ADD CONSTRAINT FK_Employees_Facilities FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID);
@@ -119,16 +132,9 @@ ALTER TABLE EmployeePersonRelationship ADD CONSTRAINT FK_EmployeePersonRelations
 ALTER TABLE EmployeePersonRelationship ADD CONSTRAINT FK_EmployeePersonRelationships_Persons FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Persons FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Residence FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID);
+ALTER TABLE Schedules ADD CONSTRAINT FK_Schedules_Employees FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID);
+ALTER TABLE Schedules ADD CONSTRAINT FK_Schedules_Facilities FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID);
 
-CREATE TABLE Schedules (
-EmployeeID INT,
-FacilityID INT,
-Date DATE,
-StartTime TIME,
-EndTime TIME,
-FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
-)
 
 
 

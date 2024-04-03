@@ -40,7 +40,6 @@ function getPerson(req, res) {
 }
 
 function createPerson(req, res) {
-  console.log(req.body);
   const {
     FirstName,
     LastName,

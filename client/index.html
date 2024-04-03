@@ -19,6 +19,7 @@
       <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
       <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+      <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>
 
     <div id="tabContainer">
@@ -155,26 +156,6 @@
         <div id="employeesTableContainer" class="tableContainer"></div>
 
         <hr />
-        
-        <div id="formsContainer">
-          <div>
-            <h2>Employee Schedule</h2>
-            <form id="scheduleForm" onsubmit="getSchedule(event)">
-              <label for="employeeID">Employee ID:</label><br />
-              <input type="text" name="EmployeeID" required /><br />
-              
-              <label for="startDate">Start Date:</label><br />
-              <input type="text" name="StartDate" required /><br />
-              
-              
-              <label for="endDate">End Date:</label><br />
-              <input type="text" name="EndDate" required /><br />
-              
-              <input type="submit" value="Get schedule" />
-              
-              </form>
-          </div>
-        
       </div>
       <div id="Vaccinations" class="tab-content">
         <h2>Vaccinations</h2>
@@ -183,6 +164,27 @@
       <div id="Infections" class="tab-content">
         <h2>Infections</h2>
         <p>This tab contains information about infections.</p>
+      </div>
+      <div id="Queries" class="tab-content">
+        <h2>Queries</h2>
+        <p>This tab is for executing the queries</p>
+
+        <div id="queryTableContainer"></div>
+
+        <h4>
+          #10:For a given employee, get the details of all the schedules she/he
+          has been scheduled during a specific period of time. Details include
+          facility name, day of the year, start time and end time. Results
+          should be displayed sorted in ascending order by facility name, then
+          by day of the year, the by start time.
+        </h4>
+        <label>EmployeeId</label>
+        <input id="queryTenEmployeeId" type="number" required />
+        <label>From:</label>
+        <input id="queryTenStartDate" type="date" required />
+        <label>To:</label>
+        <input id="queryTenEndDate" type="date" required />
+        <button onclick="getSchedule(event)">Display</button>
       </div>
     </div>
   </body>
