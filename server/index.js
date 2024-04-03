@@ -1,6 +1,7 @@
 // Import required modules
 const personsController = require("./api/PersonsController");
 const employeesController = require("./api/EmployeesController");
+const facilitiesController = require("./api/FacilitiesController");
 const express = require("express");
 const cors = require("cors");
 
@@ -20,6 +21,13 @@ app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+app.get("/facilities", facilitiesController.getAllFacilities);
+app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+app.post("/facilities", facilitiesController.createFacilities);
+app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
+app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
