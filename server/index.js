@@ -1,6 +1,8 @@
 // Import required modules
 const personsController = require("./api/PersonsController");
 const employeesController = require("./api/EmployeesController");
+const vaccinationsController = require("./api/VaccinationsController");
+const infectionsController = require("./api/InfectionsController");
 const express = require("express");
 const cors = require("cors");
 
@@ -20,6 +22,20 @@ app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+
+// #3.2 Create/Delete/Edit/Display a Vaccine
+app.get("/vaccines", vaccinationsController.getAllVaccinations);
+app.get("/vaccines/:vaccineId", vaccinationsController.getVaccination);
+app.post("/vaccines", vaccinationsController.createVaccination);
+app.delete("/vaccines/:vaccineId", vaccinationsController.deleteVaccination);
+app.put("/vaccines/:vaccineId", vaccinationsController.editVaccination);
+
+//3.3 Create/Delete/Edit/Display a Infection
+app.get("/infections", infectionsController.getAllInfections);
+app.get("/infections/:infectionId", infectionsController.getInfection);
+app.post("/infections", infectionsController.createInfection);
+app.delete("/infections/:infectionId", infectionsController.deleteInfection);
+app.put("/infections/:infectionId", infectionsController.editInfection);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
