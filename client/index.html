@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="index.js"></script>
     <script src="personsController.js"></script>
+    <script src="employeesController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -151,7 +152,29 @@
       </div>
       <div id="Employees" class="tab-content">
         <h2>Employees</h2>
-        <p>This tab contains information about employees.</p>
+        <div id="employeesTableContainer" class="tableContainer"></div>
+
+        <hr />
+        
+        <div id="formsContainer">
+          <div>
+            <h2>Employee Schedule</h2>
+            <form id="scheduleForm" onsubmit="getSchedule(event)">
+              <label for="employeeID">Employee ID:</label><br />
+              <input type="text" name="EmployeeID" required /><br />
+              
+              <label for="startDate">Start Date:</label><br />
+              <input type="text" name="StartDate" required /><br />
+              
+              
+              <label for="endDate">End Date:</label><br />
+              <input type="text" name="EndDate" required /><br />
+              
+              <input type="submit" value="Get schedule" />
+              
+              </form>
+          </div>
+        
       </div>
       <div id="Vaccinations" class="tab-content">
         <h2>Vaccinations</h2>

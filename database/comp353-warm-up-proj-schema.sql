@@ -120,3 +120,17 @@ ALTER TABLE EmployeePersonRelationship ADD CONSTRAINT FK_EmployeePersonRelations
 ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Persons FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Residence FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID);
 
+CREATE TABLE Schedules (
+EmployeeID INT,
+FacilityID INT,
+Date DATE,
+StartTime TIME,
+EndTime TIME,
+FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+)
+
+
+
+
+

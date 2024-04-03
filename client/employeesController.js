@@ -1,0 +1,3 @@
+function getSchedule(event) {
+    
+}
