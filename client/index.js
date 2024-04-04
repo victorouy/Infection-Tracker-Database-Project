@@ -19,6 +19,8 @@ function openTab(event, tabName) {
     getAllVaccinations();
   } else if (tabName === "Infections") {
     getAllInfections();
+  } elese if (tabName === "Facilities") {
+    getAllFacilities();
   }
 
 
