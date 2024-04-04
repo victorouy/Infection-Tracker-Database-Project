@@ -22,6 +22,9 @@ app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+app.get("/employees/16", employeesController.getQuery16);
+app.get("/employees/17", employeesController.getQuery17);
+app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);

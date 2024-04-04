@@ -326,6 +326,7 @@
         <p>This tab is for executing the queries</p>
 
         <div id="queryTableContainer"></div>
+        <button onclick="clearTable()">Clear Table</button>
 
         <h4>
           #10:For a given employee, get the details of all the schedules she/he
@@ -341,6 +342,35 @@
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
         <button onclick="getSchedule(event)">Display</button>
+
+        <h4>
+          #16: Provide a report of all the employees working in all the facilities by role. 
+          Report should include for every role of the employees, the total number of employees 
+          currently working in the facilities, and the total number of employees currently 
+          infected by COVID-19. Report should be displayed in ascending order by role.
+        </h4>
+        <button onclick="getQuery16(event)">Display</button>
+        
+        <h4>
+          #17: Provide a report of all the employees working in all the facilities by role. 
+          Report should include for every role of the employees, the total number of employees 
+          currently working in the facilities, and the total number of employees who have never 
+          been infected by COVID-19. Report should be displayed in ascending order by role.  
+        </h4>
+        <button onclick="getQuery17(event)">Display</button>
+
+        <h4>
+          #18:  For all provinces, give the total number of facilities, the total number of employees
+          currently working in the facilities, the total number of employees currently working
+          and infected by COVID-19, the maximum capacity of the facilities, and the total hours
+          scheduled in all facilities during a specific period. Results should be displayed in
+          ascending order by province.
+        </h4>
+        <label>Schedule From:</label>
+        <input id="queryScheduleFrom" type="date" required />
+        <label>Schedule To:</label>
+        <input id="queryScheduleTo" type="date" required />
+        <button onclick="getQuery18(event)">Display</button>
       </div>
     </div>
   </body>
