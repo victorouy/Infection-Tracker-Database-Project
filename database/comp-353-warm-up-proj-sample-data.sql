@@ -61,6 +61,12 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (10, 10),
 (39, 27);
 
+INSERT INTO PersonResidences VALUES (1, 50, 'Secondary'),
+(1, 51, 'Secondary'),
+(1, 52, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (21, 63, 'Secondary');
+
 
 # Persons who live in the same residence as the Employees
 INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
@@ -167,7 +173,8 @@ INSERT INTO Employees VALUES
 (25, 35, 'Nurse', 5),
 (26, 36, 'Regular Employee', 1),
 (27, 37, 'Pharmacist', 1),
-(28, 38, 'Pharmacist', 1);
+(28, 38, 'Pharmacist', 1),
+(60, 21, 'Pharmacist', 2);
 
 
 # Relationships between Employees and Persons living in the same residence
@@ -271,7 +278,8 @@ INSERT INTO EmploymentRecord(EmployeeID,FacilityID,StartDate,EndDate) VALUES
 (26,1,'2021-01-22',null),
 (27,1,'2021-01-22',null),
 (28, 2, '2023-06-19', null),
-(29,11,'2022-01-22',null);
+(29,11,'2022-01-22',null),
+(60, 2, '2023-01-23', NULL);
 
 
 INSERT INTO Vaccines VALUES
@@ -316,7 +324,8 @@ INSERT INTO Infections VALUES
 (21, 32, '2023-12-15', 'Delta Variant'),
 (22, 39, '2024-02-15', 'COVID-19'),
 (23, 37, '2024-02-16', 'COVID-19'),
-(24, 38, '2024-01-22', 'COVID-19');
+(24, 38, '2024-01-22', 'COVID-19'),
+(37, 21, '2024-03-29', NULL, 'COVID-19');
 
 INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (2, 2, '2023-04-20', '9:00', '17:00'),
@@ -349,6 +358,8 @@ INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (29, 11, '2023-04-20', '9:00', '17:00');
 
 INSERT INTO Schedules values (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules VALUES (11, 1, '2024-04-15', '9:00', '17:00');
+INSERT INTO Schedules VALUES (11, 1, '2024-04-16', '9:35', '17:45');
 
 
 SET FOREIGN_KEY_CHECKS = 1;

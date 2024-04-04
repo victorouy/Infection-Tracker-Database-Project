@@ -10,6 +10,7 @@
     <script src="employeesController.js"></script>
     <script src="vaccinationsController.js"></script>
     <script src="infectionsController.js"></script>
+    <script src="tabeshController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -318,7 +319,7 @@
         <div id="queryTableContainer"></div>
 
         <h4>
-          #10:For a given employee, get the details of all the schedules she/he
+          #10: For a given employee, get the details of all the schedules she/he
           has been scheduled during a specific period of time. Details include
           facility name, day of the year, start time and end time. Results
           should be displayed sorted in ascending order by facility name, then
@@ -330,7 +331,30 @@
         <input id="queryTenStartDate" type="date" required />
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
-        <button onclick="getSchedule(event)">Display</button>
+        <button onclick="queryTen(event)">Display</button>
+        
+        <h4>
+          #14: For a given facility, generate a list of all the employees who have at least three
+		  secondary residences and who have been on schedule to work in the last four weeks.
+		  The list should include first-name, last-name, role, number of secondary residences.
+		  Results should be displayed in ascending order by role, then by the number of
+		  secondary residences.
+        </h4>
+        <label>FacilityID</label>
+        <input id="queryFourteenFacilityID" type="number" required />
+        <button onclick="queryFourteen(event)">Display</button>
+        
+        <h4>
+          #15: Get details of nurses who are currently working at two or more different facilities and
+		  have been infected by COVID-19 in the last two weeks. Details include first-name,
+		  last-name, first day of work as a nurse, date of birth, email address, total number of
+		  times the nurse got infected by COVID-19, total number of vaccines the nurse had,
+		  total number of hours scheduled, and total number of secondary residences. Results
+		  should be displayed sorted in ascending order by first day of work, then by first name,
+		  then by last name.
+        </h4>
+        <button onclick="queryFifteen(event)">Display</button>
+        
       </div>
     </div>
   </body>
