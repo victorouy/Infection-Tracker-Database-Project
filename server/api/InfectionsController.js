@@ -43,6 +43,7 @@ function createInfection(req, res) {
   const {
     PersonID,
     InfectionDate,
+    InfectionEndDate,
     InfectionType,
   } = req.body;
 
@@ -51,14 +52,16 @@ function createInfection(req, res) {
       INSERT INTO Infections (
         PersonID,
         InfectionDate,
+        InfectionEndDate,
         InfectionType
-      ) VALUES (?, ?, ?)
+      ) VALUES (?, ?, ?, ?)
     `;
 
   // Values to be inserted
   const values = [
     PersonID,
     InfectionDate,
+    InfectionEndDate,
     InfectionType,
   ];
 
@@ -102,6 +105,7 @@ function editInfection(req, res) {
   const {
     PersonID,
     InfectionDate,
+    InfectionEndDate,
     InfectionType,
   } = req.body;
 
@@ -110,6 +114,7 @@ function editInfection(req, res) {
     UPDATE Infections
     SET PersonID = ?,
         InfectionDate = ?,
+        InfectionEndDate = ?,
         InfectionType = ? 
     WHERE InfectionID = ?
   `;
@@ -118,6 +123,7 @@ function editInfection(req, res) {
   const values = [
     PersonID,
     InfectionDate,
+    InfectionEndDate,
     InfectionType,
     infectionId,
   ];

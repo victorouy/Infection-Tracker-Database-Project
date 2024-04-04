@@ -18,6 +18,7 @@ function getSchedule(event) {
       console.error("Error getting schedule", error);
     });
 }
+
 function getAllEmployees() {
   fetch(`${BASE_URL}/employees`)
     .then((response) => response.json())
@@ -204,4 +205,61 @@ function formatDate(dateToFormat) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function getQuery16(event) {
+  event.preventDefault();
+
+  fetch(`${BASE_URL}/employees/16`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error getting schedule", error);
+    });
+}
+
+function getQuery17(event) {
+  event.preventDefault();
+
+  fetch(`${BASE_URL}/employees/17`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error getting schedule", error);
+    });
+}
+
+function getQuery18(event) {
+  event.preventDefault();
+
+  const startDate = document.getElementById("queryScheduleFrom").value;
+  const endDate = document.getElementById("queryScheduleTo").value;
+
+  fetch(`${BASE_URL}/employees/18/${startDate}/${endDate}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error getting schedule", error);
+    });
 }

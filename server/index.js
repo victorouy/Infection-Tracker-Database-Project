@@ -3,6 +3,7 @@ const personsController = require("./api/PersonsController");
 const employeesController = require("./api/EmployeesController");
 const vaccinationsController = require("./api/VaccinationsController");
 const infectionsController = require("./api/InfectionsController");
+const facilitiesController = require("./api/FacilitiesController");
 const express = require("express");
 const cors = require("cors");
 
@@ -38,11 +39,21 @@ app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
 
+// Facilities delete/create/update
+app.get("/facilities", facilitiesController.getAllFacilities);
+app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+app.post("/facilities", facilitiesController.createFacilities);
+app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
+app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
+
 // Queries
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+app.get("/employees/16", employeesController.getQuery16);
+app.get("/employees/17", employeesController.getQuery17);
+app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
