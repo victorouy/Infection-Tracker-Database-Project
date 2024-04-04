@@ -16,10 +16,15 @@ function openTab(event, tabName) {
 
   if (tabName === "Persons") {
     getAllPersons();
+  } else if (tabName === "Vaccines") {
+    getAllVaccinations();
+  } else if (tabName === "Infections") {
+    getAllInfections();
   }
   if (tabName === "Facilities") {
     getAllFacilities();
   }
+
 
   event.preventDefault();
 }

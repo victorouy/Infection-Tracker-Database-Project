@@ -8,6 +8,8 @@
     <script src="index.js"></script>
     <script src="personsController.js"></script>
     <script src="employeesController.js"></script>
+    <script src="vaccinationsController.js"></script>
+    <script src="infectionsController.js"></script>
     <script src="facilitiesController.js"></script>
   </head>
   <body>
@@ -18,7 +20,7 @@
       <a href="#" onclick="openTab(event, 'Residences')">Residences</a>
       <a href="#" onclick="openTab(event, 'Persons')">Persons</a>
       <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
-      <a href="#" onclick="openTab(event, 'Vaccinations')">Vaccinations</a>
+      <a href="#" onclick="openTab(event, 'Vaccines')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
       <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>
@@ -237,13 +239,157 @@
 
         <hr />
       </div>
-      <div id="Vaccinations" class="tab-content">
+      <div id="Vaccines" class="tab-content">
         <h2>Vaccinations</h2>
-        <p>This tab contains information about vaccinations.</p>
+        <div id="vaccinationsTableContainer" class="tableContainer"></div>
+
+        <hr />
+        
+        <div id="formsContainer">
+          <div>
+            <h2>Create Vaccination</h2>
+            <form id="createVaccinationForm" onsubmit="createVaccination(event)">
+
+              <label for="personID">PersonID:</label><br />
+              <input type="number" name="PersonID" required /><br />
+
+              <label for="facilityID">FacilityID:</label><br />
+              <input type="number" name="FacilityID" required /><br />
+
+              <label for="vaccinationType">Vaccination Type:</label><br />
+              <input type="text" name="VaccinationType" required /><br />
+
+              <label for="vaccinationDate">Vaccination Date:</label><br />
+              <input type="date" name="VaccinationDate" required /><br />
+
+              <label for="doseNumber">Dose Number:</label><br />
+              <input type="number" name="DoseNumber" required /><br />
+
+              <input type="submit" value="Create" />
+            </form>
+          </div>
+
+          <div>
+            <h2>Update Vaccination</h2>
+            <form id="updateVaccinationForm" onsubmit="updateVaccination(event)">
+              <label for="vaccineId">VaccineID:</label><br />
+              <input
+                type="number"
+                id="vaccineIdToUpdate"
+                name="VaccineId"
+                required
+              /><br />
+
+              <label for="personID">PersonID:</label><br />
+              <input
+                type="number"
+                id="personIDToUpdate"
+                name="PersonID"
+                required
+              /><br />
+
+              <label for="facilityID">FacilityID:</label><br />
+              <input
+                type="number"
+                id="facilityIDToUpdate"
+                name="FacilityID"
+                required
+              /><br />
+
+
+              <label for="vaccinationType">Vaccination Type:</label><br />
+              <input
+                type="text"
+                id="vaccinationTypeToUpdate"
+                name="VaccinationType"
+                required
+              /><br />
+
+              <label for="vaccinationDate">Vaccination Date:</label><br />
+              <input
+                type="date"
+                id="vaccinationDateToUpdate"
+                name="VaccinationDate"
+                required
+              /><br />
+
+              <label for="doseNumber">Dose Number:</label
+              ><br />
+              <input
+                type="number"
+                id="doseNumberToUpdate"
+                name="DoseNumber"
+                required
+              /><br />
+
+              <input type="submit" value="Update" />
+            </form>
+          </div>
+        </div>
+
       </div>
       <div id="Infections" class="tab-content">
         <h2>Infections</h2>
-        <p>This tab contains information about infections.</p>
+        <div id="infectionsTableContainer" class="tableContainer"></div>
+
+        <hr />
+
+        <div id="formsContainer">
+          <div>
+            <h2>Create Infection</h2>
+            <form id="createInfectionForm" onsubmit="createInfection(event)">
+              <label for="personIdInfection">Person ID:</label><br />
+              <input type="number" name="PersonIdInfection" required /><br />
+
+              <label for="infectionDate">Infection Date:</label><br />
+              <input type="date" name="InfectionDate" required /><br />
+
+              <label for="infectionType">Infection Type:</label><br />
+              <input type="text" name="InfectionType" required /><br />
+
+              <input type="submit" value="Create" />
+            </form>
+          </div>
+
+          <div>
+            <h2>Update Infection</h2>
+            <form id="updateInfectionForm" onsubmit="updateInfection(event)">
+              <label for="infectionId">Infection ID:</label><br />
+              <input
+                type="number"
+                id="infectionIdToUpdate"
+                name="InfectionId"
+                required
+              /><br />
+
+              <label for="personId">Person ID:</label><br />
+              <input
+                type="number"
+                id="personIdInfectionToUpdate"
+                name="PersonId"
+                required
+              /><br />
+
+              <label for="infectionDate">Infection Date:</label><br />
+              <input
+                type="date"
+                id="infectionDateToUpdate"
+                name="InfectionDate"
+                required
+              /><br />
+
+              <label for="infectionType">Infection Type:</label><br />
+              <input
+                type="text"
+                id="infectionTypeToUpdate"
+                name="InfectionType"
+                required
+              /><br />
+
+              <input type="submit" value="Update" />
+            </form>
+          </div>
+        </div>
       </div>
       <div id="Queries" class="tab-content">
         <h2>Queries</h2>

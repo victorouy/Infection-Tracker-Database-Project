@@ -72,3 +72,23 @@ input {
 input {
   margin: 5px;
 }
+
+#createVaccinationForm label,
+input {
+  margin: 5px;
+}
+
+#updateVaccinationForm label,
+input {
+  margin: 5px;
+}
+
+#createInfectionForm label,
+input {
+  margin: 5px;
+}
+
+#updateInfectionForm label,
+input {
+  margin: 5px;
+}
