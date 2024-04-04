@@ -13,6 +13,7 @@ function getAllInfections() {
         "InfectionID", 
         "PersonID",
         "InfectionDate", 
+        "InfectionEndDate",
         "InfectionType", 
         "", 
         "",
@@ -28,7 +29,7 @@ function getAllInfections() {
         var row = table.insertRow();
         Object.entries(infection).forEach(([key, value]) => {
           var cell = row.insertCell();
-          if (key == "InfectionDate") {
+          if (key == "InfectionDate" || key == "InfectionEndDate") {
             cell.textContent = formatDate(value);
           } else {
             cell.textContent = value;
@@ -90,7 +91,11 @@ function createInfection(event) {
   const formDataObject = {};
   formData.forEach((value, key) => {
     console.log(value);
-    formDataObject[key] = value;
+    if (value == "") {
+      formDataObject[key] = null;
+    } else {
+      formDataObject[key] = value;
+    }
   });
 
   fetch(`${BASE_URL}/infections`, {
@@ -161,10 +166,14 @@ function fillUpdateFormWithInfectionData(infection) {
     document.getElementById("infectionIdToUpdate").value = infection.InfectionID;
     document.getElementById("personIdInfectionToUpdate").value = infection.PersonID;
     document.getElementById("infectionDateToUpdate").value = formatDate(infection.InfectionDate);
+    document.getElementById("infectionEndDateToUpdate").value = formatDate(infection.InfectionEndDate);
     document.getElementById("infectionTypeToUpdate").value = infection.InfectionType;
   }
 
 function formatDate(dateToFormat) {
+  if (dateToFormat == null) {
+    return 'Currently Infected';
+  }
   const date = new Date(dateToFormat);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
