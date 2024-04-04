@@ -19,13 +19,11 @@ app.get("/persons/:personId", personsController.getPerson);
 app.post("/persons", personsController.createPerson);
 app.delete("/persons/:personId", personsController.deletePerson);
 app.put("/persons/:personId", personsController.editPerson);
-app.get(
-  "/employees/schedule/:employeeId/:startDate/:endDate",
-  employeesController.getScheduleForEmployee
-);
-app.get("/employees/16", employeesController.getQuery16);
-app.get("/employees/17", employeesController.getQuery17);
-app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
+
+// #4. Create/Delete/Edit/Display a Employee.
+app.get("/employees", employeesController.getAllEmployees);
+app.post("/employees", employeesController.createEmployee);
+app.delete("/employees/:employeeId", employeesController.deleteEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
@@ -40,14 +38,22 @@ app.get("/infections/:infectionId", infectionsController.getInfection);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
-// Facilites delete/create/update
+
+// Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
 app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
 
-
+// Queries
+app.get(
+  "/employees/schedule/:employeeId/:startDate/:endDate",
+  employeesController.getScheduleForEmployee
+);
+app.get("/employees/16", employeesController.getQuery16);
+app.get("/employees/17", employeesController.getQuery17);
+app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

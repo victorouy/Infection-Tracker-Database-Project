@@ -351,5 +351,4 @@ INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 
 INSERT INTO Schedules values (1,1,"2024-04-02", "6:00", "17:00");
 
-
 SET FOREIGN_KEY_CHECKS = 1;
