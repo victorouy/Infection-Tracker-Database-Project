@@ -102,8 +102,8 @@ function deleteEmployee(employeeID) {
     });
 }
 
-function createPerson(event) {
-  const form = document.getElementById("createPersonForm");
+function createEmployee(event) {
+  const form = document.getElementById("createEmployeeForm");
 
   event.preventDefault();
 
@@ -115,7 +115,7 @@ function createPerson(event) {
     formDataObject[key] = value;
   });
 
-  fetch(`${BASE_URL}/persons`, {
+  fetch(`${BASE_URL}/employees`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -127,14 +127,14 @@ function createPerson(event) {
         form.reset();
 
         // Refresh the table with new data
-        getAllPersons();
-        alert("Person created successfully");
+        getAllEmployees();
+        alert("Employee created successfully");
       } else {
-        throw new Error("Failed to create person");
+        throw new Error("Failed to create employee");
       }
     })
     .catch((error) => {
-      console.error("Error creating person:", error);
+      console.error("Error creating employee:", error);
     });
 }
 

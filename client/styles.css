@@ -57,38 +57,13 @@ th {
   font-weight: bold;
 }
 
-/* Styling for Person form */
 #formsContainer {
   display: flex;
   justify-content: space-evenly;
 }
 
-#createPersonForm label,
-input {
-  margin: 5px;
-}
-
-#updatePersonForm label,
-input {
-  margin: 5px;
-}
-
-#createVaccinationForm label,
-input {
-  margin: 5px;
-}
-
-#updateVaccinationForm label,
-input {
-  margin: 5px;
-}
-
-#createInfectionForm label,
-input {
-  margin: 5px;
-}
-
-#updateInfectionForm label,
+.tab-form label,
+select,
 input {
   margin: 5px;
 }

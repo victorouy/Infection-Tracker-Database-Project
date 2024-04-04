@@ -21,6 +21,7 @@ app.put("/persons/:personId", personsController.editPerson);
 
 // #4. Create/Delete/Edit/Display a Employee.
 app.get("/employees", employeesController.getAllEmployees);
+app.post("/employees", employeesController.createEmployee);
 app.delete("/employees/:employeeId", employeesController.deleteEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine

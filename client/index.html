@@ -42,7 +42,11 @@
         <div id="formsContainer">
           <div>
             <h2>Create Person</h2>
-            <form id="createPersonForm" onsubmit="createPerson(event)">
+            <form
+              id="createPersonForm"
+              class="tab-form"
+              onsubmit="createPerson(event)"
+            >
               <label for="firstName">First Name:</label><br />
               <input type="text" name="FirstName" required /><br />
 
@@ -75,7 +79,11 @@
 
           <div>
             <h2>Update Person</h2>
-            <form id="updatePersonForm" onsubmit="updatePerson(event)">
+            <form
+              id="updatePersonForm"
+              class="tab-form"
+              onsubmit="updatePerson(event)"
+            >
               <label for="personId">PersonID:</label><br />
               <input
                 type="number"
@@ -158,18 +166,89 @@
         <div id="employeesTableContainer" class="tableContainer"></div>
 
         <hr />
+
+        <div id="formsContainer">
+          <div>
+            <h2>Create Employee</h2>
+            <form
+              id="createEmployeeForm"
+              class="tab-form"
+              onsubmit="createEmployee(event)"
+            >
+              <label for="personId">PersonId:</label><br />
+              <input type="number" name="PersonID" required /><br />
+
+              <label for="role">Role:</label><br />
+              <select name="Role">
+                <option value="Nurse">Nurse</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Pharmacist">Pharmacist</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Administrative Personnel">
+                  Administrative Personnel
+                </option>
+                <option value="Security Personnel">Security Personnel</option>
+                <option value="Regular Employee">
+                  Regular Employee
+                </option></select
+              ><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" required /><br />
+
+              <input type="submit" value="Create" />
+            </form>
+          </div>
+
+          <div>
+            <h2>Update Employee</h2>
+            <form
+              id="updateEmployeeForm"
+              class="tab-form"
+              onsubmit="updateEmployee(event)"
+            >
+              <label for="personId">PersonId:</label><br />
+              <input type="number" name="PersonID" required /><br />
+
+              <label for="role">Role:</label><br />
+              <select name="Role">
+                <option value="Nurse">Nurse</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Pharmacist">Pharmacist</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Administrative Personnel">
+                  Administrative Personnel
+                </option>
+                <option value="Security Personnel">Security Personnel</option>
+                <option value="Regular Employee">
+                  Regular Employee
+                </option></select
+              ><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" required /><br />
+
+              <input type="submit" value="Create" />
+            </form>
+          </div>
+        </div>
       </div>
       <div id="Vaccines" class="tab-content">
         <h2>Vaccinations</h2>
         <div id="vaccinationsTableContainer" class="tableContainer"></div>
 
         <hr />
-        
+
         <div id="formsContainer">
           <div>
             <h2>Create Vaccination</h2>
-            <form id="createVaccinationForm" onsubmit="createVaccination(event)">
-
+            <form
+              id="createVaccinationForm"
+              class="tab-form"
+              onsubmit="createVaccination(event)"
+            >
               <label for="personID">PersonID:</label><br />
               <input type="number" name="PersonID" required /><br />
 
@@ -191,7 +270,11 @@
 
           <div>
             <h2>Update Vaccination</h2>
-            <form id="updateVaccinationForm" onsubmit="updateVaccination(event)">
+            <form
+              id="updateVaccinationForm"
+              class="tab-form"
+              onsubmit="updateVaccination(event)"
+            >
               <label for="vaccineId">VaccineID:</label><br />
               <input
                 type="number"
@@ -216,7 +299,6 @@
                 required
               /><br />
 
-
               <label for="vaccinationType">Vaccination Type:</label><br />
               <input
                 type="text"
@@ -233,8 +315,7 @@
                 required
               /><br />
 
-              <label for="doseNumber">Dose Number:</label
-              ><br />
+              <label for="doseNumber">Dose Number:</label><br />
               <input
                 type="number"
                 id="doseNumberToUpdate"
@@ -246,7 +327,6 @@
             </form>
           </div>
         </div>
-
       </div>
       <div id="Infections" class="tab-content">
         <h2>Infections</h2>
@@ -257,7 +337,11 @@
         <div id="formsContainer">
           <div>
             <h2>Create Infection</h2>
-            <form id="createInfectionForm" onsubmit="createInfection(event)">
+            <form
+              id="createInfectionForm"
+              class="tab-form"
+              onsubmit="createInfection(event)"
+            >
               <label for="personIdInfection">Person ID:</label><br />
               <input type="number" name="PersonIdInfection" required /><br />
 
@@ -273,7 +357,11 @@
 
           <div>
             <h2>Update Infection</h2>
-            <form id="updateInfectionForm" onsubmit="updateInfection(event)">
+            <form
+              id="updateInfectionForm"
+              class="tab-form"
+              onsubmit="updateInfection(event)"
+            >
               <label for="infectionId">Infection ID:</label><br />
               <input
                 type="number"

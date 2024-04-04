@@ -2,21 +2,7 @@ USE vjc353_4;
 
 # Use these if you need to DROP all constraints and tables
 /*
-ALTER TABLE Facilities DROP CONSTRAINT FK_Facilities_Employees;
-ALTER TABLE Employees DROP CONSTRAINT FK_Employees_Persons;
-ALTER TABLE Employees DROP CONSTRAINT FK_Employees_Facilities;
-ALTER TABLE EmploymentRecord DROP CONSTRAINT FK_EmploymentRecord_Employees;
-ALTER TABLE EmploymentRecord DROP CONSTRAINT FK_EmploymentRecord_Facilities;
-ALTER TABLE Vaccines DROP CONSTRAINT FK_Vaccines_Persons;
-ALTER TABLE Vaccines DROP CONSTRAINT FK_Vaccines_Facilities;
-ALTER TABLE Infections DROP CONSTRAINT FK_Infections_Persons;
-ALTER TABLE EmployeePersonRelationship DROP CONSTRAINT FK_EmployeePersonRelationships_Employees;
-ALTER TABLE EmployeePersonRelationship DROP CONSTRAINT FK_EmployeePersonRelationships_Persons;
-ALTER TABLE PersonResidences DROP CONSTRAINT FK_PersonResidences_Persons;
-ALTER TABLE PersonResidences DROP CONSTRAINT FK_PersonResidences_Residence;
-ALTER TABLE PersonResidences DROP CONSTRAINT FK_Schedules_Employees;
-ALTER TABLE PersonResidences DROP CONSTRAINT FK_Schedules_Facilities;
-
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS Facilities;
 DROP TABLE IF EXISTS Persons;
 DROP TABLE IF EXISTS Residence;
@@ -26,7 +12,8 @@ DROP TABLE IF EXISTS Vaccines;
 DROP TABLE IF EXISTS Infections;
 DROP TABLE IF EXISTS EmployeePersonRelationship;
 DROP TABLE IF EXISTS PersonResidences;
-DROP TABLE IF EXISTS Schedules
+DROP TABLE IF EXISTS Schedules;
+SET FOREIGN_KEY_CHECKS = 1;
 */
 
 CREATE TABLE Facilities (
