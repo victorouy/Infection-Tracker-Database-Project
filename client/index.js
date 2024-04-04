@@ -3,6 +3,7 @@ const BASE_URL = "http://localhost:5000";
 function openTab(event, tabName) {
   var i, tabContent, tabLinks;
   tabContent = document.getElementsByClassName("tab-content");
+  
   for (i = 0; i < tabContent.length; i++) {
     tabContent[i].style.display = "none"; // Hide all tab contents
   }
@@ -15,6 +16,9 @@ function openTab(event, tabName) {
 
   if (tabName === "Persons") {
     getAllPersons();
+  }
+  if (tabName === "Facilities") {
+    getAllFacilities();
   }
 
   event.preventDefault();
