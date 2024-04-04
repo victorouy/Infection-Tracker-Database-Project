@@ -100,6 +100,7 @@ CREATE TABLE Infections (
     InfectionID INT PRIMARY KEY AUTO_INCREMENT,
     PersonID INT,
     InfectionDate DATE,
+    InfectionEndDate DATE,
     InfectionType VARCHAR(50) -- Ex: COVID-19, SARS-Cov-2 Variant, Other Types
 );
 
