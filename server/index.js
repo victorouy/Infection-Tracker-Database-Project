@@ -36,6 +36,19 @@ app.get("/infections/:infectionId", infectionsController.getInfection);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
+// Facilites delete/create/update
+app.get("/facilities", facilitiesController.getAllFacilities);
+app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+app.post("/facilities", facilitiesController.createFacilities);
+app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
+app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
+// residence delete/create/update
+app.get("/residence", residenceController.getAllResidence);
+app.get("/residence/:residenceId", residenceController.getResidence);
+app.post("/residence", residenceController.createResidence);
+app.delete("/residence/:residenceId", residenceController.deleteResidence);
+app.put("/residence/:residenceId", residenceController.editResidence);
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
