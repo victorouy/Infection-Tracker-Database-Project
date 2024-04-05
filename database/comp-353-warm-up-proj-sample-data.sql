@@ -323,9 +323,9 @@ INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, 
 (21, 32, '2023-12-15', '2024-01-04', 'Delta Variant'),
 (22, 39, '2024-02-15', NULL, 'COVID-19'),
 (23, 37, '2024-02-16', NULL, 'COVID-19'),
-(24, 38, '2024-01-22', NULL, 'COVID-19');
+(24, 38, '2024-01-22', NULL, 'COVID-19'),
+(50, 21, '2024-03-23', NULL, 'COVID-19');
 
->>>>>>> master
 
 INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (2, 2, '2023-04-20', '9:00', '17:00'),
