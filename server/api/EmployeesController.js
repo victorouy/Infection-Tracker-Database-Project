@@ -5,11 +5,6 @@ function getScheduleForEmployee(req, res) {
   const startDate = req.params.startDate;
   const endDate = req.params.endDate;
 
-  console.log(empId, startDate, endDate);
-
-  // SQL query to select all persons
-  //const query = "SELECT * FROM Schedules WHERE EmployeeID = ?";
-  // const query = "SELECT * FROM Employees";
   const query = `SELECT Name, Date, StartTime, EndTime
   FROM Schedules, Facilities
   WHERE Schedules.FacilityID = Facilities.FacilityID AND EmployeeID = ? AND Date BETWEEN ? AND ?
@@ -56,13 +51,17 @@ function createEmployee(req, res) {
   const employeeCheckQuery =
     "SELECT COUNT(*) AS employeeCount FROM Employees WHERE PersonID = ?";
 
-  // Values for the EmployeeID check query
-  const employeeCheckValues = [PersonID];
+  // Check if PersonID exists in Persons table
+  const personCheckQuery =
+    "SELECT COUNT(*) AS personCount FROM Persons WHERE PersonID = ?";
 
-  // Perform the EmployeeID check query
+  // Check if the FacilityID exists in the Facilities table
+  const facilityCheckQuery =
+    "SELECT COUNT(*) AS facilityCount FROM Facilities WHERE FacilityID = ?";
+
   db.query(
     employeeCheckQuery,
-    employeeCheckValues,
+    PersonID,
     (employeeCheckError, employeeCheckResults, employeeCheckFields) => {
       if (employeeCheckError) {
         console.error(
@@ -71,7 +70,6 @@ function createEmployee(req, res) {
         return res.status(500).json({ error: "Internal Server Error" });
       }
 
-      // Check if PersonID is already in Employees table
       const employeeCount = employeeCheckResults[0].employeeCount;
       if (employeeCount > 0) {
         return res
@@ -79,17 +77,9 @@ function createEmployee(req, res) {
           .json({ error: "PersonID is already an employee" });
       }
 
-      // Check if PersonID exists
-      const personCheckQuery =
-        "SELECT COUNT(*) AS personCount FROM Persons WHERE PersonID = ?";
-
-      // Values for the PersonID check query
-      const personCheckValues = [PersonID];
-
-      // Perform the PersonID check query
       db.query(
         personCheckQuery,
-        personCheckValues,
+        PersonID,
         (personCheckError, personCheckResults, personCheckFields) => {
           if (personCheckError) {
             console.error(
@@ -98,22 +88,14 @@ function createEmployee(req, res) {
             return res.status(500).json({ error: "Internal Server Error" });
           }
 
-          // Check if PersonID exists
           const personCount = personCheckResults[0].personCount;
           if (personCount === 0) {
             return res.status(404).json({ error: "PersonID does not exist" });
           }
 
-          const facilityCheckQuery =
-            "SELECT COUNT(*) AS facilityCount FROM Facilities WHERE FacilityID = ?";
-
-          // Values for the FacilityID check query
-          const facilityCheckValues = [FacilityID];
-
-          // Perform the FacilityID check query
           db.query(
             facilityCheckQuery,
-            facilityCheckValues,
+            FacilityID,
             (facilityCheckError, facilityCheckResults, facilityCheckFields) => {
               if (facilityCheckError) {
                 console.error(
@@ -123,7 +105,6 @@ function createEmployee(req, res) {
                 return res.status(500).json({ error: "Internal Server Error" });
               }
 
-              // Check if FacilityID exists
               const facilityCount = facilityCheckResults[0].facilityCount;
               if (facilityCount === 0) {
                 return res
@@ -131,11 +112,9 @@ function createEmployee(req, res) {
                   .json({ error: "FacilityID does not exist" });
               }
 
-              // If both PersonID and FacilityID exist, execute the INSERT query
               const insertQuery = `INSERT INTO Employees (PersonID, Role, FacilityID) VALUES (?, ?, ?)`;
               const insertValues = [PersonID, Role, FacilityID];
 
-              // Perform the INSERT query
               db.query(
                 insertQuery,
                 insertValues,
@@ -149,10 +128,79 @@ function createEmployee(req, res) {
                       .json({ error: "Internal Server Error" });
                   }
 
-                  // If insertion is successful, send back success message
                   res.json({ message: "Employee created successfully" });
                 }
               );
+            }
+          );
+        }
+      );
+    }
+  );
+}
+
+function editEmployee(req, res) {
+  const employeeId = req.params.employeeId;
+
+  const { Role, FacilityID } = req.body;
+
+  // Check if the EmployeeID exists in the Employees table
+  const employeeExistsCheck =
+    "SELECT COUNT(*) AS employeeCount FROM Employees WHERE EmployeeID = ?";
+
+  // Check if the FacilityID exists in the Facilities table
+  const facilityCheckQuery =
+    "SELECT COUNT(*) AS facilityCount FROM Facilities WHERE FacilityID = ?";
+
+  db.query(
+    employeeExistsCheck,
+    employeeId,
+    (employeeCheckError, employeeCheckResults) => {
+      if (employeeCheckError) {
+        console.error(
+          "Error executing EmployeeID check query: " + employeeCheckError.stack
+        );
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      const employeeCount = employeeCheckResults[0].employeeCount;
+      if (employeeCount === 0) {
+        return res.status(404).json({ error: "EmployeeID does not exist" });
+      }
+
+      db.query(
+        facilityCheckQuery,
+        FacilityID,
+        (facilityCheckError, facilityCheckResults) => {
+          if (facilityCheckError) {
+            console.error(
+              "Error executing FacilityID check query: " +
+                facilityCheckError.stack
+            );
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          const facilityCount = facilityCheckResults[0].facilityCount;
+          if (facilityCount === 0) {
+            return res.status(404).json({ error: "FacilityID does not exist" });
+          }
+
+          const updateQuery =
+            "UPDATE Employees SET Role = ?, FacilityID = ? WHERE EmployeeID = ?";
+          const insertValues = [Role, FacilityID, employeeId];
+
+          db.query(
+            updateQuery,
+            insertValues,
+            (insertError, insertResults, insertFields) => {
+              if (insertError) {
+                console.error(
+                  "Error executing Update query: " + insertError.stack
+                );
+                return res.status(500).json({ error: "Internal Server Error" });
+              }
+
+              res.json({ message: "Employee updated successfully" });
             }
           );
         }
@@ -310,6 +358,7 @@ module.exports = {
   getAllEmployees,
   deleteEmployee,
   createEmployee,
+  editEmployee,
   getQuery16,
   getQuery17,
   getQuery18,

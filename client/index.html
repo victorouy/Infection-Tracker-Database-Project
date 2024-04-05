@@ -288,8 +288,16 @@
               class="tab-form"
               onsubmit="updateEmployee(event)"
             >
+              <label for="employeeId">EmployeeId:</label><br />
+              <input
+                type="number"
+                id="employeeIdToUpdate"
+                name="EmployeeID"
+                required
+              /><br />
+
               <label for="personId">PersonId:</label><br />
-              <input type="number" name="PersonID" required /><br />
+              <input type="number" name="PersonID" required disabled /><br />
 
               <label for="role">Role:</label><br />
               <select name="Role">
@@ -310,7 +318,7 @@
               <label for="facilityId">FacilityID:</label><br />
               <input type="number" name="FacilityID" required /><br />
 
-              <input type="submit" value="Create" />
+              <input type="submit" value="Update" />
             </form>
           </div>
         </div>
@@ -491,7 +499,6 @@
       </div>
       <div id="Queries" class="tab-content">
         <h2>Queries</h2>
-        <p>This tab is for executing the queries</p>
 
         <div id="queryTableContainer"></div>
         <button onclick="clearTable()">Clear Table</button>

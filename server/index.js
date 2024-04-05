@@ -24,6 +24,7 @@ app.put("/persons/:personId", personsController.editPerson);
 app.get("/employees", employeesController.getAllEmployees);
 app.post("/employees", employeesController.createEmployee);
 app.delete("/employees/:employeeId", employeesController.deleteEmployee);
+app.put("/employees/:employeeId", employeesController.editEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
