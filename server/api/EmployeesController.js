@@ -242,6 +242,65 @@ function deleteEmployee(req, res) {
   res.json({ message: "Person deleted successfully" });
 }
 
+function getQuery9(req, res) {
+  const query = `
+  WITH EmployeesCurrentlyWorkingAtFacilityAndSecondaryResidences AS (
+    SELECT er.EmployeeID, COUNT(pr.ResidenceID) AS SecondaryResidences, er.StartDate
+    FROM EmploymentRecord er
+    JOIN Employees e ON er.EmployeeID = e.EmployeeID
+    JOIN Persons p ON e.PersonID = p.PersonID
+    JOIN PersonResidences pr ON pr.PersonID = p.PersonID
+    WHERE er.EndDate IS NULL AND pr.Type = 'Secondary'
+    GROUP BY er.EmployeeID
+    HAVING SecondaryResidences > 0
+    )
+    SELECT 
+        e.EmployeeID,
+        p.FirstName,
+        p.LastName,
+        employeesCurrentlyWorking.StartDate,
+        p.DateOfBirth,
+        p.MedicareCardNumber,
+        p.TelephoneNumber,
+        r.Address AS PrimaryAddress,
+        r.City,
+        r.Province,
+        r.PostalCode,
+        p.Citizenship,
+        p.EmailAddress,
+        employeesCurrentlyWorking.SecondaryResidences
+    FROM 
+        Employees e
+    JOIN 
+        Persons p ON e.PersonID = p.PersonID
+    JOIN 
+        PersonResidences pr ON p.PersonID = pr.PersonID
+    JOIN 
+        Residence r ON pr.ResidenceID = r.ResidenceID
+    JOIN
+      EmployeesCurrentlyWorkingAtFacilityAndSecondaryResidences employeesCurrentlyWorking ON e.EmployeeID = employeesCurrentlyWorking.EmployeeID
+    WHERE 
+        pr.Type = 'Primary'
+      AND
+        e.EmployeeID = employeesCurrentlyWorking.EmployeeID
+    GROUP BY 
+        e.EmployeeID
+    ORDER BY 
+      e.EmployeeID,
+        p.FirstName,
+        p.LastName;
+    `;
+
+  db.query(query, (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ results });
+  });
+}
+
 function getQuery16(req, res) {
   const query = `
   SELECT 
@@ -359,6 +418,7 @@ module.exports = {
   deleteEmployee,
   createEmployee,
   editEmployee,
+  getQuery9,
   getQuery16,
   getQuery17,
   getQuery18,

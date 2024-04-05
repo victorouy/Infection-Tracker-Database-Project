@@ -296,11 +296,8 @@
                 required
               /><br />
 
-              <label for="personId">PersonId:</label><br />
-              <input type="number" name="PersonID" required disabled /><br />
-
               <label for="role">Role:</label><br />
-              <select name="Role">
+              <select name="Role" id="roleToUpdate">
                 <option value="Nurse">Nurse</option>
                 <option value="Doctor">Doctor</option>
                 <option value="Cashier">Cashier</option>
@@ -316,7 +313,12 @@
               ><br />
 
               <label for="facilityId">FacilityID:</label><br />
-              <input type="number" name="FacilityID" required /><br />
+              <input
+                type="number"
+                name="FacilityID"
+                id="employeeFacilityToUpdate"
+                required
+              /><br />
 
               <input type="submit" value="Update" />
             </form>
@@ -501,7 +503,31 @@
         <h2>Queries</h2>
 
         <div id="queryTableContainer"></div>
+        <hr />
         <button onclick="clearTable()">Clear Table</button>
+
+        <h4>
+          #8. Get details of all the facilities recorded in the system. Details
+          include facility name, address, city, province, postal-code, phone
+          number, web address, type, capacity, name of the general manager,
+          number of employees currently working at the facility, number of
+          doctors currently working in the facility, and number of nurses
+          currently working in the facility. Results should be displayed sorted
+          in ascending order by province, then by city, then by type, then by
+          number of doctors currently working for the facility.
+        </h4>
+        <button onclick="getQuery8(event)">Display</button>
+
+        <h4>
+          #9. Get details of all the employees currently working in a specific
+          facility who have at least one secondary residence. Details include
+          employee’s first-name, last-name, start date of work, date of birth,
+          Medicare card number, telephone-number, primary address, city,
+          province, postal-code, citizenship, email address, and the number of
+          secondary residences. Results should be displayed sorted in descending
+          order by start date, then by first name, then by last name
+        </h4>
+        <button onclick="getQuery9(event)">Display</button>
 
         <h4>
           #10:For a given employee, get the details of all the schedules she/he
