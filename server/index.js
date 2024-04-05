@@ -44,6 +44,10 @@ app.put("/infections/:infectionId", infectionsController.editInfection);
 app.get("/queryten/:employeeId/:startDate/:endDate", tabeshController.queryTen);
 app.get("/queryfourteen/:facilityId", tabeshController.queryFourteen);
 app.get("/queryfifteen", tabeshController.queryFifteen);
+app.get("/schedules", tabeshController.getAllSchedules);
+app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
+app.post("/schedules", tabeshController.assignSchedule);
+
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
 app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);

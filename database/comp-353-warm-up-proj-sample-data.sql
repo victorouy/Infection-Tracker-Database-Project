@@ -327,7 +327,7 @@ INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, 
 (50, 21, '2024-03-23', NULL, 'COVID-19');
 
 
-INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (2, 2, '2023-04-20', '9:00', '17:00'),
 (3, 3, '2023-04-20', '9:00', '17:00'),
 (4, 4, '2023-04-20', '9:00', '17:00'),
@@ -357,8 +357,8 @@ INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (28, 2, '2023-04-20', '9:00', '17:00'),
 (29, 11, '2023-04-20', '9:00', '15:00');
 
-INSERT INTO Schedules values (1,1,"2024-04-02", "6:00", "17:00");
-INSERT INTO Schedules VALUES (11, 1, '2024-04-15', '9:00', '17:00');
-INSERT INTO Schedules VALUES (11, 1, '2024-04-16', '9:35', '17:45');
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-15', '9:00', '17:00');
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-16', '9:35', '17:45');
 
 SET FOREIGN_KEY_CHECKS = 1;

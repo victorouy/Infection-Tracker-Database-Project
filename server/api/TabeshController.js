@@ -143,10 +143,94 @@ function queryTwenty(req, res)
 {
 }
 
+function getAllSchedules(req, res)
+{
+	const query = `SELECT * FROM Schedules`;
+
+	db.query(query, (error, results, fields) => {
+		if (error) {
+			console.error("Error executing query: " + error.stack);
+			return res.status(500).json({ error: "Internal Server Error" });
+		}
+		
+		if (results.length == 0) {
+			return res.status(404).json({ error: "Nothing in the schedules table" });
+		}
+		
+		res.json({ schedules: results });
+	});
+}
+
+function deleteSchedule(req, res)
+{
+	const scheduleId = req.params.scheduleId;
+
+	const query = `DELETE FROM Schedules WHERE ScheduleID = ?`;
+
+	db.query(query, [scheduleId], (error, results, fields) => {
+		if (error) {
+		  console.error("Error executing query: " + error.stack);
+		  return res.status(500).json({ error: "Internal Server Error" });
+		}
+	
+		// Check if any rows were affected (indicating successful deletion)
+		if (results.affectedRows === 0) {
+		  return res.status(404).json({ error: "Schedule not found" });
+		}
+	
+		// If deletion is successful, send back success message
+		res.json({ message: "Schedule deleted successfully" });
+	  });
+}
+
+function assignSchedule(req, res)
+{
+	const {
+		EmployeeID,
+		FacilityID,
+		Date,
+		StartTime,
+		EndTime,
+	  } = req.body;
+	
+	  const query = `
+		  INSERT INTO Schedules (
+			EmployeeID,
+			FacilityID,
+			Date,
+			StartTime,
+			EndTime
+		  ) VALUES (?, ?, ?, ?, ?)
+		`;
+	
+	  // Values to be inserted
+	  const values = [
+		EmployeeID,
+		FacilityID,
+		Date,
+		StartTime,
+		EndTime,
+	  ];
+	
+	  // Perform the query
+	  db.query(query, values, (error, results, fields) => {
+		if (error) {
+		  console.error("Error executing query: " + error.stack);
+		  return res.status(500).json({ error: "Internal Server Error" });
+		}
+	
+		// If insertion is successful, send back success message
+		res.json({ message: "Schedule assigned successfully" });
+	  });
+}
+
 module.exports = {
 	querySeven,
 	queryTen,
 	queryFourteen,
 	queryFifteen,
 	queryTwenty,
+	getAllSchedules,
+	deleteSchedule,
+	assignSchedule,
 };

@@ -23,6 +23,7 @@
       <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
       <a href="#" onclick="openTab(event, 'Vaccines')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+      <a href="#" onclick="openTab(event, 'Schedules')">Schedules</a>
       <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>
     <!-- This is Nav-->
@@ -490,6 +491,42 @@
           </div>
         </div>
       </div>
+
+      <div id="Schedules" class="tab-content">
+        <h2>Schedules</h2>
+        <div id="schedulesTableContainer" class="tableContainer"></div>
+
+        <hr />
+
+        <div id="formsContainer">
+          <div>
+            <h2>Assign Schedule</h2>
+            <form
+              id="assignScheduleForm"
+              class="tab-form"
+              onsubmit="assignSchedule(event)"
+            >
+              <label for="employeeId">EmployeeId:</label><br />
+              <input type="number" name="EmployeeID" required /><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" required /><br />
+
+              <label for="date">Date:</label><br />
+              <input type="date" name="Date" required /><br />
+
+              <label for="starttime">Start Time:</label><br />
+              <input type="time" name="StartTime" required /><br />
+
+              <label for="endtime">End Time:</label><br />
+              <input type="time" name="EndTime" required /><br />
+
+              <input type="submit" value="Assign" />
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div id="Queries" class="tab-content">
         <h2>Queries</h2>
         <p>This tab is for executing the queries</p>
