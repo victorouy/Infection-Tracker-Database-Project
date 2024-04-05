@@ -4,6 +4,7 @@ const employeesController = require("./api/EmployeesController");
 const vaccinationsController = require("./api/VaccinationsController");
 const infectionsController = require("./api/InfectionsController");
 const facilitiesController = require("./api/FacilitiesController");
+const residenceController = require("./api/ResidenceController");
 const express = require("express");
 const cors = require("cors");
 
@@ -40,12 +41,20 @@ app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
 
+
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
-// app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+app.get("/facilities/:FacilityID", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
-app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
-app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
+app.delete("/facilities/:FacilityID", facilitiesController.deleteFacilities);
+app.put("/facilities/:FacilityID", facilitiesController.editFacilities);
+// residence delete/create/update
+app.get("/residence", residenceController.getAllResidence);
+app.get("/residence/:ResidenceID", residenceController.getResidence);
+app.post("/residence", residenceController.createResidence);
+app.delete("/residence/:ResidenceID", residenceController.deleteResidence);
+app.put("/residence/:ResidenceID", residenceController.editResidence);
+
 
 // Queries
 app.get("/facilities/8", facilitiesController.getQuery8);

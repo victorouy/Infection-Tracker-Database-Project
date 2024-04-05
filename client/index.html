@@ -11,6 +11,7 @@
     <script src="vaccinationsController.js"></script>
     <script src="infectionsController.js"></script>
     <script src="facilitiesController.js"></script>
+    <script src="residenceController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -26,10 +27,11 @@
     </div>
     <!-- This is Nav-->
     <div id="tabContainer">
+
       <div id="Facilities" class="tab-content" style="display: block">
         <!-- Facility-->
         <h2>Facilities</h2>
-        <div id="FacilitiesTableContainer" class="tableContainer"></div>
+        <div id="facilitiesTableContainer" class="tableContainer"></div>
         <!-- The Facility table-->
         <hr />
         <div id="formsContainer">
@@ -37,31 +39,33 @@
             <h2>Create Facilities</h2>
             <form id="createFacilitiesForm" onsubmit="createFacilities(event)">
               <label for="name">Name:</label><br />
-              <input type="text" id="name" name="name" /><br />
+              <input type="text" id="name" name="Name" /><br />
 
               <label for="address">Address:</label><br />
-              <input type="text" id="address" name="address" /><br />
+              <input type="text" id="address" name="Address" /><br />
 
               <label for="city">City:</label><br />
-              <input type="text" id="city" name="city" /><br />
+              <input type="text" id="city" name="City" /><br />
 
               <label for="province">Province:</label><br />
-              <input type="text" id="province" name="province" /><br />
+              <input type="text" id="province" name="Province" /><br />
 
               <label for="postal_code">Postal Code:</label><br />
-              <input type="text" id="postal_code" name="postal_code" /><br />
+              <input type="text" id="postal_code" name="PostalCode" /><br />
 
               <label for="phone_number">Phone Number:</label><br />
-              <input type="tel" id="phone_number" name="phone_number" /><br />
+              <input type="tel" id="phone_number" name="PhoneNumber" /><br />
 
               <label for="web_address">Web Address:</label><br />
-              <input type="url" id="web_address" name="web_address" /><br />
+              <input type="url" id="web_address" name="WebAddress" /><br />
 
               <label for="type">Type:</label><br />
-              <input type="text" id="type" name="type" /><br />
+              <input type="text" id="type" name="Type" /><br />
 
               <label for="capacity">Capacity:</label><br />
-              <input type="number" id="capacity" name="capacity" />
+              <input type="number" id="capacity" name="Capacity" /><br />
+              <label for="GeneralManagerID">GeneralManagerID:</label><br />
+              <input type="number" id="generalManagerID" name="GeneralManagerID" /><br />
               <input type="submit" value="Create" />
             </form>
           </div>
@@ -70,32 +74,41 @@
             <!-- The Update Facility Form-->
             <h2>Update Facilities Information</h2>
             <form id="updateFacilitiesForm" onsubmit="updateFacilities(event)">
+              <label for="FacilityID">FacilityID:</label><br />
+              <input
+                type="number"
+                id="facilityIDToUpdate"
+                name="FacilityID"
+                required
+              /><br />
               <label for="name">Name:</label><br />
-              <input type="text" id="name" name="name" /><br />
+              <input type="text" id="nameToUpdate" name="Name" /><br />
 
               <label for="address">Address:</label><br />
-              <input type="text" id="address" name="address" /><br />
+              <input type="text" id="addressToUpdate" name="Address" /><br />
 
               <label for="city">City:</label><br />
-              <input type="text" id="city" name="city" /><br />
+              <input type="text" id="cityToUpdate" name="City" /><br />
 
               <label for="province">Province:</label><br />
-              <input type="text" id="province" name="province" /><br />
+              <input type="text" id="provinceToUpdate" name="Province" /><br />
 
               <label for="postal_code">Postal Code:</label><br />
-              <input type="text" id="postal_code" name="postal_code" /><br />
+              <input type="text" id="postalCodeToUpdate" name="PostalCode" /><br />
 
               <label for="phone_number">Phone Number:</label><br />
-              <input type="tel" id="phone_number" name="phone_number" /><br />
+              <input type="tel" id="phoneNumberToUpdate" name="PhoneNumber" /><br />
 
               <label for="web_address">Web Address:</label><br />
-              <input type="url" id="web_address" name="web_address" /><br />
+              <input type="url" id="webAddressToUpdate" name="WebAddress" /><br />
 
               <label for="type">Type:</label><br />
-              <input type="text" id="type" name="type" /><br />
+              <input type="text" id="typeToUpdate" name="Type" /><br />
 
               <label for="capacity">Capacity:</label><br />
-              <input type="number" id="capacity" name="capacity" /><br />
+              <input type="number" id="capacityToUpdate" name="Capacity" /><br />
+              <label for="GeneralManagerID">GeneralManagerID:</label><br />
+              <input type="number" id="generalManagerIDToUpdate" name="GeneralManagerID" /><br />
 
               <br />
               <input type="submit" value="Update" />
@@ -103,14 +116,85 @@
           </div>
         </div>
       </div>
+      
       <script>
         getAllFacilities();
       </script>
       <div id="Residences" class="tab-content">
-        <!-- Residence -->
-        <h2>Residences</h2>
-        <p>This tab contains information about residences.</p>
+          <!-- Residence -->
+          <h2>Residences</h2>
+          <div id="residenceTableContainer" class="tableContainer"></div>
+          <!-- Residence Table-->
+          <p>This tab contains information about residences.</p>
+          <hr />
+          <div id="formsContainer">
+            <div>
+              <h2>Create Residence</h2>
+              <form id="createResidenceForm" onsubmit="createResidence(event)">
+                <label for="Type">Type:</label><br>
+                <input type="text" id="Type" name="Type" ><br>
+                
+                <label for="address">Address:</label><br>
+                <input type="text" id="Address" name="Address" ><br>
+                
+                <label for="city">City:</label><br>
+                <input type="text" id="City" name="City" ><br>
+                
+                <label for="province">Province:</label><br>
+                <input type="text" id="Province" name="Province" ><br>
+                
+                <label for="postal_code">Postal Code:</label><br>
+                <input type="text" id="PostalCode" name="PostalCode" ><br>
+                
+                <label for="phone_number">Phone Number:</label><br>
+                <input type="tel" id="PhoneNumber" name="PhoneNumber" ><br>
+                
+                <label for="NumberOfBedrooms">NumberOfBedrooms:</label><br>
+                <input type="number" id="NumberOfBedrooms" name="NumberOfBedrooms"><br>
+                
+                <input type="submit" value="Create">
+              </form>
+            </div>
+            <div>
+              <!-- The Update Residence Form-->
+              <h2>Update Residence Information</h2>
+                <form id="updateResidenceForm" onsubmit="updateResidence(event)">
+                  
+                  <label for="ResidenceId">ResidenceID:</label><br />
+              <input
+                type="number"
+                id="residenceIDToUpdate"
+                name="ResidenceID"
+                required
+              /><br />
+                <label for="Type">Type:</label><br />
+                <input type="text" id="TypeToUpdate" name="Type" ><br>
+                
+                <label for="address">Address:</label><br>
+                <input type="text" id="AddressToUpdate" name="Address" ><br>
+                
+                <label for="city">City:</label><br>
+                <input type="text" id="CityToUpdate" name="City" ><br>
+                
+                <label for="province">Province:</label><br>
+                <input type="text" id="ProvinceToUpdate" name="Province" ><br>
+                
+                <label for="postal_code">Postal Code:</label><br>
+                <input type="text" id="PostalCodeToUpdate" name="PostalCode" ><br>
+                
+                <label for="phone_number">Phone Number:</label><br>
+                <input type="tel" id="PhoneNumberToUpdate" name="PhoneNumber" ><br>
+                
+                <label for="NumberOfBedrooms">NumberOfBedrooms:</label><br>
+                <input type="number" id="numberOfBedroomsToUpdate" name="NumberOfBedrooms"><br>
+                <br>
+                <input type="submit" value="Update">
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
+      
 
       <div id="Persons" class="tab-content">
         <!--Persons-->

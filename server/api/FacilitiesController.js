@@ -17,13 +17,13 @@ function getAllFacilities(req, res) {
 }
 
 function getFacilities(req, res) {
-  const FacilityId = req.params.facilityId;
+  const FacilityID = req.params.FacilityID;
 
-  // SQL query to select a specific Facilities by FacilityId
+  // SQL query to select a specific Facilities by FacilityID
   const query = "SELECT * FROM Facilities WHERE FacilityID = ?";
 
   // Perform the query
-  db.query(query, [FacilityId], (error, results, fields) => {
+  db.query(query, [FacilityID], (error, results, fields) => {
     if (error) {
       console.error("Error executing query: " + error.stack);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -41,8 +41,7 @@ function getFacilities(req, res) {
 
 function createFacilities(req, res) {
   const {
-    FacilityID,
-    Name,
+    Name,    
     Address,
     City,
     Province,
@@ -57,24 +56,22 @@ function createFacilities(req, res) {
   // SQL query to insert a new Facilities into the DB
   const query = `
       INSERT INTO Facilities (
-        FacilityID,
-        Name,
-        Address,
-        City,
-        Province,
-        PostalCode,
-        PhoneNumber,
-        WebAddress,
-        Type,
-        Capacity,
-        GeneralManagerID
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          Name,    
+          Address,
+          City,
+          Province,
+          PostalCode,
+          PhoneNumber,
+          WebAddress,
+          Type,
+          Capacity,
+          GeneralManagerID
+      ) VALUES (?,?,?,?,?,?,?,?,?,?);
     `;
 
   // Values to be inserted
   const values = [
-    FacilityID,
-    Name,
+    Name,    
     Address,
     City,
     Province,
@@ -94,18 +91,18 @@ function createFacilities(req, res) {
     }
 
     // If insertion is successful, send back success message
-    res.json({ message: "Facilities created successfully" });
+    res.json({ message: "facilities created successfully" });
   });
 }
 
 function deleteFacilities(req, res) {
-  const FacilityId = req.params.facilityId;
+  const FacilityID = req.params.FacilityID;
 
-  // SQL query to delete a Facilities by FacilityId
+  // SQL query to delete a Facilities by FacilityID
   const query = "DELETE FROM Facilities WHERE FacilityID = ?";
 
   // Perform the query
-  db.query(query, [FacilityId], (error, results, fields) => {
+  db.query(query, [FacilityID], (error, results, fields) => {
     if (error) {
       console.error("Error executing query: " + error.stack);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -122,9 +119,9 @@ function deleteFacilities(req, res) {
 }
 
 function editFacilities(req, res) {
-  const FacilityId = req.params.facilityId;
+  const FacilityID = req.params.FacilityID;
   const {
-    Name,
+    Name,    
     Address,
     City,
     Province,
@@ -136,25 +133,26 @@ function editFacilities(req, res) {
     GeneralManagerID,
   } = req.body;
 
-  // SQL query to update a Facilities by FacilityId
+  // SQL query to update a Facilities by FacilityID
   const query = `
     UPDATE Facilities
-    SET Name = ?,
-        Address = ?,
-        City = ?,
-        Province = ?,
-        PostalCode = ?,
-        PhoneNumber = ?,
-        Web Address = ?,
-        Type = ?,
-        Capacity = ?,
-        GeneralManagerID = ?
-    WHERE FacilityId = ?
+    SET 
+    Name = ?,  
+    Address = ?,
+    City = ?,
+    Province = ?,
+    PostalCode = ?,
+    PhoneNumber = ?,
+    WebAddress = ?,
+    Type = ?,
+    Capacity = ?,
+    GeneralManagerID = ?
+    WHERE FacilityID = ?
   `;
 
   // Values to be updated
   const values = [
-    Name,
+    Name,    
     Address,
     City,
     Province,
@@ -164,7 +162,7 @@ function editFacilities(req, res) {
     Type,
     Capacity,
     GeneralManagerID,
-    FacilityId,
+    FacilityID,
   ];
 
   // Perform the query

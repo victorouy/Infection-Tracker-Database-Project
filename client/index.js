@@ -30,6 +30,9 @@ function openTab(event, tabName) {
     case "Facilities":
       getAllFacilities();
       break;
+    case "Residences":
+      getAllResidence();
+      break;
   }
 
   event.preventDefault();
