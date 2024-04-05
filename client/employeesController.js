@@ -69,13 +69,13 @@ function getAllEmployees() {
         deleteButtonCell.appendChild(deleteButton);
 
         // Add update button to each row
-        // var updateButtonCell = row.insertCell();
-        // var updateButton = document.createElement("button");
-        // updateButton.textContent = "Update";
-        // updateButton.addEventListener("click", function () {
-        //   fillUpdateFormWithPersonData(person);
-        // });
-        // updateButtonCell.appendChild(updateButton);
+        var updateButtonCell = row.insertCell();
+        var updateButton = document.createElement("button");
+        updateButton.textContent = "Update";
+        updateButton.addEventListener("click", function () {
+          fillUpdateFormWithEmployeeData(employee);
+        });
+        updateButtonCell.appendChild(updateButton);
       });
 
       // Append table to table container
@@ -124,44 +124,36 @@ function createEmployee(event) {
     body: JSON.stringify(formDataObject),
   })
     .then((response) => {
-      if (response.ok) {
+      if (!response.ok) {
+        if (response.status === 404) {
+          alert("The PersonID and FacilityID must exist.");
+        } else if (response.status === 409) {
+          alert("This person is already an employee.");
+        } else {
+          throw new Error("Could not create a new employee");
+        }
+      } else {
         form.reset();
-
-        // Refresh the table with new data
         getAllEmployees();
         alert("Employee created successfully");
-      } else {
-        throw new Error("Failed to create employee");
       }
     })
     .catch((error) => {
-      console.error("Error creating employee:", error);
+      alert(`Error: ${error.message}`);
     });
 }
 
-function fillUpdateFormWithPersonData(person) {
-  document.getElementById("personIdToUpdate").value = person.PersonID;
-  document.getElementById("firstNameToUpdate").value = person.FirstName;
-  document.getElementById("lastNameToUpdate").value = person.LastName;
-
-  document.getElementById("dateOfBirthToUpdate").value = formatDate(
-    person.DateOfBirth
-  );
-
-  document.getElementById("socialSecurityNumberToUpdate").value =
-    person.SocialSecurityNumber;
-  document.getElementById("medicareCardNumberToUpdate").value =
-    person.MedicareCardNumber;
-  document.getElementById("telephoneNumberToUpdate").value =
-    person.TelephoneNumber;
-  document.getElementById("citizenshipToUpdate").value = person.Citizenship;
-  document.getElementById("emailAddressToUpdate").value = person.EmailAddress;
+function fillUpdateFormWithEmployeeData(employee) {
+  document.getElementById("employeeIdToUpdate").value = employee.EmployeeID;
+  document.getElementById("roleToUpdate").value = employee.Role;
+  document.getElementById("employeeFacilityToUpdate").value =
+    employee.FacilityID;
 }
 
-function updatePerson(event) {
-  const form = document.getElementById("updatePersonForm");
+function updateEmployee(event) {
+  const form = document.getElementById("updateEmployeeForm");
 
-  const personId = document.getElementById("personIdToUpdate").value;
+  const employeeId = document.getElementById("employeeIdToUpdate").value;
 
   event.preventDefault();
 
@@ -173,10 +165,11 @@ function updatePerson(event) {
     formDataObject[key] = value;
   });
 
-  // We don't need to pass the personId in the body of the request. The personId is passed in the request parameters.
-  delete formDataObject.PersonId;
+  // We don't update the PersonID or EmployeeID when editing an Employee
+  delete formDataObject.PersonID;
+  delete formDataObject.EmployeeID;
 
-  fetch(`${BASE_URL}/persons/${personId}`, {
+  fetch(`${BASE_URL}/employees/${employeeId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -184,18 +177,20 @@ function updatePerson(event) {
     body: JSON.stringify(formDataObject),
   })
     .then((response) => {
-      if (response.ok) {
-        form.reset();
-
-        // Refresh the table with new data
-        getAllPersons();
-        alert(`Person ${personId} updated successfully`);
+      if (!response.ok) {
+        if (response.status === 404) {
+          alert("The EmployeeID and FacilityID must exist.");
+        } else {
+          throw new Error("Could not update the employee");
+        }
       } else {
-        throw new Error(`Failed to update person with ID: ${personId}`);
+        form.reset();
+        getAllEmployees();
+        alert("Employee updated successfully");
       }
     })
     .catch((error) => {
-      console.error("Error creating person:", error);
+      alert(`Error: ${error.message}`);
     });
 }
 
@@ -205,6 +200,32 @@ function formatDate(dateToFormat) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function getQuery9(event) {
+  event.preventDefault();
+
+  fetch(`${BASE_URL}/employees/9`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to get query9");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      data.results.forEach((tuple) => {
+        if ("StartDate" in tuple) {
+          tuple.StartDate = formatDate(tuple.StartDate);
+        }
+        if ("DateOfBirth" in tuple) {
+          tuple.DateOfBirth = formatDate(tuple.DateOfBirth);
+        }
+      });
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function getQuery16(event) {

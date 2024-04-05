@@ -182,10 +182,50 @@ function editFacilities(req, res) {
   });
 }
 
+function getQuery8(req, res) {
+  const query = `SELECT 
+  f.Name AS FacilityName,
+  f.Address,
+  f.City,
+  f.Province,
+  f.PostalCode,
+  f.PhoneNumber,
+  f.WebAddress,
+  f.Type AS FacilityType,
+  f.Capacity,
+  CONCAT(p.FirstName, ' ', p.LastName) AS GeneralManagerName,
+  COUNT(DISTINCT e.EmployeeID) AS NumEmployees,
+  SUM(CASE WHEN e.Role = 'Doctor' THEN 1 ELSE 0 END) AS NumDoctors,
+  SUM(CASE WHEN e.Role = 'Nurse' THEN 1 ELSE 0 END) AS NumNurses
+FROM 
+  Facilities f
+LEFT JOIN 
+  Employees e ON f.FacilityID = e.FacilityID
+LEFT JOIN 
+  Persons p ON f.GeneralManagerID = p.PersonID
+GROUP BY 
+  f.FacilityID
+ORDER BY 
+  f.Province ASC,
+  f.City ASC,
+  f.Type ASC,
+  NumDoctors ASC;
+`;
+
+  db.query(query, (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ results });
+  });
+}
 module.exports = {
   getAllFacilities,
   getFacilities,
   createFacilities,
   deleteFacilities,
   editFacilities,
+  getQuery8,
 };

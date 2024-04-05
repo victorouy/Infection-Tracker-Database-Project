@@ -25,6 +25,7 @@ app.put("/persons/:personId", personsController.editPerson);
 app.get("/employees", employeesController.getAllEmployees);
 app.post("/employees", employeesController.createEmployee);
 app.delete("/employees/:employeeId", employeesController.deleteEmployee);
+app.put("/employees/:employeeId", employeesController.editEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
@@ -56,6 +57,9 @@ app.put("/residence/:ResidenceID", residenceController.editResidence);
 
 
 // Queries
+app.get("/facilities/8", facilitiesController.getQuery8);
+app.get("/employees/9", employeesController.getQuery9);
+
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
@@ -69,3 +73,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
