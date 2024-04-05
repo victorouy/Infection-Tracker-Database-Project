@@ -12,12 +12,12 @@ function getAllResidence(req, res) {
     }
 
     // If query is successful, send back the results
-    res.json({ Residence: results });
+    res.json({ residence: results });
   });
 }
 
 function getResidence(req, res) {
-  const ResidenceID = req.params.residenceId;
+  const ResidenceID = req.params.ResidenceID;
 
   // SQL query to select a specific Residence by ResidenceID
   const query = "SELECT * FROM Residence WHERE ResidenceID = ?";
@@ -41,40 +41,31 @@ function getResidence(req, res) {
 
 function createResidence(req, res) {
   const {
-    residenceId,
     Type,
     Address,
     City,
     Province,
     PostalCode,
     PhoneNumber,
-    NumbeOfBedrooms,
+    NumberOfBedrooms,
   } = req.body;
 
   // SQL query to insert a new Residence into the DB
   const query = `
-      INSERT INTO Residence (
-        residenceId,
-        Type,
-        Address,
-        City,
-        Province,
-        PostalCode,
-        PhoneNumber,
-        NumbeOfBedrooms,
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO Residence (
+    Type,Address,City,Province,PostalCode,PhoneNumber,NumberOfBedrooms) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
   // Values to be inserted
   const values = [
-    residenceId,
     Type,
     Address,
     City,
     Province,
     PostalCode,
     PhoneNumber,
-    NumbeOfBedrooms,
+    NumberOfBedrooms,
   ];
 
   // Perform the query
@@ -90,13 +81,13 @@ function createResidence(req, res) {
 }
 
 function deleteResidence(req, res) {
-  const ResidenceId = req.params.residenceId;
+  const ResidenceID = req.params.ResidenceID;
 
-  // SQL query to delete a Residence by ResidenceId
+  // SQL query to delete a Residence by ResidenceID
   const query = "DELETE FROM Residence WHERE ResidenceID = ?";
 
   // Perform the query
-  db.query(query, [ResidenceId], (error, results, fields) => {
+  db.query(query, [ResidenceID], (error, results, fields) => {
     if (error) {
       console.error("Error executing query: " + error.stack);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -113,7 +104,7 @@ function deleteResidence(req, res) {
 }
 
 function editResidence(req, res) {
-  const ResidenceId = req.params.residenceId;
+  const ResidenceID = req.params.ResidenceID;
   const {
     Type,
     Address,
@@ -121,10 +112,10 @@ function editResidence(req, res) {
     Province,
     PostalCode,
     PhoneNumber,
-    NumbeOfBedrooms,
+    NumberOfBedrooms,
   } = req.body;
 
-  // SQL query to update a Residence by ResidenceId
+  // SQL query to update a Residence by ResidenceID
   const query = `
     UPDATE Residence
     SET Type = ?,
@@ -133,8 +124,8 @@ function editResidence(req, res) {
         Province = ?,
         PostalCode = ?,
         PhoneNumber = ?,
-        NumbeOfBedrooms = ?,
-    WHERE residenceId = ?
+        NumberOfBedrooms = ?
+    WHERE ResidenceID = ?
   `;
 
   // Values to be updated
@@ -146,7 +137,8 @@ function editResidence(req, res) {
     Province,
     PostalCode,
     PhoneNumber,
-    NumbeOfBedrooms,
+    NumberOfBedrooms,
+    ResidenceID,
   ];
 
   // Perform the query

@@ -3,7 +3,7 @@ const BASE_URL = "http://localhost:5000";
 function openTab(event, tabName) {
   var i, tabContent, tabLinks;
   tabContent = document.getElementsByClassName("tab-content");
-  
+
   for (i = 0; i < tabContent.length; i++) {
     tabContent[i].style.display = "none"; // Hide all tab contents
   }
@@ -14,20 +14,26 @@ function openTab(event, tabName) {
   document.getElementById(tabName).style.display = "block"; // Show the content of the selected tab
   event.currentTarget.classList.add("active"); // Add active class to the clicked tab link
 
-  if (tabName === "Persons") {
-    getAllPersons();
-  } else if (tabName === "Vaccines") {
-    getAllVaccinations();
-  } else if (tabName === "Infections") {
-    getAllInfections();
+  switch (tabName) {
+    case "Persons":
+      getAllPersons();
+      break;
+    case "Employees":
+      getAllEmployees();
+      break;
+    case "Vaccines":
+      getAllVaccinations();
+      break;
+    case "Infections":
+      getAllInfections();
+      break;
+    case "Facilities":
+      getAllFacilities();
+      break;
+    case "Residences":
+      getAllResidence();
+      break;
   }
-  else if (tabName === "Facilities") {
-    getAllFacilities();
-  }
-  else if (tabName === "Residences") {
-    getAllResidence();
-  }
-
 
   event.preventDefault();
 }
