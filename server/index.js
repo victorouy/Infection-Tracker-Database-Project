@@ -40,6 +40,7 @@ app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
 
+
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
 app.get("/facilities/:FacilityID", facilitiesController.getFacilities);
