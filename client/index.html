@@ -11,6 +11,7 @@
     <script src="vaccinationsController.js"></script>
     <script src="infectionsController.js"></script>
     <script src="facilitiesController.js"></script>
+    <script src="residenceController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -106,11 +107,74 @@
 
       </div>
       <script> getAllFacilities() </script>
+      
       <div id="Residences" class="tab-content">
-        <!-- Residence -->
-        <h2>Residences</h2>
-        <p>This tab contains information about residences.</p>
+          <!-- Residence -->
+          <h2>Residences</h2>
+          <div id="ResidenceTableContainer" class="tableContainer"></div>
+          <!-- Residence Table-->
+          <p>This tab contains information about residences.</p>
+          <hr />
+          <div id="formsContainer">
+            <div>
+              <h2>Create Residence</h2>
+              <form id="createResidenceForm" onsubmit="createResidence(event)">
+                <label for="Type">Type:</label><br>
+                <input type="text" id="type" name="type" ><br>
+                
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" ><br>
+                
+                <label for="city">City:</label><br>
+                <input type="text" id="city" name="city" ><br>
+                
+                <label for="province">Province:</label><br>
+                <input type="text" id="province" name="province" ><br>
+                
+                <label for="postal_code">Postal Code:</label><br>
+                <input type="text" id="postal_code" name="postal_code" ><br>
+                
+                <label for="phone_number">Phone Number:</label><br>
+                <input type="tel" id="phonenumber" name="phonenumber" ><br>
+                
+                <label for="NumberOfBedrooms">NumberOfBedrooms:</label><br>
+                <input type="number" id="NumberOfBedrooms" name="NumberOfBedrooms"><br>
+                
+                <input type="submit" value="Create">
+              </form>
+            </div>
+            <div>
+              <!-- The Update Residence Form-->
+              <h2>Update Residence Information</h2>
+                <form id="updateResidenceForm" onsubmit="updateResidence(event)">
+                  <label for="Type">Type:</label><br>
+                <input type="text" id="type" name="type" ><br>
+                
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" ><br>
+                
+                <label for="city">City:</label><br>
+                <input type="text" id="city" name="city" ><br>
+                
+                <label for="province">Province:</label><br>
+                <input type="text" id="province" name="province" ><br>
+                
+                <label for="postal_code">Postal Code:</label><br>
+                <input type="text" id="postal_code" name="postal_code" ><br>
+                
+                <label for="phone_number">Phone Number:</label><br>
+                <input type="tel" id="phonenumber" name="phonenumber" ><br>
+                
+                <label for="NumberOfBedrooms">NumberOfBedrooms:</label><br>
+                <input type="number" id="NumberOfBedrooms" name="NumberOfBedrooms"><br>
+                <br>
+                <input type="submit" value="Update">
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
+      
 
       <div id="Persons" class="tab-content">
         <!--Persons-->

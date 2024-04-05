@@ -21,8 +21,11 @@ function openTab(event, tabName) {
   } else if (tabName === "Infections") {
     getAllInfections();
   }
-  if (tabName === "Facilities") {
+  else if (tabName === "Facilities") {
     getAllFacilities();
+  }
+  else if (tabName === "Residences") {
+    getAllResidence();
   }
 
 

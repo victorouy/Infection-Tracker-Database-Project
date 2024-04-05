@@ -4,6 +4,7 @@ const employeesController = require("./api/EmployeesController");
 const vaccinationsController = require("./api/VaccinationsController");
 const infectionsController = require("./api/InfectionsController");
 const facilitiesController = require("./api/FacilitiesController");
+const residenceController = require("./api/ResidenceController");
 const express = require("express");
 const cors = require("cors");
 
@@ -43,7 +44,12 @@ app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
-
+// residence delete/create/update
+app.get("/residence", residenceController.getAllResidence);
+app.get("/residence/:residenceId", residenceController.getResidence);
+app.post("/residence", residenceController.createResidence);
+app.delete("/residence/:residenceId", residenceController.deleteResidence);
+app.put("/residence/:residenceId", residenceController.editResidence);
 
 
 // Start the server
