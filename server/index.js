@@ -24,6 +24,7 @@ app.put("/persons/:personId", personsController.editPerson);
 app.get("/employees", employeesController.getAllEmployees);
 app.post("/employees", employeesController.createEmployee);
 app.delete("/employees/:employeeId", employeesController.deleteEmployee);
+app.put("/employees/:employeeId", employeesController.editEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
@@ -41,12 +42,15 @@ app.put("/infections/:infectionId", infectionsController.editInfection);
 
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
-app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+// app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
 
 // Queries
+app.get("/facilities/8", facilitiesController.getQuery8);
+app.get("/employees/9", employeesController.getQuery9);
+
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee

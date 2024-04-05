@@ -30,7 +30,13 @@ INSERT INTO Residence VALUES
 (24, 'Condominium', '1111 Oak Avenue', 'Richmond Hill', 'Ontario', 'R8S9T0', '9054567890', 5),
 (25, 'Semidetached House', '1212 Maple Drive', 'Vaughan', 'Ontario', 'V1W2X3', '9055678901', 4),
 (26, 'House', '405 Jubistreet', 'Toronto', 'Ontario', 'H1L2M4', '9055178901', 2),
-(27, 'House', '123 Mayflower', 'Lincoln', 'Ontario', 'J4LE23', '9055178555', 2);
+(27, 'House', '123 Mayflower', 'Lincoln', 'Ontario', 'J4LE23', '9055178555', 2),
+(28, 'Apartment', '1111 Poggers Street', 'Markham', 'Ontario', 'M6P7Y6', '9052356789', 2),
+(29, 'Condominium', '999 Galib Street', 'Markham Hill', 'Ontario', 'R8S9T0', '9014467890', 5),
+(30, 'Semidetached House', '144 Mikkelson', 'Vaughan', 'Ontario', 'H5DJ5G', '90556781111', 4),
+(31, 'House', '111 Venice Road', 'Toronto', 'Ontario', 'H1L5M5', '1155178901', 2),
+(32, 'House', '678 Yeti Road', 'Lincoln', 'Ontario', 'J4LE24', '9055178444', 2),
+(33, 'House', '555 Godiva Road', 'Montreal', 'Quebec', 'H1LM64', '9125178444', 2);
 
 
 # Administrative Personnel
@@ -61,6 +67,14 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (10, 10),
 (39, 27);
 
+INSERT INTO PersonResidences (PersonID, ResidenceID, Type) VALUES
+(1, 28, 'Secondary'),
+(2, 29, 'Secondary'),
+(3, 30, 'Secondary'),
+(4, 31, 'Secondary'),
+(5, 32, 'Secondary'),
+(5, 33, 'Secondary');
+
 
 # Persons who live in the same residence as the Employees
 INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
@@ -89,8 +103,6 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (19, 9),
 (20, 10),
 (38, 26);
-
-
 
 # Other non-administrative Personnel
 INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
@@ -205,10 +217,8 @@ tal',500,1),
 ec/','Hospital',400,4),
 (5,'CLSC de Montréal-Nord','11441 Bd Lacordaire','Montréal-Nord','Quebec','H1G 4J9','(514)
 384-2000','https://www.ciusssnordmtl.ca/installations/clsc/clsc-de-montreal-nord/','CLSC',25,5),
-(6,'CLSC de Cote de Neiges','5700 Chem. de la Côte-des-Neiges','Montreal','Quebec','(514)
-731-8531','H3T
-2A8','https://www.ciussswestcentral.ca/sites-and-resources/clsc/clsc-de-cote-des-neiges/','CLSC
-',25,6),
+(6,'CLSC de Cote de Neiges','5700 Chem. de la Côte-des-Neiges','Montreal','Quebec','H3T
+2A8','(514) 731-8531','https://www.ciussswestcentral.ca/sites-and-resources/clsc/clsc-de-cote-des-neiges/','Clinic',25,6),
 (7,'Pharmacy Montreal','5815 Sherbrooke St W','Montreal','Quebec','H4A 1X4','(514)
 925-061','https://muhc.ca/Pharmacy-Montreal','Pharmacy',5,7),
 (8,'Pharmacy Quebec','698 Rue Saint-Jean','Québec City','Quebec','G1R 1P8','(418)
