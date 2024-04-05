@@ -1,9 +1,9 @@
 // Import required modules
-const personsController = require("./api/PersonsController");
-const employeesController = require("./api/EmployeesController");
-const vaccinationsController = require("./api/VaccinationsController");
-const infectionsController = require("./api/InfectionsController");
-const facilitiesController = require("./api/FacilitiesController");
+const personsController = require("./PersonsController");
+const employeesController = require("./EmployeesController");
+const vaccinationsController = require("./VaccinationsController");
+const infectionsController = require("./InfectionsController");
+const facilitiesController = require("./FacilitiesController");
 const express = require("express");
 const cors = require("cors");
 
@@ -12,6 +12,8 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+app.get("/", (req, res) => res.send("HFESTS on Vercel"));
 
 // #3. Create/Delete/Edit/Display a Person.
 app.get("/persons", personsController.getAllPersons);
@@ -60,3 +62,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
