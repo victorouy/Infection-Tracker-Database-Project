@@ -120,7 +120,7 @@ function getAllSchedules()
         var updateButton = document.createElement("button");
         updateButton.textContent = "Update";
         updateButton.addEventListener("click", function () {
-          //fillUpdateFormWithScheduleData(schedule);
+          updateSchedule(schedule);
         });
         updateButtonCell.appendChild(updateButton);
       });
@@ -183,5 +183,54 @@ function assignSchedule(event)
     .catch((error) => {
       console.error("Error creating schedule:", error);
     });
+}
+
+function updateSchedule(eve)
+{
+  const form = document.getElementById("updateScheduleForm");
+
+  const scheduleId = document.getElementById("scheduleIdToUpdate").value;
+
+  event.preventDefault();
+
+  const formData = new FormData(form);
+
+  const formDataObject = {};
+  formData.forEach((value, key) => {
+    formDataObject[key] = value;
+  });
+
+  delete formDataObject.ScheduleId;
+
+  fetch(`${BASE_URL}/schedules/${scheduleId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formDataObject),
+  })
+    .then((response) => {
+      if (response.ok) {
+        form.reset();
+
+        // Refresh the table with new data
+        getAllSchedules();
+        alert(`Schedule ${scheduleId} updated successfully`);
+      } else {
+        throw new Error(`Failed to update schedule with ID: ${scheduleId}`);
+      }
+    })
+    .catch((error) => {
+      console.error("Error creating schedule:", error);
+    });
+}
+
+function fillUpdateFormWithScheduleData(schedule) {
+  document.getElementById("scheduleIdToUpdate").value = schedule.ScheduleID;
+  document.getElementById("employeeIdToUpdate").value = schedule.EmployeeID;
+  document.getElementById("facilityIdToUpdate").value = schedule.FacilityID;
+  document.getElementById("dateToUpdate").value = formatDate(schedule.Date);
+  document.getElementById("startTimeToUpdate").value = schedule.StartTime;
+  document.getElementById("endTimeToUpdate").value = schedule.EndTime;
 }
 

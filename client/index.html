@@ -522,6 +522,35 @@
               <input type="time" name="EndTime" required /><br />
 
               <input type="submit" value="Assign" />
+          </form>
+          </div>
+          <div>
+            <h2>Update Schedule</h2>
+            <form
+              id="updateScheduleForm"
+              class="tab-form"
+              onsubmit="updateSchedule(event)"
+            >
+
+              <label for="scheduleId">ScheduleId:</label><br />
+              <input type="number" name="ScheduleID" id ="scheduleIdToUpdate" required /><br />
+
+              <label for="employeeId">EmployeeId:</label><br />
+              <input type="number" name="EmployeeID" id ="employeeIdToUpdate"required /><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" id="facilityIdToUpdate" required /><br />
+
+              <label for="date">Date:</label><br />
+              <input type="date" name="Date" id="dateToUpdate" required /><br />
+
+              <label for="starttime">Start Time:</label><br />
+              <input type="time" name="StartTime" id="startTimeToUpdate" required /><br />
+
+              <label for="endtime">End Time:</label><br />
+              <input type="time" name="EndTime" id ="endTimeToUpdate" required /><br />
+
+              <input type="submit" value="Update" />
             </form>
           </div>
         </div>

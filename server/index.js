@@ -47,6 +47,7 @@ app.get("/queryfifteen", tabeshController.queryFifteen);
 app.get("/schedules", tabeshController.getAllSchedules);
 app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
 app.post("/schedules", tabeshController.assignSchedule);
+app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
 
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);

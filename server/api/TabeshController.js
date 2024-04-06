@@ -194,14 +194,62 @@ function assignSchedule(req, res)
 	  } = req.body;
 	
 	  const query = `
-		  INSERT INTO Schedules (
-			EmployeeID,
-			FacilityID,
-			Date,
-			StartTime,
-			EndTime
-		  ) VALUES (?, ?, ?, ?, ?)
-		`;
+	  	  CREATE TEMPORARY TABLE MostRecentVaccination AS
+		  (
+		    SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
+			FROM Vaccines
+			GROUP BY PersonID
+		  );
+
+		  INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime)
+		  SELECT ?, ?, ?, ?, ?
+		  WHERE TIME('?') < TIME('?') # StartTime, EndTime
+		    AND ? NOT IN
+			(
+			  SELECT EmployeeID
+			  FROM Schedules
+			  WHERE EmployeeID = ?
+			    AND TIME('?') BETWEEN StartTime AND EndTime # StartTime
+			)
+			AND ? NOT IN
+			(
+			  SELECT EmployeeID
+			  FROM Schedules
+			  WHERE EmployeeID = ?
+			    AND TIME('?') BETWEEN StartTime AND EndTime # EndTime
+			)
+			AND ? NOT IN
+			(
+				SELECT EmployeeID
+				FROM Schedules
+				WHERE EmployeeID = ?
+				  AND ABS(TIME_TO_SEC(TIMEDIFF(TIME(?), EndTime))) <= 7200
+			)
+			AND ? NOT IN
+			(
+				SELECT EmployeeID
+				FROM Schedules
+				WHERE EmployeeID = ?
+				  AND ABS(TIME_TO_SEC(TIMEDIFF(StartTime, TIME(?)))) <= 7200
+			)
+			AND ? NOT IN
+			(
+				SELECT EmployeeID
+				FROM Infections, Employees
+				WHERE Infections.PersonID = Employees.PersonID
+				  AND EmployeeID = ?
+				  AND InfectionType = 'COVID-19'
+				  AND DATEDIFF(DATE('?'), InfectionDate) <= 14
+			)
+			AND ? IN # Table of EmployeeID where most recent vaccination is less than 6 months ago
+			(
+				SELECT EmployeeID
+				FROM MostRecentVaccination
+				  INNER JOIN Employees ON MostRecentVaccination.PersonID = Employees.PersonID
+				WHERE DATEDIFF(DATE('?'), VaccinationDate) / 30 <= 6
+			);
+			
+			DROP TEMPORARY TABLE MostRecentVaccination;`;
 	
 	  // Values to be inserted
 	  const values = [
@@ -210,6 +258,25 @@ function assignSchedule(req, res)
 		Date,
 		StartTime,
 		EndTime,
+		StartTime,
+		EndTime,
+		EmployeeID,
+		EmployeeID,
+		StartTime,
+		EmployeeID,
+		EmployeeID,
+		EndTime,
+		EmployeeID,
+		EmployeeID,
+		StartTime,
+		EmployeeID,
+		EmployeeID,
+		EndTime,
+		EmployeeID,
+		EmployeeID,
+		Date,
+		EmployeeID,
+		Date,
 	  ];
 	
 	  // Perform the query
@@ -224,6 +291,50 @@ function assignSchedule(req, res)
 	  });
 }
 
+function updateSchedule(req, res)
+{
+	const scheduleId = req.params.scheduleId;
+	const {
+	  EmployeeID,
+	  FacilityID,
+	  Date,
+	  StartTime,
+	  EndTime,
+	} = req.body;
+  
+	const query = `
+	  UPDATE Schedules
+	  SET EmployeeID = ?,
+		  FacilityID = ?,
+		  Date = ?,
+		  StartTime = ?,
+		  EndTime = ?
+	  WHERE ScheduleID = ?
+	`;
+  
+	const values = [
+	  EmployeeID,
+	  FacilityID,
+	  Date,
+	  StartTime,
+	  EndTime,
+	  scheduleId,
+	];
+  
+	db.query(query, values, (error, results, fields) => {
+	  if (error) {
+		console.error("Error executing query: " + error.stack);
+		return res.status(500).json({ error: "Internal Server Error" });
+	  }
+  
+	  if (results.affectedRows === 0) {
+		return res.status(404).json({ error: "Schedule not found" });
+	  }
+  
+	  res.json({ message: "Schedule updated successfully" });
+	});
+}
+
 module.exports = {
 	querySeven,
 	queryTen,
@@ -233,4 +344,5 @@ module.exports = {
 	getAllSchedules,
 	deleteSchedule,
 	assignSchedule,
+	updateSchedule,
 };
