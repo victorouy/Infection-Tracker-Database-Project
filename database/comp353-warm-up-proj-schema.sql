@@ -98,6 +98,7 @@ CREATE TABLE EmployeePersonRelationship (
 );
 
 CREATE TABLE Schedules (
+ScheduleID INT PRIMARY KEY AUTO_INCREMENT,
 EmployeeID INT,
 FacilityID INT,
 Date DATE,

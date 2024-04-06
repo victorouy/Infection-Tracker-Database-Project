@@ -10,6 +10,7 @@
     <script src="employeesController.js"></script>
     <script src="vaccinationsController.js"></script>
     <script src="infectionsController.js"></script>
+    <script src="tabeshController.js"></script>
     <script src="facilitiesController.js"></script>
     <script src="residenceController.js"></script>
   </head>
@@ -23,6 +24,7 @@
       <a href="#" onclick="openTab(event, 'Employees')">Employees</a>
       <a href="#" onclick="openTab(event, 'Vaccines')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
+      <a href="#" onclick="openTab(event, 'Schedules')">Schedules</a>
       <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>
     <!-- This is Nav-->
@@ -583,6 +585,71 @@
           </div>
         </div>
       </div>
+
+      <div id="Schedules" class="tab-content">
+        <h2>Schedules</h2>
+        <div id="schedulesTableContainer" class="tableContainer"></div>
+
+        <hr />
+
+        <div id="formsContainer">
+          <div>
+            <h2>Assign Schedule</h2>
+            <form
+              id="assignScheduleForm"
+              class="tab-form"
+              onsubmit="assignSchedule(event)"
+            >
+              <label for="employeeId">EmployeeId:</label><br />
+              <input type="number" name="EmployeeID" required /><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" required /><br />
+
+              <label for="date">Date:</label><br />
+              <input type="date" name="Date" required /><br />
+
+              <label for="starttime">Start Time:</label><br />
+              <input type="time" name="StartTime" required /><br />
+
+              <label for="endtime">End Time:</label><br />
+              <input type="time" name="EndTime" required /><br />
+
+              <input type="submit" value="Assign" />
+          </form>
+          </div>
+          <div>
+            <h2>Update Schedule</h2>
+            <form
+              id="updateScheduleForm"
+              class="tab-form"
+              onsubmit="updateSchedule(event)"
+            >
+
+              <label for="scheduleId">ScheduleId:</label><br />
+              <input type="number" name="ScheduleID" id ="scheduleIdToUpdate" required /><br />
+
+              <label for="employeeId">EmployeeId:</label><br />
+              <input type="number" name="EmployeeID" id ="employeeIdToUpdate"required /><br />
+
+              <label for="facilityId">FacilityID:</label><br />
+              <input type="number" name="FacilityID" id="facilityIdToUpdate" required /><br />
+
+              <label for="date">Date:</label><br />
+              <input type="date" name="Date" id="dateToUpdate" required /><br />
+
+              <label for="starttime">Start Time:</label><br />
+              <input type="time" name="StartTime" id="startTimeToUpdate" required /><br />
+
+              <label for="endtime">End Time:</label><br />
+              <input type="time" name="EndTime" id ="endTimeToUpdate" required /><br />
+
+              <input type="submit" value="Update" />
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div id="Queries" class="tab-content">
         <h2>Queries</h2>
 
@@ -626,7 +693,29 @@
         <input id="queryTenStartDate" type="date" required />
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
-        <button onclick="getSchedule(event)">Display</button>
+        <button onclick="queryTen(event)">Display</button>
+        
+        <h4>
+          #14: For a given facility, generate a list of all the employees who have at least three
+		  secondary residences and who have been on schedule to work in the last four weeks.
+		  The list should include first-name, last-name, role, number of secondary residences.
+		  Results should be displayed in ascending order by role, then by the number of
+		  secondary residences.
+        </h4>
+        <label>FacilityID</label>
+        <input id="queryFourteenFacilityID" type="number" required />
+        <button onclick="queryFourteen(event)">Display</button>
+        
+        <h4>
+          #15: Get details of nurses who are currently working at two or more different facilities and
+		  have been infected by COVID-19 in the last two weeks. Details include first-name,
+		  last-name, first day of work as a nurse, date of birth, email address, total number of
+		  times the nurse got infected by COVID-19, total number of vaccines the nurse had,
+		  total number of hours scheduled, and total number of secondary residences. Results
+		  should be displayed sorted in ascending order by first day of work, then by first name,
+		  then by last name.
+        </h4>
+        <button onclick="queryFifteen(event)">Display</button>
 
         <h4>
           #16: Provide a report of all the employees working in all the
