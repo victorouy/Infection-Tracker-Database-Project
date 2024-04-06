@@ -67,6 +67,11 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (10, 10),
 (39, 27);
 
+INSERT INTO PersonResidences VALUES (1, 50, 'Secondary'),
+(1, 51, 'Secondary'),
+(1, 52, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (21, 63, 'Secondary');
 INSERT INTO PersonResidences (PersonID, ResidenceID, Type) VALUES
 (1, 28, 'Secondary'),
 (2, 29, 'Secondary'),
@@ -179,7 +184,8 @@ INSERT INTO Employees VALUES
 (25, 35, 'Nurse', 5),
 (26, 36, 'Regular Employee', 1),
 (27, 37, 'Pharmacist', 1),
-(28, 38, 'Pharmacist', 1);
+(28, 38, 'Pharmacist', 1),
+(60, 21, 'Pharmacist', 2);
 
 
 # Relationships between Employees and Persons living in the same residence
@@ -281,7 +287,8 @@ INSERT INTO EmploymentRecord(EmployeeID,FacilityID,StartDate,EndDate) VALUES
 (26,1,'2021-01-22',null),
 (27,1,'2021-01-22',null),
 (28, 2, '2023-06-19', null),
-(29,11,'2022-01-22',null);
+(29,11,'2022-01-22',null),
+(60, 2, '2023-01-23', NULL);
 
 
 INSERT INTO Vaccines VALUES
@@ -300,7 +307,6 @@ INSERT INTO Vaccines VALUES
 (13, 21, 5, 'Pfizer', '2021-04-29', 2),
 (14, 25, 6, 'Moderna', '2020-08-02', 2),
 (15, 32, 1, 'Moderna', '2021-07-01', 2);
-
 
 INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, InfectionType) VALUES
 (1, 11, '2020-03-21', '2020-04-10', 'COVID-19'),
@@ -326,10 +332,11 @@ INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, 
 (21, 32, '2023-12-15', '2024-01-04', 'Delta Variant'),
 (22, 39, '2024-02-15', NULL, 'COVID-19'),
 (23, 37, '2024-02-16', NULL, 'COVID-19'),
-(24, 38, '2024-01-22', NULL, 'COVID-19');
+(24, 38, '2024-01-22', NULL, 'COVID-19'),
+(50, 21, '2024-03-23', NULL, 'COVID-19');
 
 
-INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (2, 2, '2023-04-20', '9:00', '17:00'),
 (3, 3, '2023-04-20', '9:00', '17:00'),
 (4, 4, '2023-04-20', '9:00', '17:00'),
@@ -359,7 +366,9 @@ INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (28, 2, '2023-04-20', '9:00', '17:00'),
 (29, 11, '2023-04-20', '9:00', '15:00');
 
-INSERT INTO Schedules values (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-15', '9:00', '17:00');
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-16', '9:35', '17:45');
 
 
 SET FOREIGN_KEY_CHECKS = 1;
