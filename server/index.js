@@ -36,7 +36,7 @@ app.put("/vaccines/:vaccineId", vaccinationsController.editVaccination);
 
 //3.3 Create/Delete/Edit/Display a Infection
 app.get("/infections", infectionsController.getAllInfections);
-app.get("/infections/:infectionId", infectionsController.getInfection);
+//app.get("/infections/:infectionId", infectionsController.getInfection);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);

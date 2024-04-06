@@ -192,8 +192,7 @@ function getQuery12(event) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data)
-      const results = {results:[data.infection]}
-      displayQueryResult(results);
+      displayQueryResult(data);
     })
     .catch((error) => {
       console.error("Error getting schedule", error);

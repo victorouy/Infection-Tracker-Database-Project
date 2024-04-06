@@ -154,8 +154,9 @@ function editPerson(req, res) {
     TelephoneNumber,
     Citizenship,
     EmailAddress,
-    personId,
     Occupation,
+    personId,
+    
   ];
 
   // Perform the query
