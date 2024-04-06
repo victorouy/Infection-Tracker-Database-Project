@@ -1,4 +1,5 @@
 var db = require("../db");
+const emailController = require("./EmailController");
 
 function getAllInfections(req, res) {
   // SQL query to select all infections
@@ -39,13 +40,8 @@ function getInfection(req, res) {
   });
 }
 
-function createInfection(req, res) {
-  const {
-    PersonID,
-    InfectionDate,
-    InfectionEndDate,
-    InfectionType,
-  } = req.body;
+async function createInfection(req, res) {
+  const { PersonID, InfectionDate, InfectionEndDate, InfectionType } = req.body;
 
   // SQL query to insert a new Infection into the DB
   const query = `
@@ -58,22 +54,120 @@ function createInfection(req, res) {
     `;
 
   // Values to be inserted
-  const values = [
-    PersonID,
-    InfectionDate,
-    InfectionEndDate,
-    InfectionType,
-  ];
+  const values = [PersonID, InfectionDate, InfectionEndDate, InfectionType];
 
   // Perform the query
-  db.query(query, values, (error, results, fields) => {
+  await db.query(query, values, async (error, results, fields) => {
     if (error) {
       console.error("Error executing query: " + error.stack);
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
+    if (String(InfectionType).toUpperCase() === "COVID-19") {
+      await cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate);
+    }
+
+    console.log(`Infection for Person ${PersonID} successfully created`);
     // If insertion is successful, send back success message
     res.json({ message: "Infection created successfully" });
+  });
+}
+
+async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
+  const infectionDate = new Date(InfectionDate);
+  const twoWeeksFromInfectionDate = new Date(
+    infectionDate.getTime() + 14 * 24 * 60 * 60 * 1000
+  );
+
+  const getEmployeeIdQuery =
+    "SELECT EmployeeID FROM Employees WHERE PersonID = ?";
+
+  await db.query(
+    getEmployeeIdQuery,
+    [PersonID],
+    async (error, results, fields) => {
+      // Only cancel the assignments if the person is an employee
+      if (results.length > 0) {
+        const employeeId = results[0].EmployeeID;
+        await cancelScheduledAssignments(
+          employeeId,
+          infectionDate,
+          twoWeeksFromInfectionDate
+        );
+
+        // Send email to infected employee letting them know that their scheduled assignments are cancelled
+        const personEmailAddress = await getPersonEmail(PersonID);
+        if (!personEmailAddress) {
+          console.log(personEmailAddress);
+          const subject =
+            "Notice: Cancelled Scheduled Assignments due to your infection!";
+          const body =
+            "Hello Dear Employee, your shifts scheduled between today and two weeks from now are cancelled due to your infection.";
+          emailController.sendEmail(personEmailAddress, subject, body);
+        } else {
+          console.log("its null");
+        }
+      }
+    }
+  );
+}
+
+async function cancelScheduledAssignments(
+  employeeId,
+  infectionDate,
+  twoWeeksFromInfectionDate
+) {
+  const deleteScheduledAssignmentsQuery =
+    "DELETE FROM Schedules WHERE EmployeeID = ? and Date BETWEEN ? AND ?";
+
+  await db.query(
+    deleteScheduledAssignmentsQuery,
+    [employeeId, infectionDate, twoWeeksFromInfectionDate],
+    (results) => {
+      if (!results) {
+        console.log(
+          `Successfully deleted all scheduled assignments for employee ${employeeId}`
+        );
+      }
+    }
+  );
+}
+
+// (async () => {
+//   try {
+//     const personId = 1; // Replace with the actual person ID
+//     const emailAddress = await getEmailAddressByPersonId(personId);
+//     if (emailAddress) {
+//       console.log("Email Address:", emailAddress);
+//     } else {
+//       console.log("No email address found for person ID:", personId);
+//     }
+//   } catch (error) {
+//     console.error("Error:", error);
+//   } finally {
+//   }
+// })();
+
+async function getPersonEmail(personId) {
+  // SQL query
+  const sql = "SELECT EmailAddress FROM Persons WHERE PersonID = ?";
+
+  // Wrap the database operation in a promise
+  return new Promise((resolve, reject) => {
+    // Execute the query
+    db.query(sql, [personId], (err, results) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      // Check if any results were returned
+      if (results.length > 0) {
+        resolve(results[0].EmailAddress); // Assuming only one row is returned
+      } else {
+        resolve(null); // No email address found for the given personId
+      }
+    });
   });
 }
 
@@ -102,12 +196,7 @@ function deleteInfection(req, res) {
 
 function editInfection(req, res) {
   const infectionId = req.params.infectionId;
-  const {
-    PersonID,
-    InfectionDate,
-    InfectionEndDate,
-    InfectionType,
-  } = req.body;
+  const { PersonID, InfectionDate, InfectionEndDate, InfectionType } = req.body;
 
   // SQL query to update an Infection by InfectionID
   const query = `
