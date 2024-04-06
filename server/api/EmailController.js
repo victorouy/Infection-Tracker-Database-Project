@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 
 function sendEmail(recipient, subject, emailBody) {
-  console.log("recipient", recipient);
   let config = {
     service: "gmail",
     auth: {
@@ -23,14 +22,10 @@ function sendEmail(recipient, subject, emailBody) {
   transporter
     .sendMail(message)
     .then((info) => {
-      return res.status(201).json({
-        msg: "Email sent",
-        info: info.messageId,
-        preview: nodemailer.getTestMessageUrl(info),
-      });
+      console.log(`Email successfully sent to ${recipient}`);
     })
     .catch((err) => {
-      return res.status(500).json({ msg: err });
+      console.log(`Failed to send email to ${recipient}: ${err}`);
     });
 }
 

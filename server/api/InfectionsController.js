@@ -56,12 +56,18 @@ async function createInfection(req, res) {
   // Values to be inserted
   const values = [PersonID, InfectionDate, InfectionEndDate, InfectionType];
 
-  // Perform the query
-  await db.query(query, values, async (error, results, fields) => {
-    if (error) {
-      console.error("Error executing query: " + error.stack);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
+  try {
+    // Perform the query
+    await new Promise((resolve, reject) => {
+      db.query(query, values, (error, results, fields) => {
+        if (error) {
+          console.error("Error executing query: " + error.stack);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
 
     if (String(InfectionType).toUpperCase() === "COVID-19") {
       await cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate);
@@ -70,7 +76,9 @@ async function createInfection(req, res) {
     console.log(`Infection for Person ${PersonID} successfully created`);
     // If insertion is successful, send back success message
     res.json({ message: "Infection created successfully" });
-  });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 }
 
 async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
@@ -79,37 +87,124 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
     infectionDate.getTime() + 14 * 24 * 60 * 60 * 1000
   );
 
-  const getEmployeeIdQuery =
-    "SELECT EmployeeID FROM Employees WHERE PersonID = ?";
+  const getEmployeeInfoQuery =
+    "SELECT e.EmployeeID, p.EmailAddress FROM Employees e JOIN Persons p ON e.PersonID = p.PersonID WHERE e.PersonID = ?";
 
-  await db.query(
-    getEmployeeIdQuery,
-    [PersonID],
-    async (error, results, fields) => {
-      // Only cancel the assignments if the person is an employee
-      if (results.length > 0) {
-        const employeeId = results[0].EmployeeID;
-        await cancelScheduledAssignments(
-          employeeId,
-          infectionDate,
-          twoWeeksFromInfectionDate
-        );
+  try {
+    const results = await new Promise((resolve, reject) => {
+      db.query(getEmployeeInfoQuery, [PersonID], (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    // Only cancel the assignments if the person is an employee
+    if (results.length > 0) {
+      const employeeId = results[0].EmployeeID;
+      const areSchedulesDeleted = await cancelScheduledAssignments(
+        employeeId,
+        infectionDate,
+        twoWeeksFromInfectionDate
+      );
+
+      if (areSchedulesDeleted) {
+        const emailsOfEmployeesWhoWorkedWithInfected =
+          await getEmailsOfEmployeesWhoWorkedWithInfected(
+            employeeId,
+            InfectionDate
+          );
+        console.log(emailsOfEmployeesWhoWorkedWithInfected);
+
+        // Email all employees who worked with the infected person
+        if (emailsOfEmployeesWhoWorkedWithInfected) {
+          for (const tuple of emailsOfEmployeesWhoWorkedWithInfected) {
+            const subject = "Warning";
+            const body =
+              "One of your colleagues with whom you worked in the past two weeks has been infected with COVID-19";
+
+            await emailController.sendEmail(tuple.EmailAddress, subject, body);
+          }
+        } else {
+          console.log("There are no employees who worked with the infected");
+        }
+
+        const emailAddress = results[0].EmailAddress;
 
         // Send email to infected employee letting them know that their scheduled assignments are cancelled
-        const personEmailAddress = await getPersonEmail(PersonID);
-        if (!personEmailAddress) {
-          console.log(personEmailAddress);
+        if (emailAddress) {
           const subject =
             "Notice: Cancelled Scheduled Assignments due to your infection!";
           const body =
             "Hello Dear Employee, your shifts scheduled between today and two weeks from now are cancelled due to your infection.";
-          emailController.sendEmail(personEmailAddress, subject, body);
+          await emailController.sendEmail(emailAddress, subject, body);
         } else {
-          console.log("its null");
+          console.log("Email address is null or undefined");
         }
       }
     }
-  );
+  } catch (error) {
+    console.error("Error executing query: " + error.stack);
+    throw new Error("Error retrieving employee information");
+  }
+}
+
+async function getEmailsOfEmployeesWhoWorkedWithInfected(
+  employeeId,
+  infectionStartDate
+) {
+  try {
+    const infectionDate = new Date(infectionStartDate);
+    const twoWeeksBeforeInfectionDate = formatDate(
+      new Date(infectionDate.getTime() - 14 * 24 * 60 * 60 * 1000)
+    );
+
+    const getEmailsOfEmployeesWhoWorkedWithInfectedQuery = `
+    WITH FacilityWithInfected AS 
+    (SELECT DISTINCT FacilityID from Schedules WHERE EmployeeID = ${employeeId} and Date between "${twoWeeksBeforeInfectionDate}" and "${infectionStartDate}")
+    SELECT p.EmailAddress FROM Schedules s 
+    JOIN Employees e on s.EmployeeID = e.EmployeeID 
+    JOIN Persons p ON e.PersonID = p.PersonID
+    JOIN FacilityWithInfected ON s.FacilityID = FacilityWithInfected.FacilityID
+    WHERE (s.Date BETWEEN "${twoWeeksBeforeInfectionDate}" and "${infectionStartDate}") and (s.EmployeeID <> ${employeeId});
+    `;
+
+    const results = await new Promise((resolve, reject) => {
+      db.query(
+        getEmailsOfEmployeesWhoWorkedWithInfectedQuery,
+        (error, results, fields) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+
+    if (results.length > 0) {
+      return results;
+    } else {
+      console.log(
+        "Nobody worked with this infected employee in the past two weeks."
+      );
+    }
+  } catch (error) {
+    console.error("Error executing query: " + error.stack);
+    throw new Error(
+      "Error retrieving emails of employees who worked with infected. "
+    );
+  }
+}
+
+function formatDate(dateToFormat) {
+  const date = new Date(dateToFormat);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 async function cancelScheduledAssignments(
@@ -120,55 +215,34 @@ async function cancelScheduledAssignments(
   const deleteScheduledAssignmentsQuery =
     "DELETE FROM Schedules WHERE EmployeeID = ? and Date BETWEEN ? AND ?";
 
-  await db.query(
-    deleteScheduledAssignmentsQuery,
-    [employeeId, infectionDate, twoWeeksFromInfectionDate],
-    (results) => {
-      if (!results) {
-        console.log(
-          `Successfully deleted all scheduled assignments for employee ${employeeId}`
-        );
-      }
-    }
-  );
-}
-
-// (async () => {
-//   try {
-//     const personId = 1; // Replace with the actual person ID
-//     const emailAddress = await getEmailAddressByPersonId(personId);
-//     if (emailAddress) {
-//       console.log("Email Address:", emailAddress);
-//     } else {
-//       console.log("No email address found for person ID:", personId);
-//     }
-//   } catch (error) {
-//     console.error("Error:", error);
-//   } finally {
-//   }
-// })();
-
-async function getPersonEmail(personId) {
-  // SQL query
-  const sql = "SELECT EmailAddress FROM Persons WHERE PersonID = ?";
-
-  // Wrap the database operation in a promise
-  return new Promise((resolve, reject) => {
-    // Execute the query
-    db.query(sql, [personId], (err, results) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      // Check if any results were returned
-      if (results.length > 0) {
-        resolve(results[0].EmailAddress); // Assuming only one row is returned
-      } else {
-        resolve(null); // No email address found for the given personId
-      }
+  try {
+    const results = await new Promise((resolve, reject) => {
+      db.query(
+        deleteScheduledAssignmentsQuery,
+        [employeeId, infectionDate, twoWeeksFromInfectionDate],
+        (error, results, fields) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
     });
-  });
+
+    if (results && results.affectedRows > 0) {
+      console.log(
+        `Successfully deleted all scheduled assignments for employee ${employeeId}`
+      );
+      return true;
+    } else {
+      console.log(`No scheduled assignments found for employee ${employeeId}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error executing query: " + error.stack);
+    throw new Error("Error canceling scheduled assignments");
+  }
 }
 
 function deleteInfection(req, res) {
