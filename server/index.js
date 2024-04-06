@@ -5,6 +5,7 @@ const vaccinationsController = require("./api/VaccinationsController");
 const infectionsController = require("./api/InfectionsController");
 const tabeshController = require("./api/TabeshController");
 const facilitiesController = require("./api/FacilitiesController");
+const residenceController = require("./api/ResidenceController");
 const express = require("express");
 const cors = require("cors");
 
@@ -25,6 +26,7 @@ app.put("/persons/:personId", personsController.editPerson);
 app.get("/employees", employeesController.getAllEmployees);
 app.post("/employees", employeesController.createEmployee);
 app.delete("/employees/:employeeId", employeesController.deleteEmployee);
+app.put("/employees/:employeeId", employeesController.editEmployee);
 
 // #3.2 Create/Delete/Edit/Display a Vaccine
 app.get("/vaccines", vaccinationsController.getAllVaccinations);
@@ -49,14 +51,25 @@ app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
 app.post("/schedules", tabeshController.assignSchedule);
 app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
 
+
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
-app.get("/facilities/:FacilitiesId", facilitiesController.getFacilities);
+app.get("/facilities/:FacilityID", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
-app.delete("/facilities/:FacilitiesId", facilitiesController.deleteFacilities);
-app.put("/facilities/:FacilitiesId", facilitiesController.editFacilities);
+app.delete("/facilities/:FacilityID", facilitiesController.deleteFacilities);
+app.put("/facilities/:FacilityID", facilitiesController.editFacilities);
+// residence delete/create/update
+app.get("/residence", residenceController.getAllResidence);
+app.get("/residence/:ResidenceID", residenceController.getResidence);
+app.post("/residence", residenceController.createResidence);
+app.delete("/residence/:ResidenceID", residenceController.deleteResidence);
+app.put("/residence/:ResidenceID", residenceController.editResidence);
+
 
 // Queries
+app.get("/facilities/8", facilitiesController.getQuery8);
+app.get("/employees/9", employeesController.getQuery9);
+
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
@@ -70,3 +83,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

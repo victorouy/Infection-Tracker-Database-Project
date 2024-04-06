@@ -1,26 +1,23 @@
-function getAllFacilities() {
-  fetch(`${BASE_URL}/facilities`)
+function getAllResidence() {
+  fetch(`${BASE_URL}/residence`)
     .then((response) => response.json())
     .then((data) => {
       // Clear previous table content
-      var tableContainer = document.getElementById("facilitiesTableContainer");
+      var tableContainer = document.getElementById("residenceTableContainer");
       tableContainer.innerHTML = "";
 
       // Create table header
       var table = document.createElement("table");
       var headerRow = table.insertRow();
       var headers = [
-        "FacilityID",
-        "Name",    
-        "Address",
-        "City",
-        "Province",
-        "PostalCode",
-        "PhoneNumber",
-        "WebAddress",
-        "Type",
-        "Capacity",
-        "GeneralManagerID",
+          "ResidenceID",
+          "Type",
+          "Address",
+          "City",
+          "Province",
+          "PostalCode",
+          "PhoneNumber",
+          "NumberOfBedrooms",
         "",
         "",
       ]; // Example headers, replace with your actual data keys
@@ -31,9 +28,9 @@ function getAllFacilities() {
       });
 
       // Populate table with data
-      data.facilities.forEach((facilities) => {
+      data.residence.forEach((residence) => {
         var row = table.insertRow();
-        Object.entries(facilities).forEach(([key, value]) => {
+        Object.entries(residence).forEach(([key, value]) => {
           var cell = row.insertCell();
           if (key == "DateOfBirth") {
             cell.textContent = formatDate(value);
@@ -47,8 +44,8 @@ function getAllFacilities() {
         var deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.addEventListener("click", function () {
-          if (confirm("Are you sure you want to delete this facilities?")) {
-            deleteFacilities(facilities.FacilityID);
+          if (confirm("Are you sure you want to delete this residence?")) {
+            deleteResidence(residence.ResidenceID);
             table.deleteRow(row.rowIndex);
           }
         });
@@ -59,7 +56,7 @@ function getAllFacilities() {
         var updateButton = document.createElement("button");
         updateButton.textContent = "Update";
         updateButton.addEventListener("click", function () {
-          fillUpdateFormWithFacilitiesData(facilities);
+          fillUpdateFormWithResidenceData(residence);
         });
         updateButtonCell.appendChild(updateButton);
       });
@@ -72,22 +69,22 @@ function getAllFacilities() {
     });
 }
 
-function deleteFacilities(FacilityID) {
-  fetch(`${BASE_URL}/facilities/${FacilityID}`, {
+function deleteResidence(ResidenceID) {
+  fetch(`${BASE_URL}/residence/${ResidenceID}`, {
     method: "DELETE",
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to delete facilities");
+        throw new Error("Failed to delete residence");
       }
     })
     .catch((error) => {
-      console.error("Error deleting facilities:", error);
+      console.error("Error deleting residence:", error);
     });
 }
 
-function createFacilities(event) {
-  const form = document.getElementById("createFacilitiesForm");
+function createResidence(event) {
+  const form = document.getElementById("createResidenceForm");
 
   event.preventDefault();
 
@@ -99,7 +96,7 @@ function createFacilities(event) {
     formDataObject[key] = value;
   });
 
-  fetch(`${BASE_URL}/facilities`, {
+  fetch(`${BASE_URL}/residence`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -111,35 +108,45 @@ function createFacilities(event) {
         form.reset();
 
         // Refresh the table with new data
-        getAllFacilities();
-        alert("facilities created successfully");
+        getAllResidence();
+        alert("residence created successfully");
       } else {
-        throw new Error("Failed to create facilities");
+        throw new Error("Failed to create residence");
       }
     })
     .catch((error) => {
-      console.error("Error creating facilities:", error);
+      console.error("Error creating residence:", error);
     });
 }
 
-function fillUpdateFormWithFacilitiesData(facilities) {
-  document.getElementById("facilityIDToUpdate").value = facilities.FacilityID;
-  document.getElementById("nameToUpdate").value = facilities.Name;
-  document.getElementById("addressToUpdate").value = facilities.Address;
-  document.getElementById("cityToUpdate").value = facilities.City;
-  document.getElementById("provinceToUpdate").value = facilities.Province;
-  document.getElementById("postalCodeToUpdate").value = facilities.PostalCode;
-  document.getElementById("phoneNumberToUpdate").value = facilities.PhoneNumber;
-  document.getElementById("webAddressToUpdate").value = facilities.WebAddress;
-  document.getElementById("typeToUpdate").value = facilities.Type;
-  document.getElementById("capacityToUpdate").value = facilities.Capacity;
-  document.getElementById("generalManagerIDToUpdate").value = facilities.GeneralManagerID;
+function fillUpdateFormWithResidenceData(residence) {
+  document.getElementById("residenceIDToUpdate").value = residence.ResidenceID;
+  //console.log(residence.ResidenceID);
+  document.getElementById("TypeToUpdate").value = residence.Type;
+  //console.log(residence.Type);
+  document.getElementById("AddressToUpdate").value = residence.Address;
+  //console.log(residence.Address);
+
+  document.getElementById("CityToUpdate").value = residence.City;
+  //console.log(residence.City);
+
+  document.getElementById("ProvinceToUpdate").value =
+  residence.Province;
+  //console.log(residence.Province);
+  document.getElementById("PostalCodeToUpdate").value =
+  residence.PostalCode;
+  //console.log(residence.PostalCode);
+  document.getElementById("PhoneNumberToUpdate").value =
+  residence.PhoneNumber;
+  //console.log(residence.PhoneNumber);
+  document.getElementById("numberOfBedroomsToUpdate").value = residence.NumberOfBedrooms;
+  //console.log(residence.NumberOfBedrooms);
 }
 
-function updateFacilities(event) {
-  const form = document.getElementById("updateFacilitiesForm");
+function updateResidence(event) {
+  const form = document.getElementById("updateResidenceForm");
 
-  const FacilityID = document.getElementById("facilityIDToUpdate").value;
+  const ResidenceID = document.getElementById("residenceIDToUpdate").value;
 
   event.preventDefault();
 
@@ -151,10 +158,10 @@ function updateFacilities(event) {
     formDataObject[key] = value;
   });
 
-  // We don't need to pass the FacilityID in the body of the request. The FacilityID is passed in the request parameters.
-  delete formDataObject.FacilityID;
+  // We don't need to pass the ResidenceID in the body of the request. The ResidenceID is passed in the request parameters.
+  delete formDataObject.ResidenceID;
 
-  fetch(`${BASE_URL}/facilities/${FacilityID}`, {
+  fetch(`${BASE_URL}/residence/${ResidenceID}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -166,14 +173,14 @@ function updateFacilities(event) {
         form.reset();
 
         // Refresh the table with new data
-        getAllFacilities();
-        alert(`Facility ${FacilityID} updated successfully`);
+        getAllResidence();
+        alert(`residence ${ResidenceID} updated successfully`);
       } else {
-        throw new Error(`Failed to update Facilties with ID: ${FacilityID}`);
+        throw new Error(`Failed to update residence with ID: ${ResidenceID}`);
       }
     })
     .catch((error) => {
-      console.error("Error creating Facilties:", error);
+      console.error("Error creating residence:", error);
     });
 }
 

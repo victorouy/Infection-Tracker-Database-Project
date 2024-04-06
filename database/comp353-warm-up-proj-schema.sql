@@ -1,7 +1,6 @@
 USE vjc353_4;
 
 # Use these if you need to DROP all constraints and tables
-/*
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS Facilities;
 DROP TABLE IF EXISTS Persons;
@@ -14,7 +13,7 @@ DROP TABLE IF EXISTS EmployeePersonRelationship;
 DROP TABLE IF EXISTS PersonResidences;
 DROP TABLE IF EXISTS Schedules;
 SET FOREIGN_KEY_CHECKS = 1;
-*/
+
 
 CREATE TABLE Facilities (
     FacilityID INT PRIMARY KEY AUTO_INCREMENT,
