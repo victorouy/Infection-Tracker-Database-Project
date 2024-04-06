@@ -50,6 +50,7 @@ CREATE TABLE Persons (
     TelephoneNumber VARCHAR(20),
     Citizenship VARCHAR(50),
     EmailAddress VARCHAR(50)
+    Occupation VARCHAR(50)
 );
 
 # A person must have one primary residence and can have multiple secondary residences
@@ -98,6 +99,7 @@ CREATE TABLE EmployeePersonRelationship (
 );
 
 CREATE TABLE Schedules (
+ScheduleID INT PRIMARY KEY AUTO_INCREMENT,
 EmployeeID INT,
 FacilityID INT,
 Date DATE,
@@ -121,9 +123,3 @@ ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Persons FOREIGN 
 ALTER TABLE PersonResidences ADD CONSTRAINT FK_PersonResidences_Residence FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID);
 ALTER TABLE Schedules ADD CONSTRAINT FK_Schedules_Employees FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID);
 ALTER TABLE Schedules ADD CONSTRAINT FK_Schedules_Facilities FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID);
-
-
-
-
-
-

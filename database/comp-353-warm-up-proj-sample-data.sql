@@ -40,18 +40,18 @@ INSERT INTO Residence VALUES
 
 
 # Administrative Personnel
-INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
-(1, 'John', 'Doe', '1980-05-15', '121-45-6789', 'MC123456789', '(555) 111-1111', 'Canada', 'john.doe@email.com'),
-(2, 'Jane', 'Smith', '1995-08-20', '987-35-4321', 'MC987654321', '(555) 222-2222', 'United States', 'jane.smith@email.com'),
-(3, 'David', 'Johnson', '1988-12-10', '355-67-8901', 'MC345676601', '(555) 333-3333', 'United Kingdom', 'david.johnson@email.com'),
-(4, 'Emily', 'White', '2000-03-25', '567-89-0123', 'MC567890145', '(555) 444-4444', 'France', 'emily.white@email.com'),
-(5, 'Michael', 'Johnson', '1985-07-20', '234-56-3890', 'MC234567890', '(555) 555-5555', 'Canada', 'michael.johnson@email.com'),
-(6, 'Sarah', 'Anderson', '1990-09-12', '345-67-8928', 'MC345678901', '(555) 666-6666', 'United States', 'sarah.anderson@email.com'),
-(7, 'Daniel', 'Brown', '1982-04-03', '456-78-9018', 'MC456789012', '(555) 777-7777', 'United Kingdom', 'daniel.brown@email.com'),
-(8, 'Olivia', 'Miller', '1998-12-28', '567-89-0128', 'MC567890123', '(555) 888-8888', 'France', 'olivia.miller@email.com'),
-(9, 'Christopher', 'Smith', '1975-01-05', '678-90-1234', 'MC678901234', '(555) 999-9999', 'Australia', 'christopher.smith@email.com'),
-(10, 'Sophia', 'Davis', '1989-06-15', '789-01-2346', 'MC789012345', '(555) 123-4567', 'Canada', 'sophia.davis@email.com'),
-(39, 'Mike', 'Wazowski', '1975-06-15', '450-01-1111', 'MC789019988', '(555) 123-4545', 'Canada', 'mike.wazowski@email.com');
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress,Occupation) VALUES
+(1, 'John', 'Doe', '1980-05-15', '121-45-6789', 'MC123456789', '(555) 111-1111', 'Canada', 'john.doe@email.com','Administrator'),
+(2, 'Jane', 'Smith', '1995-08-20', '987-35-4321', 'MC987654321', '(555) 222-2222', 'United States', 'jane.smith@email.com','Administrator'),
+(3, 'David', 'Johnson', '1988-12-10', '355-67-8901', 'MC345676601', '(555) 333-3333', 'United Kingdom', 'david.johnson@email.com','Administrator'),
+(4, 'Emily', 'White', '2000-03-25', '567-89-0123', 'MC567890145', '(555) 444-4444', 'France', 'emily.white@email.com','Administrator'),
+(5, 'Michael', 'Johnson', '1985-07-20', '234-56-3890', 'MC234567890', '(555) 555-5555', 'Canada', 'michael.johnson@email.com','Administrator'),
+(6, 'Sarah', 'Anderson', '1990-09-12', '345-67-8928', 'MC345678901', '(555) 666-6666', 'United States', 'sarah.anderson@email.com','Administrator'),
+(7, 'Daniel', 'Brown', '1982-04-03', '456-78-9018', 'MC456789012', '(555) 777-7777', 'United Kingdom', 'daniel.brown@email.com','Administrator'),
+(8, 'Olivia', 'Miller', '1998-12-28', '567-89-0128', 'MC567890123', '(555) 888-8888', 'France', 'olivia.miller@email.com','Administrator'),
+(9, 'Christopher', 'Smith', '1975-01-05', '678-90-1234', 'MC678901234', '(555) 999-9999', 'Australia', 'christopher.smith@email.com','Administrator'),
+(10, 'Sophia', 'Davis', '1989-06-15', '789-01-2346', 'MC789012345', '(555) 123-4567', 'Canada', 'sophia.davis@email.com','Administrator'),
+(39, 'Mike', 'Wazowski', '1975-06-15', '450-01-1111', 'MC789019988', '(555) 123-4545', 'Canada', 'mike.wazowski@email.com','Administrator');
 
 
 INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
@@ -67,6 +67,11 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (10, 10),
 (39, 27);
 
+INSERT INTO PersonResidences VALUES (1, 50, 'Secondary'),
+(1, 51, 'Secondary'),
+(1, 52, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (21, 63, 'Secondary');
 INSERT INTO PersonResidences (PersonID, ResidenceID, Type) VALUES
 (1, 28, 'Secondary'),
 (2, 29, 'Secondary'),
@@ -77,19 +82,18 @@ INSERT INTO PersonResidences (PersonID, ResidenceID, Type) VALUES
 
 
 # Persons who live in the same residence as the Employees
-INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
-(11, 'Michaela', 'Johnson', '1982-03-10', '111-22-3339', 'MC15223333', '(555) 123-1111', 'Canada', 'michaela.johnson@email.com'),
-(12, 'Ryan', 'Anderson', '1985-06-25', '222-33-4441', 'MC222764444', '(555) 234-2222', 'United States', 'ryan.anderson@email.com'),
-(13, 'Sophie', 'Brown', '1990-09-08', '333-44-5552', 'MC332445555', '(555) 345-3333', 'United Kingdom', 'sophie.brown@email.com'),
-(14, 'Oscar', 'Miller', '1978-11-15', '444-55-6663', 'MC444558866', '(555) 456-4444', 'France', 'oscar.miller@email.com'),
-(15, 'Isabella', 'Johnson', '1995-02-20', '555-66-7774', 'MC555669977', '(555) 567-5555', 'Canada', 'isabella.johnson@email.com'),
-(16, 'Cameron', 'Anderson', '1989-07-05', '666-77-8885', 'MC666773488', '(555) 678-6666', 'United States', 'cameron.anderson@email.com'),
-(17, 'Lily', 'Brown', '1982-01-18', '777-88-9996', 'MC777889912', '(555) 789-7777', 'United Kingdom', 'lily.brown@email.com'),
-(18, 'Noah', 'Miller', '1998-05-30', '888-99-0007', 'MC888990330', '(555) 890-8888', 'France', 'noah.miller@email.com'),
-(19, 'Aiden', 'Smith', '1975-08-10', '999-00-1118', 'MC999001551', '(555) 901-9999', 'Australia', 'aiden.smith@email.com'),
-(20, 'Ella', 'Davis', '1987-12-18', '000-11-2229', 'MC000112266', '(555) 112-0000', 'Canada', 'ella.davis@email.com'),
-(38, 'Ben', 'McDonalds', '2001-12-18', '000-11-2212', 'MC000117564', '(555) 112-1234', 'Canada', 'ben.mcdonalds@email.com');
-
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress,Occupation) VALUES
+(11, 'Michaela', 'Johnson', '1982-03-10', '111-22-3339', 'MC15223333', '(555) 123-1111', 'Canada', 'michaela.johnson@email.com','Mechanic'),
+(12, 'Ryan', 'Anderson', '1985-06-25', '222-33-4441', 'MC222764444', '(555) 234-2222', 'United States', 'ryan.anderson@email.com','Engineer'),
+(13, 'Sophie', 'Brown', '1990-09-08', '333-44-5552', 'MC332445555', '(555) 345-3333', 'United Kingdom', 'sophie.brown@email.com','Server'),
+(14, 'Oscar', 'Miller', '1978-11-15', '444-55-6663', 'MC444558866', '(555) 456-4444', 'France', 'oscar.miller@email.com','Teacher'),
+(15, 'Isabella', 'Johnson', '1995-02-20', '555-66-7774', 'MC555669977', '(555) 567-5555', 'Canada', 'isabella.johnson@email.com','Chairnman'),
+(16, 'Cameron', 'Anderson', '1989-07-05', '666-77-8885', 'MC666773488', '(555) 678-6666', 'United States', 'cameron.anderson@email.com','Writer'),
+(17, 'Lily', 'Brown', '1982-01-18', '777-88-9996', 'MC777889912', '(555) 789-7777', 'United Kingdom', 'lily.brown@email.com','Plumber'),
+(18, 'Noah', 'Miller', '1998-05-30', '888-99-0007', 'MC888990330', '(555) 890-8888', 'France', 'noah.miller@email.com','Painter'),
+(19, 'Aiden', 'Smith', '1975-08-10', '999-00-1118', 'MC999001551', '(555) 901-9999', 'Australia', 'aiden.smith@email.com','Engineer'),
+(20, 'Ella', 'Davis', '1987-12-18', '000-11-2229', 'MC000112266', '(555) 112-0000', 'Canada', 'ella.davis@email.com','Waiter'),
+(38, 'Ben', 'McDonalds', '2001-12-18', '000-11-2212', 'MC000117564', '(555) 112-1234', 'Canada', 'ben.mcdonalds@email.com','Cashier');
 
 INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (11, 1),
@@ -105,24 +109,24 @@ INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (38, 26);
 
 # Other non-administrative Personnel
-INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress) VALUES
-(21, 'Evelyn', 'Reyes', '1982-03-10', '111-12-3333', 'MC111223311', '(555) 123-1111', 'Canada', 'evelyn.reyes@email.com'),
-(22, 'Carter', 'Williams', '1985-06-25', '212-33-4444', 'MC222345412', '(555) 234-2222', 'United States', 'carter.williams@email.com'),
-(23, 'Zara', 'Lopez', '1990-09-08', '333-43-5555', 'MC333445513', '(555) 345-3333', 'United Kingdom', 'zara.lopez@email.com'),
-(24, 'Omar', 'Smith', '1978-11-15', '444-54-6666', 'MC444556614', '(555) 456-4444', 'France', 'omar.smith@email.com'),
-(25, 'Mila', 'Perez', '1995-02-20', '555-65-7777', 'MC555667715', '(555) 567-5555', 'Canada', 'mila.perez@email.com'),
-(26, 'Levi', 'Garcia', '1989-07-05', '666-77-8888', 'MC666778816', '(555) 678-6666', 'United States', 'levi.garcia@email.com'),
-(27, 'Isabel', 'Wright', '1982-01-18', '772-88-9999', 'MC777889917', '(555) 789-7777', 'United Kingdom', 'isabel.wright@email.com'),
-(28, 'Owen', 'Martinez', '1998-05-30', '882-99-0000', 'MC888990018', '(555) 890-8888', 'France', 'owen.martinez@email.com'),
-(29, 'Nina', 'Cooper', '1975-08-10', '994-00-1111', 'MC999001119', '(555) 901-9999', 'Australia', 'nina.cooper@email.com'),
-(30, 'Elijah', 'Fisher', '1987-12-18', '005-11-2222', 'MC0001122255', '(555) 112-0000', 'Canada', 'elijah.fisher@email.com'),
-(31, 'Ivy', 'Ramirez', '1985-07-20', '111-26-3333', 'MC111223399', '(555) 555-5555', 'Canada', 'ivy.ramirez@email.com'),
-(32, 'Hudson', 'Barnes', '1990-09-12', '226-33-4444', 'MC222376412', '(555) 666-6666', 'United States', 'hudson.barnes@email.com'),
-(33, 'Zoe', 'Diaz', '1982-04-03', '337-44-5555', 'MC333445566', '(555) 777-7777', 'United Kingdom', 'zoe.diaz@email.com'),
-(34, 'Felix', 'Turner', '1998-12-28', '448-55-6666', 'MC444556686', '(555) 888-8888', 'France', 'felix.turner@email.com'),
-(35, 'Stella', 'Murray', '1995-02-20', '559-66-7777', 'MC555667763', '(555) 999-9999', 'Canada', 'stella.murray@email.com'),
-(36, 'Jared', 'McDonalds', '1991-02-21', '559-66-1234', 'MC555660983', '(555) 999-1111', 'Canada', 'jared.mcdonalds@email.com'),
-(37, 'Makayla', 'McDonalds', '1992-02-21', '559-66-2222', 'MC574360983', '(555) 999-2222', 'Canada', 'makayla.mcdonalds@email.com');
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurityNumber, MedicareCardNumber, TelephoneNumber, Citizenship, EmailAddress,Occupation) VALUES
+(21, 'Evelyn', 'Reyes', '1982-03-10', '111-12-3333', 'MC111223311', '(555) 123-1111', 'Canada', 'evelyn.reyes@email.com', 'Nurse'),
+(22, 'Carter', 'Williams', '1985-06-25', '212-33-4444', 'MC222345412', '(555) 234-2222', 'United States', 'carter.williams@email.com','Doctor'),
+(23, 'Zara', 'Lopez', '1990-09-08', '333-43-5555', 'MC333445513', '(555) 345-3333', 'United Kingdom', 'zara.lopez@email.com', 'Cashier'),
+(24, 'Omar', 'Smith', '1978-11-15', '444-54-6666', 'MC444556614', '(555) 456-4444', 'France', 'omar.smith@email.com', 'Pharmacist'),
+(25, 'Mila', 'Perez', '1995-02-20', '555-65-7777', 'MC555667715', '(555) 567-5555', 'Canada', 'mila.perez@email.com', 'Receptionist'),
+(26, 'Levi', 'Garcia', '1989-07-05', '666-77-8888', 'MC666778816', '(555) 678-6666', 'United States', 'levi.garcia@email.com', 'Security Personnel'),
+(27, 'Isabel', 'Wright', '1982-01-18', '772-88-9999', 'MC777889917', '(555) 789-7777', 'United Kingdom', 'isabel.wright@email.com', 'Regular Employee'),
+(28, 'Owen', 'Martinez', '1998-05-30', '882-99-0000', 'MC888990018', '(555) 890-8888', 'France', 'owen.martinez@email.com', 'Nurse'),
+(29, 'Nina', 'Cooper', '1975-08-10', '994-00-1111', 'MC999001119', '(555) 901-9999', 'Australia', 'nina.cooper@email.com', 'Doctor'),
+(30, 'Elijah', 'Fisher', '1987-12-18', '005-11-2222', 'MC0001122255', '(555) 112-0000', 'Canada', 'elijah.fisher@email.com', 'Cashier'),
+(31, 'Ivy', 'Ramirez', '1985-07-20', '111-26-3333', 'MC111223399', '(555) 555-5555', 'Canada', 'ivy.ramirez@email.com', 'Pharmacist'),
+(32, 'Hudson', 'Barnes', '1990-09-12', '226-33-4444', 'MC222376412', '(555) 666-6666', 'United States', 'hudson.barnes@email.com', 'Receptionist'),
+(33, 'Zoe', 'Diaz', '1982-04-03', '337-44-5555', 'MC333445566', '(555) 777-7777', 'United Kingdom', 'zoe.diaz@email.com', 'Security Personnel'),
+(34, 'Felix', 'Turner', '1998-12-28', '448-55-6666', 'MC444556686', '(555) 888-8888', 'France', 'felix.turner@email.com', 'Regular Employee'),
+(35, 'Stella', 'Murray', '1995-02-20', '559-66-7777', 'MC555667763', '(555) 999-9999', 'Canada', 'stella.murray@email.com', 'Nurse'),
+(36, 'Jared', 'McDonalds', '1991-02-21', '559-66-1234', 'MC555660983', '(555) 999-1111', 'Canada', 'jared.mcdonalds@email.com', 'Regular Employee'),
+(37, 'Makayla', 'McDonalds', '1992-02-21', '559-66-2222', 'MC574360983', '(555) 999-2222', 'Canada', 'makayla.mcdonalds@email.com', 'Pharmacist');
 
 INSERT INTO PersonResidences (PersonID, ResidenceID) VALUES
 (21, 11),
@@ -179,7 +183,8 @@ INSERT INTO Employees VALUES
 (25, 35, 'Nurse', 5),
 (26, 36, 'Regular Employee', 1),
 (27, 37, 'Pharmacist', 1),
-(28, 38, 'Pharmacist', 1);
+(28, 38, 'Pharmacist', 1),
+(60, 21, 'Pharmacist', 2);
 
 
 # Relationships between Employees and Persons living in the same residence
@@ -281,7 +286,8 @@ INSERT INTO EmploymentRecord(EmployeeID,FacilityID,StartDate,EndDate) VALUES
 (26,1,'2021-01-22',null),
 (27,1,'2021-01-22',null),
 (28, 2, '2023-06-19', null),
-(29,11,'2022-01-22',null);
+(29,11,'2022-01-22',null),
+(60, 2, '2023-01-23', NULL);
 
 
 INSERT INTO Vaccines VALUES
@@ -300,7 +306,6 @@ INSERT INTO Vaccines VALUES
 (13, 21, 5, 'Pfizer', '2021-04-29', 2),
 (14, 25, 6, 'Moderna', '2020-08-02', 2),
 (15, 32, 1, 'Moderna', '2021-07-01', 2);
-
 
 INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, InfectionType) VALUES
 (1, 11, '2020-03-21', '2020-04-10', 'COVID-19'),
@@ -326,10 +331,11 @@ INSERT INTO Infections (InfectionID, PersonID, InfectionDate, InfectionEndDate, 
 (21, 32, '2023-12-15', '2024-01-04', 'Delta Variant'),
 (22, 39, '2024-02-15', NULL, 'COVID-19'),
 (23, 37, '2024-02-16', NULL, 'COVID-19'),
-(24, 38, '2024-01-22', NULL, 'COVID-19');
+(24, 38, '2024-01-22', NULL, 'COVID-19'),
+(50, 21, '2024-03-23', NULL, 'COVID-19');
 
 
-INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (2, 2, '2023-04-20', '9:00', '17:00'),
 (3, 3, '2023-04-20', '9:00', '17:00'),
 (4, 4, '2023-04-20', '9:00', '17:00'),
@@ -359,6 +365,8 @@ INSERT INTO Schedules VALUES (1, 1, '2023-04-20', '9:00', '17:00'),
 (28, 2, '2023-04-20', '9:00', '17:00'),
 (29, 11, '2023-04-20', '9:00', '15:00');
 
-INSERT INTO Schedules values (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (1,1,"2024-04-02", "6:00", "17:00");
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-15', '9:00', '17:00');
+INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-16', '9:35', '17:45');
 
 SET FOREIGN_KEY_CHECKS = 1;
