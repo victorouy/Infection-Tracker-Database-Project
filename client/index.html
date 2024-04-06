@@ -237,6 +237,9 @@
               <label for="emailAddress">Email Address:</label><br />
               <input type="email" name="EmailAddress" /><br />
 
+              <label for="occupation">Occupation:</label><br />
+              <input type="occupation" name="Occupation" /><br />
+
               <input type="submit" value="Create" />
             </form>
           </div>
@@ -318,6 +321,12 @@
                 type="email"
                 id="emailAddressToUpdate"
                 name="EmailAddress"
+              /><br />
+              <label for="occupation">Occupation:</label><br />
+              <input
+                type="occupation"
+                id="occupationToUpdate"
+                name="Occupation"
               /><br />
 
               <input type="submit" value="Update" />
@@ -627,7 +636,14 @@
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
         <button onclick="getSchedule(event)">Display</button>
-
+        <h4>
+          #12:Get details of all the doctors who have been infected by COVID-19 in the past two weeks. Details
+          include doctor’s first-name, last-name, date of infection, the name of the facility that the doctor is
+          currently working for, and the number of secondary residences the doctor has. Results should be
+          displayed sorted in ascending order by the facility name, then by the number of secondary
+          residences the doctor has. 
+          <button onclick="getQuery12(event)">Display</button>
+        </h4>
         <h4>
           #16: Provide a report of all the employees working in all the
           facilities by role. Report should include for every role of the

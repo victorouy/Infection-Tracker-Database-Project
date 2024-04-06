@@ -49,6 +49,7 @@ function createPerson(req, res) {
     TelephoneNumber,
     Citizenship,
     EmailAddress,
+    Occupation,
   } = req.body;
 
   // SQL query to insert a new Person into the DB
@@ -61,8 +62,9 @@ function createPerson(req, res) {
         MedicareCardNumber,
         TelephoneNumber,
         Citizenship,
-        EmailAddress
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        EmailAddress,
+        Occupation
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   // Values to be inserted
@@ -75,6 +77,7 @@ function createPerson(req, res) {
     TelephoneNumber,
     Citizenship,
     EmailAddress,
+    Occupation,
   ];
 
   // Perform the query
@@ -123,6 +126,7 @@ function editPerson(req, res) {
     TelephoneNumber,
     Citizenship,
     EmailAddress,
+    Occupation,
   } = req.body;
 
   // SQL query to update a Person by PersonId
@@ -135,7 +139,8 @@ function editPerson(req, res) {
         MedicareCardNumber = ?,
         TelephoneNumber = ?,
         Citizenship = ?,
-        EmailAddress = ?
+        EmailAddress = ?,
+        Occupation = ?
     WHERE PersonID = ?
   `;
 
@@ -150,6 +155,7 @@ function editPerson(req, res) {
     Citizenship,
     EmailAddress,
     personId,
+    Occupation,
   ];
 
   // Perform the query

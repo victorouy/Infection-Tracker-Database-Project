@@ -180,3 +180,22 @@ function formatDate(dateToFormat) {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+function getQuery12(event) {
+  event.preventDefault();
+
+  fetch(`${BASE_URL}/infections/12`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      const results = {results:[data.infection]}
+      displayQueryResult(results);
+    })
+    .catch((error) => {
+      console.error("Error getting schedule", error);
+    });
+}
