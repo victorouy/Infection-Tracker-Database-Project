@@ -3,6 +3,7 @@ const personsController = require("./api/PersonsController");
 const employeesController = require("./api/EmployeesController");
 const vaccinationsController = require("./api/VaccinationsController");
 const infectionsController = require("./api/InfectionsController");
+const tabeshController = require("./api/TabeshController");
 const facilitiesController = require("./api/FacilitiesController");
 const residenceController = require("./api/ResidenceController");
 const express = require("express");
@@ -40,6 +41,15 @@ app.get("/infections", infectionsController.getAllInfections);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
+
+//tabesh's part
+app.get("/queryten/:employeeId/:startDate/:endDate", tabeshController.queryTen);
+app.get("/queryfourteen/:facilityId", tabeshController.queryFourteen);
+app.get("/queryfifteen", tabeshController.queryFifteen);
+app.get("/schedules", tabeshController.getAllSchedules);
+app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
+app.post("/schedules", tabeshController.assignSchedule);
+app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
 
 
 // Facilities delete/create/update
