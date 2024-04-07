@@ -51,10 +51,8 @@ app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
 app.post("/schedules", tabeshController.assignSchedule);
 app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
 
-
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
-app.get("/facilities/:FacilityID", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilityID", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilityID", facilitiesController.editFacilities);
@@ -64,7 +62,6 @@ app.get("/residence/:ResidenceID", residenceController.getResidence);
 app.post("/residence", residenceController.createResidence);
 app.delete("/residence/:ResidenceID", residenceController.deleteResidence);
 app.put("/residence/:ResidenceID", residenceController.editResidence);
-
 
 // Queries
 app.get("/facilities/8", facilitiesController.getQuery8);

@@ -6,6 +6,7 @@ body {
 
 .tab-content {
   display: none;
+  margin: 10px;
 }
 .topnav {
   background-color: #333;
@@ -32,10 +33,6 @@ body {
 .topnav a.active {
   background-color: #04aa6d;
   color: white;
-}
-
-#tabContainer {
-  margin: 15px;
 }
 
 table {

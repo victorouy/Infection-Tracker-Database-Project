@@ -124,7 +124,6 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
             const subject = "Warning";
             const body =
               "One of your colleagues with whom you worked in the past two weeks has been infected with COVID-19";
-
             await emailController.sendEmail(tuple.EmailAddress, subject, body);
           }
         } else {
