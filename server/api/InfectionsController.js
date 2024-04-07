@@ -165,7 +165,9 @@ Select E.EmployeeID,P.PersonID As P_ID,P.FirstName,P.LastName,F.name AS Facility
 		GROUP BY X.PersonID
 		)AS Y ON X.P_ID =Y.P_ID2
 join Infections As I on X.P_ID = I.PersonID
-where I.InfectionEndDate is NULL;
+where I.InfectionEndDate is NULL
+ORDER BY X.FacilityName,Y.NumberOFSecondaryRes;
+
 `;
 
   db.query(query, [], (error, results, fields) => {

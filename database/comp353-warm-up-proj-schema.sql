@@ -49,7 +49,7 @@ CREATE TABLE Persons (
     MedicareCardNumber VARCHAR(20) UNIQUE NOT NULL,
     TelephoneNumber VARCHAR(20),
     Citizenship VARCHAR(50),
-    EmailAddress VARCHAR(50)
+    EmailAddress VARCHAR(50),
     Occupation VARCHAR(50)
 );
 

@@ -64,6 +64,7 @@ app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+app.get("/employees/q11/:employeeId", employeesController.getQuery11);
 app.get("/employees/16", employeesController.getQuery16);
 app.get("/employees/17", employeesController.getQuery17);
 app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
