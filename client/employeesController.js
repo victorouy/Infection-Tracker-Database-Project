@@ -228,6 +228,23 @@ function getQuery9(event) {
     });
 }
 
+function getQuery11(event) {
+  event.preventDefault();
+  const employeeId = document.getElementById("queryElevenEmployeeId").value;
+  fetch(`${BASE_URL}/employees/q11/${employeeId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error getting schedule", error);
+    });
+}
 function getQuery16(event) {
   event.preventDefault();
 

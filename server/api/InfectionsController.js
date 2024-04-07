@@ -144,11 +144,53 @@ function editInfection(req, res) {
     res.json({ message: "Infection updated successfully" });
   });
 }
+function getQuery12(req, res) {
+  const query = `
+  Select X.FirstName,LastName,X.FacilityName,I.InfectionDate,Y.NumberOFSecondaryRes
+From(
+Select E.EmployeeID,P.PersonID As P_ID,P.FirstName,P.LastName,F.name AS FacilityName
+	from Employees As E
+    join Persons As P on E.PersonID = P.PersonID
+    Join Facilities AS F on E.FacilityID=F.FacilityID
+	WHERE E.Role = "Doctor"
+    
+         )AS X
+        left Join(
+         Select P.PersonID as P_ID2,COALESCE(count(X.Type)) AS NumberOFSecondaryRes
+		from Persons AS P
+		left Join(
+		select PersonResidences.PersonID,PersonResidences.Type
+		from PersonResidences
+		where Type = "Secondary")AS X on P.PersonID = X.PersonID
+		GROUP BY X.PersonID
+		)AS Y ON X.P_ID =Y.P_ID2
+join Infections As I on X.P_ID = I.PersonID
+where I.InfectionEndDate is NULL
+ORDER BY X.FacilityName,Y.NumberOFSecondaryRes;
 
+`;
+
+  db.query(query, [], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Check if any rows were returned
+    if (results.length === 0) {
+      return res.status(200).json({ error: "Employee not found" });
+    }
+
+    // If query is successful, send back the person
+    console.log(results+"This is from the server qeury")
+    res.json({ results });
+  });
+}
 module.exports = {
   getAllInfections,
   getInfection,
   createInfection,
   deleteInfection,
   editInfection,
+  getQuery12,
 };

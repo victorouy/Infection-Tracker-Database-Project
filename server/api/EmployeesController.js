@@ -300,6 +300,35 @@ function getQuery9(req, res) {
     res.json({ results });
   });
 }
+function getQuery11(req, res) {
+  const employeeId = req.params.employeeId;
+  const query = `
+ Select X.ResidenceID,X.Type,Y.FirstName,Y.LastName,Y.Occupation,EPR.RelationshipType
+from(
+Select E.EmployeeID,P.PersonID As P_ID,PR.*
+from Employees As E
+join Persons As P on E.PersonID = P.PersonID
+join PersonResidences as PR on PR.PersonID = P.PersonID
+)As X
+Join(
+Select P.*,PR.ResidenceID,PR.Type
+from Persons As P
+join PersonResidences as PR on PR.PersonID = P.PersonID
+
+) as Y on X.ResidenceID = Y.ResidenceID and X.P_ID != Y.PersonId
+Join EmployeePersonRelationship As EPR on Y.PersonId= EPR.PersonID
+where X.EmployeeID = ?
+    `;
+
+  db.query(query, employeeId,(error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ results });
+  });
+}
 
 function getQuery16(req, res) {
   const query = `
@@ -419,6 +448,7 @@ module.exports = {
   createEmployee,
   editEmployee,
   getQuery9,
+  getQuery11,
   getQuery16,
   getQuery17,
   getQuery18,
