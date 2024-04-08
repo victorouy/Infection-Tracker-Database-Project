@@ -120,7 +120,7 @@ function getAllSchedules()
         var updateButton = document.createElement("button");
         updateButton.textContent = "Update";
         updateButton.addEventListener("click", function () {
-          updateSchedule(schedule);
+          fillUpdateFormWithScheduleData(schedule);
         });
         updateButtonCell.appendChild(updateButton);
       });
@@ -150,10 +150,8 @@ function deleteSchedule(scheduleID)
 
 function assignSchedule(event)
 {
-  const form = document.getElementById("assignScheduleForm");
-
   event.preventDefault();
-
+  const form = document.getElementById("assignScheduleForm");
   const formData = new FormData(form);
 
   // Convert FormData to object
@@ -161,7 +159,7 @@ function assignSchedule(event)
   formData.forEach((value, key) => {
     formDataObject[key] = value;
   });
-
+  console.log(formDataObject);
   fetch(`${BASE_URL}/schedules`, {
     method: "POST",
     headers: {
@@ -175,9 +173,9 @@ function assignSchedule(event)
 
         // Refresh the table with new data
         getAllSchedules();
-        alert("Schedule assigned successfully");
+        alert("Schedule created successfully");
       } else {
-        throw new Error("Failed to assign schedule");
+        throw new Error("Failed to create schedule");
       }
     })
     .catch((error) => {
@@ -185,24 +183,23 @@ function assignSchedule(event)
     });
 }
 
-function updateSchedule(eve)
+function updateSchedule(event)
 {
-  const form = document.getElementById("updateScheduleForm");
-
-  const scheduleId = document.getElementById("scheduleIdToUpdate").value;
-
   event.preventDefault();
-
+  const form = document.getElementById("updateScheduleForm");
+  const scheduleId = document.getElementById("scheduleIdToUpdateS").value;
   const formData = new FormData(form);
 
+  // Convert FormData to object
   const formDataObject = {};
   formData.forEach((value, key) => {
     formDataObject[key] = value;
   });
 
-  delete formDataObject.ScheduleId;
+  // We don't update the PersonID or EmployeeID when editing an Employee
+  delete formDataObject.ScheduleID;
 
-  fetch(`${BASE_URL}/schedules/${scheduleId}`, {
+  fetch(`${BASE_URL}/schedules/update/${scheduleId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -210,27 +207,29 @@ function updateSchedule(eve)
     body: JSON.stringify(formDataObject),
   })
     .then((response) => {
-      if (response.ok) {
-        form.reset();
-
-        // Refresh the table with new data
-        getAllSchedules();
-        alert(`Schedule ${scheduleId} updated successfully`);
+      if (!response.ok) {
+        if (response.status === 404) {
+          alert("The EmployeeID and FacilityID must exist. Schedules");
+        } else {
+          throw new Error("Could not update the employee");
+        }
       } else {
-        throw new Error(`Failed to update schedule with ID: ${scheduleId}`);
+        form.reset();
+        getAllSchedules();
+        alert("Schedule updated successfully");
       }
     })
     .catch((error) => {
-      console.error("Error creating schedule:", error);
+      alert(`Error: ${error.message}`);
     });
 }
 
 function fillUpdateFormWithScheduleData(schedule) {
-  document.getElementById("scheduleIdToUpdate").value = schedule.ScheduleID;
-  document.getElementById("employeeIdToUpdate").value = schedule.EmployeeID;
-  document.getElementById("facilityIdToUpdate").value = schedule.FacilityID;
-  document.getElementById("dateToUpdate").value = formatDate(schedule.Date);
-  document.getElementById("startTimeToUpdate").value = schedule.StartTime;
-  document.getElementById("endTimeToUpdate").value = schedule.EndTime;
+  document.getElementById("scheduleIdToUpdateS").value = schedule.ScheduleID;
+  document.getElementById("employeeIdToUpdateS").value = schedule.EmployeeID;
+  document.getElementById("facilityIdToUpdateS").value = schedule.FacilityID;
+  document.getElementById("dateToUpdateS").value = formatDate(schedule.Date);
+  document.getElementById("startTimeToUpdateS").value = schedule.StartTime;
+  document.getElementById("endTimeToUpdateS").value = schedule.EndTime;
 }
 
