@@ -239,6 +239,9 @@
               <label for="emailAddress">Email Address:</label><br />
               <input type="email" name="EmailAddress" /><br />
 
+              <label for="occupation">Occupation:</label><br />
+              <input type="occupation" name="Occupation" /><br />
+
               <input type="submit" value="Create" />
             </form>
           </div>
@@ -320,6 +323,12 @@
                 type="email"
                 id="emailAddressToUpdate"
                 name="EmailAddress"
+              /><br />
+              <label for="occupation">Occupation:</label><br />
+              <input
+                type="occupation"
+                id="occupationToUpdate"
+                name="Occupation"
               /><br />
 
               <input type="submit" value="Update" />
@@ -693,6 +702,26 @@
         <input id="queryTenStartDate" type="date" required />
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
+        <button onclick="getSchedule(event)">Display</button>
+        <h4>
+          #11. For a given employee, get the details of all the people who live with the employee at
+          the primary address and at all the secondary addresses. For every address the employee
+          has, you need to provide the residence type for that address, and for every person who 
+          lives at that address, you need to provide the person’s first name, last name, occupation 
+          of the person, and the relationship with the employee.  
+        </h4>
+        <label>EmployeeId</label>
+        <input id="queryElevenEmployeeId" type="number" required />
+        <button onclick="getQuery11(event)">Display</button>
+        <h4>
+          #12:Get details of all the doctors who have been infected by COVID-19 in the past two weeks. Details
+          include doctor’s first-name, last-name, date of infection, the name of the facility that the doctor is
+          currently working for, and the number of secondary residences the doctor has. Results should be
+          displayed sorted in ascending order by the facility name, then by the number of secondary
+          residences the doctor has. 
+          
+        </h4>
+        <button onclick="getQuery12(event)">Display</button>
         <button onclick="queryTen(event)">Display</button>
         
         <h4>
