@@ -192,103 +192,134 @@ function assignSchedule(req, res)
 		StartTime,
 		EndTime,
 	  } = req.body;
-	
-	  const query = `
-	  	  CREATE TEMPORARY TABLE MostRecentVaccination AS
-		  (
-		    SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
-			FROM Vaccines
-			GROUP BY PersonID
-		  );
 
-		  INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime)
-		  SELECT ?, ?, ?, ?, ?
-		  WHERE TIME('?') < TIME('?') # StartTime, EndTime
-		    AND ? NOT IN
-			(
-			  SELECT EmployeeID
-			  FROM Schedules
-			  WHERE EmployeeID = ?
-			    AND TIME('?') BETWEEN StartTime AND EndTime # StartTime
-			)
-			AND ? NOT IN
-			(
-			  SELECT EmployeeID
-			  FROM Schedules
-			  WHERE EmployeeID = ?
-			    AND TIME('?') BETWEEN StartTime AND EndTime # EndTime
-			)
-			AND ? NOT IN
-			(
-				SELECT EmployeeID
-				FROM Schedules
-				WHERE EmployeeID = ?
-				  AND ABS(TIME_TO_SEC(TIMEDIFF(TIME(?), EndTime))) <= 7200
-			)
-			AND ? NOT IN
-			(
-				SELECT EmployeeID
-				FROM Schedules
-				WHERE EmployeeID = ?
-				  AND ABS(TIME_TO_SEC(TIMEDIFF(StartTime, TIME(?)))) <= 7200
-			)
-			AND ? NOT IN
-			(
-				SELECT EmployeeID
-				FROM Infections, Employees
-				WHERE Infections.PersonID = Employees.PersonID
-				  AND EmployeeID = ?
-				  AND InfectionType = 'COVID-19'
-				  AND DATEDIFF(DATE('?'), InfectionDate) <= 14
-			)
-			AND ? IN # Table of EmployeeID where most recent vaccination is less than 6 months ago
-			(
-				SELECT EmployeeID
-				FROM MostRecentVaccination
-				  INNER JOIN Employees ON MostRecentVaccination.PersonID = Employees.PersonID
-				WHERE DATEDIFF(DATE('?'), VaccinationDate) / 30 <= 6
-			);
+	const query1 = `
+	CREATE TEMPORARY TABLE MostRecentVaccinations AS
+	(
+		SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
+		FROM Vaccines
+		GROUP BY PersonID
+	)`;
+
+	const query2 = `
+	CREATE TEMPORARY TABLE MostRecentCovidInfections AS
+	(
+		SELECT PersonID, MAX(InfectionDate) AS LatestInfection
+		FROM Infections
+		WHERE InfectionType = 'COVID-19'
+		GROUP BY PersonID
+	)
+	`;
+	
+	const query3 = `
+		INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime)
+		SELECT ${EmployeeID}, ${FacilityID}, '${Date}', '${StartTime}', '${EndTime}'
+		WHERE TIME('${StartTime}') < TIME('${EndTime}')
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+			FROM Schedules
+			WHERE EmployeeID = ${EmployeeID}
+			AND Date = '${Date}'
+			AND TIME('${StartTime}') BETWEEN StartTime AND EndTime
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+			FROM Schedules
+			WHERE EmployeeID = ${EmployeeID}
+			AND Date = '${Date}'
+			AND TIME('${EndTime}') BETWEEN StartTime AND EndTime
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+			FROM Schedules
+			WHERE EmployeeID = ${EmployeeID}
+				AND Date = '${Date}'
+				AND TIME_TO_SEC(TIMEDIFF(EndTime, TIME('${StartTime}'))) < 0
+				AND ABS(TIME_TO_SEC(TIMEDIFF(TIME('${StartTime}'), EndTime))) <= 7200
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+			FROM Schedules
+			WHERE EmployeeID = ${EmployeeID}
+				AND Date = '${Date}'
+				AND TIME_TO_SEC(TIMEDIFF(TIME('${EndTime}'), StartTime)) < 0
+				AND ABS(TIME_TO_SEC(TIMEDIFF(StartTime, TIME('${EndTime}')))) <= 7200
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+        	FROM MostRecentCovidInfections
+				INNER JOIN Employees ON MostRecentCovidInfections.PersonID = Employees.PersonID
+			WHERE EmployeeID = ${EmployeeID}
+				AND FacilityID = ${FacilityID}
+            	AND DATEDIFF(LatestInfection, DATE('${Date}')) <= 0
+				AND ABS(DATEDIFF(LatestInfection, DATE('${Date}'))) <= 14
+		)
+		AND ${EmployeeID} IN # Table of EmployeeID where most recent vaccination is less than 6 months ago
+		(
+			SELECT EmployeeID
+			FROM MostRecentVaccinations
+				INNER JOIN Employees ON MostRecentVaccinations.PersonID = Employees.PersonID
+			WHERE DATEDIFF(DATE('${Date}'), LatestVaccine) / 30 <= 6
+		)
+		AND ${EmployeeID} IN
+		(
+			SELECT EmployeeID
+			FROM EmploymentRecord
+			WHERE EmployeeID = ${EmployeeID}
+			AND FacilityID = ${FacilityID}
+			AND EndDate IS NULL
+		)`;
 			
-			DROP TEMPORARY TABLE MostRecentVaccination;`;
-	
-	  // Values to be inserted
-	  const values = [
-		EmployeeID,
-		FacilityID,
-		Date,
-		StartTime,
-		EndTime,
-		StartTime,
-		EndTime,
-		EmployeeID,
-		EmployeeID,
-		StartTime,
-		EmployeeID,
-		EmployeeID,
-		EndTime,
-		EmployeeID,
-		EmployeeID,
-		StartTime,
-		EmployeeID,
-		EmployeeID,
-		EndTime,
-		EmployeeID,
-		EmployeeID,
-		Date,
-		EmployeeID,
-		Date,
-	  ];
-	
-	  // Perform the query
-	  db.query(query, values, (error, results, fields) => {
-		if (error) {
-		  console.error("Error executing query: " + error.stack);
-		  return res.status(500).json({ error: "Internal Server Error" });
-		}
-	
-		// If insertion is successful, send back success message
-		res.json({ message: "Schedule assigned successfully" });
-	  });
+		const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
+		const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
+
+		db.query(query1, (error1, results1, fields1) => {
+			if (error1) {
+				console.error("Error executing query 1: " + error1.stack);
+				return res.status(500).json({ error: "Internal Server Error" });
+			}
+		
+			// Query 1 executed successfully
+			db.query(query2, (error2, results2, fields2) => {
+				if (error2) {
+					console.error("Error executing query 2: " + error2.stack);
+					return res.status(500).json({ error: "Internal Server Error" });
+				}
+		
+				// Query 2 executed successfully
+				db.query(query3, (error3, results3, fields3) => {
+					if (error3) {
+						console.error("Error executing query 3: " + error3.stack);
+						return res.status(500).json({ error: "Internal Server Error" });
+					}
+		
+					// Query 3 executed successfully
+					db.query(query4, (error4, results4, fields4) => {
+						if (error4) {
+							console.error("Error executing query 4: " + error4.stack);
+							return res.status(500).json({ error: "Internal Server Error" });
+						}
+		
+						// Query 4 executed successfully
+						db.query(query5, (error5, results5, fields5) => {
+							if (error5) {
+								console.error("Error executing query 5: " + error5.stack);
+								return res.status(500).json({ error: "Internal Server Error" });
+							}
+		
+							// Query 5 executed successfully
+							// If all queries are successful, send back success message
+							res.json({ message: "Schedule updated successfully" });
+						});
+					});
+				});
+			});
+		});
 }
 
 function updateSchedule(req, res)
@@ -301,37 +332,141 @@ function updateSchedule(req, res)
 	  StartTime,
 	  EndTime,
 	} = req.body;
-  
-	const query = `
-	  UPDATE Schedules
-	  SET EmployeeID = ?,
-		  FacilityID = ?,
-		  Date = ?,
-		  StartTime = ?,
-		  EndTime = ?
-	  WHERE ScheduleID = ?
+
+	const query1 = `
+	CREATE TEMPORARY TABLE MostRecentVaccinations AS
+	(
+		SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
+		FROM Vaccines
+		GROUP BY PersonID
+	)
+	`;
+
+	const query2 = `
+	CREATE TEMPORARY TABLE MostRecentCovidInfections AS
+	(
+		SELECT PersonID, MAX(InfectionDate) AS LatestInfection
+		FROM Infections
+		WHERE InfectionType = 'COVID-19'
+		GROUP BY PersonID
+	)
 	`;
   
-	const values = [
-	  EmployeeID,
-	  FacilityID,
-	  Date,
-	  StartTime,
-	  EndTime,
-	  scheduleId,
-	];
+	const query3 = `
+	UPDATE Schedules
+	SET FacilityID = ${FacilityID}, Date = '${Date}', StartTime = '${StartTime}', EndTime = '${EndTime}'
+	WHERE ScheduleID = ${scheduleId}
+		AND TIME('${StartTime}') < TIME('${EndTime}')
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT s1.EmployeeID
+			FROM (SELECT * FROM Schedules) AS s1
+			WHERE s1.EmployeeID = ${EmployeeID}
+				AND s1.ScheduleID != ${scheduleId}
+				AND s1.Date = '${Date}'
+				AND TIME('${StartTime}') BETWEEN s1.StartTime AND s1.EndTime
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT s2.EmployeeID
+			FROM (SELECT * FROM Schedules) AS s2
+			WHERE s2.EmployeeID = ${EmployeeID}
+				AND s2.ScheduleID != ${scheduleId}
+				AND s2.Date = '${Date}'
+				AND TIME('${EndTime}') BETWEEN s2.StartTime AND s2.EndTime
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT s3.EmployeeID
+			FROM (SELECT * FROM Schedules) AS s3
+			WHERE s3.EmployeeID = ${EmployeeID}
+				AND s3.ScheduleID != ${scheduleId}
+				AND s3.Date = '${Date}'
+				AND TIME_TO_SEC(TIMEDIFF(EndTime, TIME('${StartTime}'))) < 0
+				AND ABS(TIME_TO_SEC(TIMEDIFF(TIME('${StartTime}'), s3.EndTime))) <= 7200
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT s4.EmployeeID
+			FROM (SELECT * FROM Schedules) AS s4
+			WHERE s4.EmployeeID = ${EmployeeID}
+				AND s4.ScheduleID != ${scheduleId}
+				AND s4.Date = '${Date}'
+				AND TIME_TO_SEC(TIMEDIFF(TIME('${EndTime}'), StartTime)) < 0
+				AND ABS(TIME_TO_SEC(TIMEDIFF(s4.StartTime, TIME('${EndTime}')))) <= 7200
+		)
+		AND ${EmployeeID} NOT IN
+		(
+			SELECT EmployeeID
+        	FROM MostRecentCovidInfections
+				INNER JOIN Employees ON MostRecentCovidInfections.PersonID = Employees.PersonID
+			WHERE EmployeeID = ${EmployeeID}
+				AND FacilityID = ${FacilityID}
+            	AND DATEDIFF(LatestInfection, DATE('${Date}')) <= 0
+				AND ABS(DATEDIFF(LatestInfection, DATE('${Date}'))) <= 14
+		)
+		AND ${EmployeeID} IN # Table of EmployeeID where most recent vaccination is less than 6 months ago
+		(
+			SELECT EmployeeID
+			FROM MostRecentVaccinations
+				INNER JOIN Employees ON MostRecentVaccinations.PersonID = Employees.PersonID
+			WHERE DATEDIFF(LatestVaccine, DATE('${Date}')) < 0
+				AND ABS(DATEDIFF(LatestVaccine, DATE('${Date}'))) / 30 <= 6
+		)
+		AND ${EmployeeID} IN
+		(
+			SELECT EmployeeID
+			FROM EmploymentRecord
+			WHERE EmployeeID = ${EmployeeID}
+				AND FacilityID = ${FacilityID}
+				AND EndDate IS NULL
+		)
+	`;
+
+	const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
+	const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
   
-	db.query(query, values, (error, results, fields) => {
-	  if (error) {
-		console.error("Error executing query: " + error.stack);
-		return res.status(500).json({ error: "Internal Server Error" });
-	  }
-  
-	  if (results.affectedRows === 0) {
-		return res.status(404).json({ error: "Schedule not found" });
-	  }
-  
-	  res.json({ message: "Schedule updated successfully" });
+	db.query(query1, (error1, results1, fields1) => {
+		if (error1) {
+			console.error("Error executing query 1: " + error1.stack);
+			return res.status(500).json({ error: "Internal Server Error" });
+		}
+	
+		// Query 1 executed successfully
+		db.query(query2, (error2, results2, fields2) => {
+			if (error2) {
+				console.error("Error executing query 2: " + error2.stack);
+				return res.status(500).json({ error: "Internal Server Error" });
+			}
+	
+			// Query 2 executed successfully
+			db.query(query3, (error3, results3, fields3) => {
+				if (error3) {
+					console.error("Error executing query 3: " + error3.stack);
+					return res.status(500).json({ error: "Internal Server Error" });
+				}
+	
+				// Query 3 executed successfully
+				db.query(query4, (error4, results4, fields4) => {
+					if (error4) {
+						console.error("Error executing query 4: " + error4.stack);
+						return res.status(500).json({ error: "Internal Server Error" });
+					}
+	
+					// Query 4 executed successfully
+					db.query(query5, (error5, results5, fields5) => {
+						if (error5) {
+							console.error("Error executing query 5: " + error5.stack);
+							return res.status(500).json({ error: "Internal Server Error" });
+						}
+	
+						// Query 5 executed successfully
+						// If all queries are successful, send back success message
+						res.json({ message: "Schedule updated successfully" });
+					});
+				});
+			});
+		});
 	});
 }
 
