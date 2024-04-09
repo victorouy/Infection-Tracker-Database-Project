@@ -13,6 +13,7 @@
     <script src="tabeshController.js"></script>
     <script src="facilitiesController.js"></script>
     <script src="residenceController.js"></script>
+    <script src="emailsController.js"></script>
   </head>
   <body>
     <div class="topnav">
@@ -25,6 +26,7 @@
       <a href="#" onclick="openTab(event, 'Vaccines')">Vaccinations</a>
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
       <a href="#" onclick="openTab(event, 'Schedules')">Schedules</a>
+      <a href="#" onclick="openTab(event, 'Emails')">Emails</a>
       <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
     </div>    
       <div id="Facilities" class="tab-content" style="display: block">
@@ -653,6 +655,11 @@
             </form>
           </div>
         </div>
+      </div>
+
+      <div id="Emails" class="tab-content">
+        <h2>Emails</h2>
+        <div id="emailsTableContainer" class="tableContainer"></div>
       </div>
 
       <div id="Queries" class="tab-content">

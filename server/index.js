@@ -6,6 +6,7 @@ const infectionsController = require("./api/InfectionsController");
 const tabeshController = require("./api/TabeshController");
 const facilitiesController = require("./api/FacilitiesController");
 const residenceController = require("./api/ResidenceController");
+const emailController = require("./api/EmailController");
 const express = require("express");
 const cors = require("cors");
 
@@ -56,12 +57,15 @@ app.get("/facilities", facilitiesController.getAllFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilityID", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilityID", facilitiesController.editFacilities);
+
 // residence delete/create/update
 app.get("/residence", residenceController.getAllResidence);
 app.get("/residence/:ResidenceID", residenceController.getResidence);
 app.post("/residence", residenceController.createResidence);
 app.delete("/residence/:ResidenceID", residenceController.deleteResidence);
 app.put("/residence/:ResidenceID", residenceController.editResidence);
+
+app.get("/emails", emailController.getAllEmails);
 
 // Queries
 app.get("/facilities/8", facilitiesController.getQuery8);
@@ -83,4 +87,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-// Yo 
+// Yo

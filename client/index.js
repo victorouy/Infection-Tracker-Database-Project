@@ -36,6 +36,9 @@ function openTab(event, tabName) {
     case "Residences":
       getAllResidence();
       break;
+    case "Emails":
+      getAllEmails();
+      break;
   }
 
   event.preventDefault();
@@ -43,7 +46,7 @@ function openTab(event, tabName) {
 
 function displayQueryResult(jsonData) {
   clearTable();
-  console.log( typeof jsonData)
+  console.log(typeof jsonData);
   //console.log(typeof jsonData.results)
 
   const tableContainer = document.getElementById("queryTableContainer");
