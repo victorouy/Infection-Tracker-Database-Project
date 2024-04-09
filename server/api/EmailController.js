@@ -51,7 +51,6 @@ async function addEmailLogs(
     0,
     100
   )}', '${reason}')`;
-  console.log(query);
   db.query(query, (error) => {
     if (error) {
       console.error("Error executing query: " + error.stack);

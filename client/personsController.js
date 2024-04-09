@@ -19,6 +19,7 @@ function getAllPersons() {
         "TelephoneNumber",
         "Citizenship",
         "EmailAddress",
+        "Occupation",
         "",
         "",
       ]; // Example headers, replace with your actual data keys
@@ -137,6 +138,7 @@ function fillUpdateFormWithPersonData(person) {
     person.TelephoneNumber;
   document.getElementById("citizenshipToUpdate").value = person.Citizenship;
   document.getElementById("emailAddressToUpdate").value = person.EmailAddress;
+  document.getElementById("occupationToUpdate").value = person.Occupation;
 }
 
 function updatePerson(event) {

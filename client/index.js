@@ -43,6 +43,8 @@ function openTab(event, tabName) {
 
 function displayQueryResult(jsonData) {
   clearTable();
+  console.log( typeof jsonData)
+  //console.log(typeof jsonData.results)
 
   const tableContainer = document.getElementById("queryTableContainer");
 

@@ -37,7 +37,7 @@ app.put("/vaccines/:vaccineId", vaccinationsController.editVaccination);
 
 //3.3 Create/Delete/Edit/Display a Infection
 app.get("/infections", infectionsController.getAllInfections);
-app.get("/infections/:infectionId", infectionsController.getInfection);
+//app.get("/infections/:infectionId", infectionsController.getInfection);
 app.post("/infections", infectionsController.createInfection);
 app.delete("/infections/:infectionId", infectionsController.deleteInfection);
 app.put("/infections/:infectionId", infectionsController.editInfection);
@@ -49,7 +49,7 @@ app.get("/queryfifteen", tabeshController.queryFifteen);
 app.get("/schedules", tabeshController.getAllSchedules);
 app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
 app.post("/schedules", tabeshController.assignSchedule);
-app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
+app.put("/schedules/update/:scheduleId", tabeshController.updateSchedule);
 
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
@@ -66,11 +66,12 @@ app.put("/residence/:ResidenceID", residenceController.editResidence);
 // Queries
 app.get("/facilities/8", facilitiesController.getQuery8);
 app.get("/employees/9", employeesController.getQuery9);
-
+app.get("/infections/12", infectionsController.getQuery12);
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
 );
+app.get("/employees/q11/:employeeId", employeesController.getQuery11);
 app.get("/employees/16", employeesController.getQuery16);
 app.get("/employees/17", employeesController.getQuery17);
 app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
@@ -82,3 +83,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+// Yo 
