@@ -61,6 +61,19 @@ async function addEmailLogs(
   });
 }
 
+function getAllEmails(req, res) {
+  const query = `SELECT Date, f.Name as Sender, Receiver, Subject, Body, Reason FROM Emails JOIN Facilities f ON f.FacilityID = Emails.FacilityID`;
+
+  db.query(query, (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ results });
+  });
+}
+
 function formatDate(dateToFormat) {
   const date = new Date(dateToFormat);
   const year = date.getFullYear();
@@ -69,4 +82,4 @@ function formatDate(dateToFormat) {
   return `${year}-${month}-${day}`;
 }
 
-module.exports = { sendEmail };
+module.exports = { sendEmail, getAllEmails };
