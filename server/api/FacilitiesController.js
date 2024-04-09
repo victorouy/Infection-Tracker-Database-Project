@@ -16,32 +16,9 @@ function getAllFacilities(req, res) {
   });
 }
 
-function getFacilities(req, res) {
-  const FacilityID = req.params.FacilityID;
-
-  // SQL query to select a specific Facilities by FacilityID
-  const query = "SELECT * FROM Facilities WHERE FacilityID = ?";
-
-  // Perform the query
-  db.query(query, [FacilityID], (error, results, fields) => {
-    if (error) {
-      console.error("Error executing query: " + error.stack);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    // Check if any rows were returned
-    if (results.length === 0) {
-      return res.status(404).json({ error: "Facilities not found" });
-    }
-
-    // If query is successful, send back the Facilities
-    res.json({ facilities: results[0] });
-  });
-}
-
 function createFacilities(req, res) {
   const {
-    Name,    
+    Name,
     Address,
     City,
     Province,
@@ -71,7 +48,7 @@ function createFacilities(req, res) {
 
   // Values to be inserted
   const values = [
-    Name,    
+    Name,
     Address,
     City,
     Province,
@@ -121,7 +98,7 @@ function deleteFacilities(req, res) {
 function editFacilities(req, res) {
   const FacilityID = req.params.FacilityID;
   const {
-    Name,    
+    Name,
     Address,
     City,
     Province,
@@ -152,7 +129,7 @@ function editFacilities(req, res) {
 
   // Values to be updated
   const values = [
-    Name,    
+    Name,
     Address,
     City,
     Province,
@@ -223,7 +200,6 @@ ORDER BY
 }
 module.exports = {
   getAllFacilities,
-  getFacilities,
   createFacilities,
   deleteFacilities,
   editFacilities,

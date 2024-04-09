@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS Infections;
 DROP TABLE IF EXISTS EmployeePersonRelationship;
 DROP TABLE IF EXISTS PersonResidences;
 DROP TABLE IF EXISTS Schedules;
+DROP TABLE IF EXISTS Emails;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -107,6 +108,15 @@ StartTime TIME,
 EndTime TIME,
 FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
 FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+);
+
+CREATE TABLE Emails (
+Date DATE,
+FacilityID INT REFERENCES Facilities(FacilityID),
+Receiver VARCHAR(50),
+Subject VARCHAR(100),
+Body VARCHAR(100),
+Reason VARCHAR(20) # Can either be 'Cancellation' or 'Warning'
 );
 
 ALTER TABLE Facilities ADD CONSTRAINT FK_Facilities_Employees FOREIGN KEY (GeneralManagerID) REFERENCES Employees(EmployeeID);

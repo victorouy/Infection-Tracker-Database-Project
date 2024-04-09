@@ -26,10 +26,7 @@
       <a href="#" onclick="openTab(event, 'Infections')">Infections</a>
       <a href="#" onclick="openTab(event, 'Schedules')">Schedules</a>
       <a href="#" onclick="openTab(event, 'Queries')">Queries</a>
-    </div>
-    <!-- This is Nav-->
-    <div id="tabContainer">
-
+    </div>    
       <div id="Facilities" class="tab-content" style="display: block">
         <!-- Facility-->
         <h2>Facilities</h2>
@@ -127,7 +124,6 @@
           <h2>Residences</h2>
           <div id="residenceTableContainer" class="tableContainer"></div>
           <!-- Residence Table-->
-          <p>This tab contains information about residences.</p>
           <hr />
           <div id="formsContainer">
             <div>
@@ -194,8 +190,8 @@
               </form>
             </div>
           </div>
-        </div>
       </div>
+    
       
 
       <div id="Persons" class="tab-content">
@@ -528,7 +524,7 @@
               onsubmit="createInfection(event)"
             >
               <label for="personIdInfection">Person ID:</label><br />
-              <input type="number" name="PersonIdInfection" required /><br />
+              <input type="number" name="PersonID" required /><br />
 
               <label for="infectionDate">Infection Date:</label><br />
               <input type="date" name="InfectionDate" required /><br />
