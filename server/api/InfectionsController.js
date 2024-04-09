@@ -116,7 +116,9 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
             employeeId,
             InfectionDate
           );
-        console.log(emailsOfEmployeesWhoWorkedWithInfected);
+
+        // call here
+        const facilityID = await getFacilityIdWhereEmployeeWorks(employeeId);
 
         // Email all employees who worked with the infected person
         if (emailsOfEmployeesWhoWorkedWithInfected) {
@@ -124,7 +126,13 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
             const subject = "Warning";
             const body =
               "One of your colleagues with whom you worked in the past two weeks has been infected with COVID-19";
-            await emailController.sendEmail(tuple.EmailAddress, subject, body);
+            await emailController.sendEmail(
+              facilityID,
+              tuple.EmailAddress,
+              subject,
+              body,
+              "Warning"
+            );
           }
         } else {
           console.log("There are no employees who worked with the infected");
@@ -138,7 +146,13 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
             "Notice: Cancelled Scheduled Assignments due to your infection!";
           const body =
             "Hello Dear Employee, your shifts scheduled between today and two weeks from now are cancelled due to your infection.";
-          await emailController.sendEmail(emailAddress, subject, body);
+          await emailController.sendEmail(
+            facilityID,
+            emailAddress,
+            subject,
+            body,
+            "Cancellation"
+          );
         } else {
           console.log("Email address is null or undefined");
         }
@@ -147,6 +161,31 @@ async function cancelScheduledAssignmentsIfEmployee(PersonID, InfectionDate) {
   } catch (error) {
     console.error("Error executing query: " + error.stack);
     throw new Error("Error retrieving employee information");
+  }
+}
+
+async function getFacilityIdWhereEmployeeWorks(employeeId) {
+  const query = `SELECT DISTINCT FacilityID FROM EmploymentRecord WHERE EmployeeID = ${employeeId} and EndDate is null`;
+
+  try {
+    const results = await new Promise((resolve, reject) => {
+      db.query(query, (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    if (results.length > 0) {
+      return results[0].FacilityID;
+    } else {
+      console.log("Employee doesn't work in a facility");
+    }
+  } catch (error) {
+    console.error("Error executing query: " + error.stack);
+    throw new Error("Error retrieving facilityID of the employee");
   }
 }
 
@@ -163,7 +202,7 @@ async function getEmailsOfEmployeesWhoWorkedWithInfected(
     const getEmailsOfEmployeesWhoWorkedWithInfectedQuery = `
     WITH FacilityWithInfected AS 
     (SELECT DISTINCT FacilityID from Schedules WHERE EmployeeID = ${employeeId} and Date between "${twoWeeksBeforeInfectionDate}" and "${infectionStartDate}")
-    SELECT p.EmailAddress FROM Schedules s 
+    SELECT s.FacilityID, p.EmailAddress FROM Schedules s 
     JOIN Employees e on s.EmployeeID = e.EmployeeID 
     JOIN Persons p ON e.PersonID = p.PersonID
     JOIN FacilityWithInfected ON s.FacilityID = FacilityWithInfected.FacilityID
