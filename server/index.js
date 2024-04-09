@@ -7,6 +7,7 @@ const tabeshController = require("./api/TabeshController");
 const facilitiesController = require("./api/FacilitiesController");
 const residenceController = require("./api/ResidenceController");
 const emailController = require("./api/EmailController");
+const cron = require("node-cron");
 const express = require("express");
 const cors = require("cors");
 
@@ -80,6 +81,27 @@ app.get("/employees/16", employeesController.getQuery16);
 app.get("/employees/17", employeesController.getQuery17);
 app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
 
+cron.schedule("0 0 * * SUN", async () => {
+  console.log(
+    "Executing task: Sending schedules for upcoming week to all employees."
+  );
+  emailController.emailEmployeeSchedules(
+    getDateWithOffset(0),
+    getDateWithOffset(7)
+  );
+});
+
+function getDateWithOffset(offset) {
+  const currentDate = new Date();
+  const targetDate = new Date(
+    currentDate.getTime() + offset * 24 * 60 * 60 * 1000
+  );
+  const year = targetDate.getFullYear();
+  const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+  const day = String(targetDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -87,4 +109,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-// Yo

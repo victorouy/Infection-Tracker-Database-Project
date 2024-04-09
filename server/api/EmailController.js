@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 var db = require("../db");
+const tabeshController = require("./TabeshController");
 
 function sendEmail(facilityID, recipient, subject, emailBody, reason) {
   let config = {
@@ -74,6 +75,76 @@ function getAllEmails(req, res) {
   });
 }
 
+// Function to email schedules to all employees within a given time frame
+async function emailEmployeeSchedules(startDate, endDate) {
+  try {
+    // Get schedules for all employees
+    const schedules =
+      await tabeshController.getEmployeeSchedulesDuringTimeframe(
+        startDate,
+        endDate
+      );
+
+    // Group schedules by employee ID
+    const schedulesByEmployee = {};
+    schedules.forEach((schedule) => {
+      if (!schedulesByEmployee[schedule.EmployeeID]) {
+        schedulesByEmployee[schedule.EmployeeID] = [];
+      }
+      schedulesByEmployee[schedule.EmployeeID].push(schedule);
+    });
+
+    // Send emails for each employee
+    for (const employeeId in schedulesByEmployee) {
+      const employeeSchedules = schedulesByEmployee[employeeId];
+      const employee = employeeSchedules[0]; // Get employee details from any schedule
+
+      const scheduleEmailToSend = generateScheduleEmail(
+        employee,
+        employeeSchedules,
+        startDate,
+        endDate
+      );
+
+      await sendEmail(
+        scheduleEmailToSend.FacilityID,
+        scheduleEmailToSend.Recipient,
+        scheduleEmailToSend.Subject,
+        scheduleEmailToSend.EmailBody,
+        scheduleEmailToSend.Reason
+      );
+    }
+
+    console.log("All schedule emails sent successfully.");
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function generateScheduleEmail(
+  employee,
+  employeeSchedules,
+  startDate,
+  endDate
+) {
+  const subject = `${employee.FacilityName} Schedule for ${startDate} to ${endDate}`;
+
+  let body = `Dear ${employee.FirstName} ${employee.LastName},<br>`;
+  body += "Your schedule for the coming week:<br>";
+
+  employeeSchedules.forEach((schedule) => {
+    body += `${schedule.Date}: ${schedule.StartTime} - ${schedule.EndTime}<br>`;
+  });
+
+  return {
+    FacilityID: employee.FacilityID,
+    Recipient: employee.EmailAddress,
+    Subject: subject,
+    EmailBody: body,
+    Reason: "Schedule",
+  };
+}
+
 function formatDate(dateToFormat) {
   const date = new Date(dateToFormat);
   const year = date.getFullYear();
@@ -82,4 +153,4 @@ function formatDate(dateToFormat) {
   return `${year}-${month}-${day}`;
 }
 
-module.exports = { sendEmail, getAllEmails };
+module.exports = { sendEmail, getAllEmails, emailEmployeeSchedules };

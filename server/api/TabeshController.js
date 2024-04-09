@@ -1,62 +1,59 @@
 var db = require("../db");
 
-function querySeven(req, res)
-{
-}
+function querySeven(req, res) {}
 
-function queryTen(req, res)
-{
-	const empId = req.params.employeeId;
-	const startDate = req.params.startDate;
-	const endDate = req.params.endDate;
-	
-	const query = `SELECT Facilities.Name, Schedules.Date, Schedules.StartTime, Schedules.EndTime
+function queryTen(req, res) {
+  const empId = req.params.employeeId;
+  const startDate = req.params.startDate;
+  const endDate = req.params.endDate;
+
+  const query = `SELECT Facilities.Name, Schedules.Date, Schedules.StartTime, Schedules.EndTime
 	FROM Facilities, Schedules
 	WHERE Schedules.FacilityID = Facilities.FacilityID AND EmployeeID = ? AND Date BETWEEN ? AND ?
-	ORDER BY Facilities.Name ASC, Schedules.Date ASC, Schedules.StartTime ASC`;	
-	
-	db.query(query, [empId, startDate, endDate], (error, results, fields) => {
-		if (error) {
-			console.error("Error executing query: " + error.stack);
-			return res.status(500).json({ error: "Internal Server Error" });
-		}
-		
-		if (results.length == 0) {
-			return res.status(404).json({ error: "Employee not found" });
-		}
-		
-		res.json({ results });
-	});
+	ORDER BY Facilities.Name ASC, Schedules.Date ASC, Schedules.StartTime ASC`;
+
+  db.query(query, [empId, startDate, endDate], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length == 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.json({ results });
+  });
 }
 
-function queryFourteen(req, res)
-{
-	const facilityId = req.params.facilityId;
-	
-	const query = `SELECT Persons.FirstName, Persons.LastName, Employees.Role, COUNT(PersonResidences.Type)
+function queryFourteen(req, res) {
+  const facilityId = req.params.facilityId;
+
+  const query = `SELECT Persons.FirstName, Persons.LastName, Employees.Role, COUNT(PersonResidences.Type)
 	FROM Persons, Employees, PersonResidences
 	WHERE Persons.PersonID = Employees.PersonID AND Persons.PersonID = PersonResidences.PersonID AND Employees.FacilityID = ? AND PersonResidences.Type = 'Secondary'
 	GROUP BY Employees.EmployeeID
 	HAVING COUNT(PersonResidences.Type) >= 3
 	ORDER BY Employees.Role ASC, COUNT(PersonResidences.Type) ASC`;
-	
-	db.query(query, [facilityId], (error, results, fields) => {
-		if (error) {
-			console.error("Error executing query: " + error.stack);
-			return res.status(500).json({ error: "Internal Server Error" });
-		}
-		
-		if (results.length == 0) {
-			return res.status(404).json({ error: "No employee at this facility satisfies the condition" });
-		}
-		
-		res.json({ results });
-	});
+
+  db.query(query, [facilityId], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length == 0) {
+      return res.status(404).json({
+        error: "No employee at this facility satisfies the condition",
+      });
+    }
+
+    res.json({ results });
+  });
 }
 
-function queryFifteen(req, res)
-{
-	const query = `WITH Nurses AS (
+function queryFifteen(req, res) {
+  const query = `WITH Nurses AS (
 		SELECT DISTINCT Employees.PersonID
 		FROM Employees
 		WHERE Employees.Role = 'Nurse'
@@ -125,75 +122,64 @@ function queryFifteen(req, res)
 		INNER JOIN TotalHoursScheduled ON Persons.PersonID = TotalHoursScheduled.PersonID
 		LEFT JOIN AmountSecondaryResidences ON Persons.PersonID = AmountSecondaryResidences.PersonID;`;
 
-		db.query(query, [], (error, results, fields) => {
-			if (error) {
-				console.error("Error executing query: " + error.stack);
-				return res.status(500).json({ error: "Internal Server Error" });
-			}
-			
-			if (results.length == 0) {
-				return res.status(404).json({ error: "No nurse fit the criteria" });
-			}
-			
-			res.json({ results });
-		});
+  db.query(query, [], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length == 0) {
+      return res.status(404).json({ error: "No nurse fit the criteria" });
+    }
+
+    res.json({ results });
+  });
 }
 
-function queryTwenty(req, res)
-{
+function queryTwenty(req, res) {}
+
+function getAllSchedules(req, res) {
+  const query = `SELECT * FROM Schedules`;
+
+  db.query(query, (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (results.length == 0) {
+      return res.status(404).json({ error: "Nothing in the schedules table" });
+    }
+
+    res.json({ schedules: results });
+  });
 }
 
-function getAllSchedules(req, res)
-{
-	const query = `SELECT * FROM Schedules`;
+function deleteSchedule(req, res) {
+  const scheduleId = req.params.scheduleId;
 
-	db.query(query, (error, results, fields) => {
-		if (error) {
-			console.error("Error executing query: " + error.stack);
-			return res.status(500).json({ error: "Internal Server Error" });
-		}
-		
-		if (results.length == 0) {
-			return res.status(404).json({ error: "Nothing in the schedules table" });
-		}
-		
-		res.json({ schedules: results });
-	});
+  const query = `DELETE FROM Schedules WHERE ScheduleID = ?`;
+
+  db.query(query, [scheduleId], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query: " + error.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Check if any rows were affected (indicating successful deletion)
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "Schedule not found" });
+    }
+
+    // If deletion is successful, send back success message
+    res.json({ message: "Schedule deleted successfully" });
+  });
 }
 
-function deleteSchedule(req, res)
-{
-	const scheduleId = req.params.scheduleId;
+function assignSchedule(req, res) {
+  const { EmployeeID, FacilityID, Date, StartTime, EndTime } = req.body;
 
-	const query = `DELETE FROM Schedules WHERE ScheduleID = ?`;
-
-	db.query(query, [scheduleId], (error, results, fields) => {
-		if (error) {
-		  console.error("Error executing query: " + error.stack);
-		  return res.status(500).json({ error: "Internal Server Error" });
-		}
-	
-		// Check if any rows were affected (indicating successful deletion)
-		if (results.affectedRows === 0) {
-		  return res.status(404).json({ error: "Schedule not found" });
-		}
-	
-		// If deletion is successful, send back success message
-		res.json({ message: "Schedule deleted successfully" });
-	  });
-}
-
-function assignSchedule(req, res)
-{
-	const {
-		EmployeeID,
-		FacilityID,
-		Date,
-		StartTime,
-		EndTime,
-	  } = req.body;
-
-	const query1 = `
+  const query1 = `
 	CREATE TEMPORARY TABLE MostRecentVaccinations AS
 	(
 		SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
@@ -201,7 +187,7 @@ function assignSchedule(req, res)
 		GROUP BY PersonID
 	)`;
 
-	const query2 = `
+  const query2 = `
 	CREATE TEMPORARY TABLE MostRecentCovidInfections AS
 	(
 		SELECT PersonID, MAX(InfectionDate) AS LatestInfection
@@ -210,8 +196,8 @@ function assignSchedule(req, res)
 		GROUP BY PersonID
 	)
 	`;
-	
-	const query3 = `
+
+  const query3 = `
 		INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime)
 		SELECT ${EmployeeID}, ${FacilityID}, '${Date}', '${StartTime}', '${EndTime}'
 		WHERE TIME('${StartTime}') < TIME('${EndTime}')
@@ -274,66 +260,59 @@ function assignSchedule(req, res)
 			AND FacilityID = ${FacilityID}
 			AND EndDate IS NULL
 		)`;
-			
-		const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
-		const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
 
-		db.query(query1, (error1, results1, fields1) => {
-			if (error1) {
-				console.error("Error executing query 1: " + error1.stack);
-				return res.status(500).json({ error: "Internal Server Error" });
-			}
-		
-			// Query 1 executed successfully
-			db.query(query2, (error2, results2, fields2) => {
-				if (error2) {
-					console.error("Error executing query 2: " + error2.stack);
-					return res.status(500).json({ error: "Internal Server Error" });
-				}
-		
-				// Query 2 executed successfully
-				db.query(query3, (error3, results3, fields3) => {
-					if (error3) {
-						console.error("Error executing query 3: " + error3.stack);
-						return res.status(500).json({ error: "Internal Server Error" });
-					}
-		
-					// Query 3 executed successfully
-					db.query(query4, (error4, results4, fields4) => {
-						if (error4) {
-							console.error("Error executing query 4: " + error4.stack);
-							return res.status(500).json({ error: "Internal Server Error" });
-						}
-		
-						// Query 4 executed successfully
-						db.query(query5, (error5, results5, fields5) => {
-							if (error5) {
-								console.error("Error executing query 5: " + error5.stack);
-								return res.status(500).json({ error: "Internal Server Error" });
-							}
-		
-							// Query 5 executed successfully
-							// If all queries are successful, send back success message
-							res.json({ message: "Schedule updated successfully" });
-						});
-					});
-				});
-			});
-		});
+  const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
+  const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
+
+  db.query(query1, (error1, results1, fields1) => {
+    if (error1) {
+      console.error("Error executing query 1: " + error1.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Query 1 executed successfully
+    db.query(query2, (error2, results2, fields2) => {
+      if (error2) {
+        console.error("Error executing query 2: " + error2.stack);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      // Query 2 executed successfully
+      db.query(query3, (error3, results3, fields3) => {
+        if (error3) {
+          console.error("Error executing query 3: " + error3.stack);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        // Query 3 executed successfully
+        db.query(query4, (error4, results4, fields4) => {
+          if (error4) {
+            console.error("Error executing query 4: " + error4.stack);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          // Query 4 executed successfully
+          db.query(query5, (error5, results5, fields5) => {
+            if (error5) {
+              console.error("Error executing query 5: " + error5.stack);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+
+            // Query 5 executed successfully
+            // If all queries are successful, send back success message
+            res.json({ message: "Schedule updated successfully" });
+          });
+        });
+      });
+    });
+  });
 }
 
-function updateSchedule(req, res)
-{
-	const scheduleId = req.params.scheduleId;
-	const {
-	  EmployeeID,
-	  FacilityID,
-	  Date,
-	  StartTime,
-	  EndTime,
-	} = req.body;
+function updateSchedule(req, res) {
+  const scheduleId = req.params.scheduleId;
+  const { EmployeeID, FacilityID, Date, StartTime, EndTime } = req.body;
 
-	const query1 = `
+  const query1 = `
 	CREATE TEMPORARY TABLE MostRecentVaccinations AS
 	(
 		SELECT PersonID, MAX(VaccinationDate) AS LatestVaccine
@@ -342,7 +321,7 @@ function updateSchedule(req, res)
 	)
 	`;
 
-	const query2 = `
+  const query2 = `
 	CREATE TEMPORARY TABLE MostRecentCovidInfections AS
 	(
 		SELECT PersonID, MAX(InfectionDate) AS LatestInfection
@@ -351,8 +330,8 @@ function updateSchedule(req, res)
 		GROUP BY PersonID
 	)
 	`;
-  
-	const query3 = `
+
+  const query3 = `
 	UPDATE Schedules
 	SET FacilityID = ${FacilityID}, Date = '${Date}', StartTime = '${StartTime}', EndTime = '${EndTime}'
 	WHERE ScheduleID = ${scheduleId}
@@ -423,61 +402,85 @@ function updateSchedule(req, res)
 		)
 	`;
 
-	const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
-	const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
-  
-	db.query(query1, (error1, results1, fields1) => {
-		if (error1) {
-			console.error("Error executing query 1: " + error1.stack);
-			return res.status(500).json({ error: "Internal Server Error" });
-		}
-	
-		// Query 1 executed successfully
-		db.query(query2, (error2, results2, fields2) => {
-			if (error2) {
-				console.error("Error executing query 2: " + error2.stack);
-				return res.status(500).json({ error: "Internal Server Error" });
-			}
-	
-			// Query 2 executed successfully
-			db.query(query3, (error3, results3, fields3) => {
-				if (error3) {
-					console.error("Error executing query 3: " + error3.stack);
-					return res.status(500).json({ error: "Internal Server Error" });
-				}
-	
-				// Query 3 executed successfully
-				db.query(query4, (error4, results4, fields4) => {
-					if (error4) {
-						console.error("Error executing query 4: " + error4.stack);
-						return res.status(500).json({ error: "Internal Server Error" });
-					}
-	
-					// Query 4 executed successfully
-					db.query(query5, (error5, results5, fields5) => {
-						if (error5) {
-							console.error("Error executing query 5: " + error5.stack);
-							return res.status(500).json({ error: "Internal Server Error" });
-						}
-	
-						// Query 5 executed successfully
-						// If all queries are successful, send back success message
-						res.json({ message: "Schedule updated successfully" });
-					});
-				});
-			});
-		});
-	});
+  const query4 = `DROP TEMPORARY TABLE MostRecentVaccinations`;
+  const query5 = `DROP TEMPORARY TABLE MostRecentCovidInfections`;
+
+  db.query(query1, (error1, results1, fields1) => {
+    if (error1) {
+      console.error("Error executing query 1: " + error1.stack);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Query 1 executed successfully
+    db.query(query2, (error2, results2, fields2) => {
+      if (error2) {
+        console.error("Error executing query 2: " + error2.stack);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      // Query 2 executed successfully
+      db.query(query3, (error3, results3, fields3) => {
+        if (error3) {
+          console.error("Error executing query 3: " + error3.stack);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        // Query 3 executed successfully
+        db.query(query4, (error4, results4, fields4) => {
+          if (error4) {
+            console.error("Error executing query 4: " + error4.stack);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          // Query 4 executed successfully
+          db.query(query5, (error5, results5, fields5) => {
+            if (error5) {
+              console.error("Error executing query 5: " + error5.stack);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+
+            // Query 5 executed successfully
+            // If all queries are successful, send back success message
+            res.json({ message: "Schedule updated successfully" });
+          });
+        });
+      });
+    });
+  });
+}
+
+// Function to get schedules for all employees within a given time frame
+async function getEmployeeSchedulesDuringTimeframe(startDate, endDate) {
+  const sql = `
+	SELECT Employees.EmployeeID, Facilities.FacilityID, Facilities.Name as FacilityName, Facilities.Address, Persons.FirstName, Persons.LastName, Persons.EmailAddress, Employees.Role,
+	Schedules.Date, Schedules.StartTime, Schedules.EndTime
+	FROM Employees
+	INNER JOIN Persons ON Employees.PersonID = Persons.PersonID
+	INNER JOIN Schedules ON Employees.EmployeeID = Schedules.EmployeeID
+	INNER JOIN Facilities ON Schedules.FacilityID = Facilities.FacilityID
+	WHERE Schedules.Date BETWEEN '${startDate}' and '${endDate}'
+	`;
+
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, results) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(results);
+    });
+  });
 }
 
 module.exports = {
-	querySeven,
-	queryTen,
-	queryFourteen,
-	queryFifteen,
-	queryTwenty,
-	getAllSchedules,
-	deleteSchedule,
-	assignSchedule,
-	updateSchedule,
+  querySeven,
+  queryTen,
+  queryFourteen,
+  queryFifteen,
+  queryTwenty,
+  getAllSchedules,
+  deleteSchedule,
+  assignSchedule,
+  updateSchedule,
+  getEmployeeSchedulesDuringTimeframe,
 };

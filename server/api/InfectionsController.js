@@ -383,7 +383,6 @@ ORDER BY X.FacilityName,Y.NumberOFSecondaryRes;
     }
 
     // If query is successful, send back the person
-    console.log(results+"This is from the server qeury")
     res.json({ results });
   });
 }
