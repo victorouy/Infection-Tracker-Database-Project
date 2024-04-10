@@ -173,7 +173,7 @@ function assignSchedule(event)
 
         // Refresh the table with new data
         getAllSchedules();
-        alert("Schedule created successfully");
+        alert("Query executed successfully");
       } else {
         throw new Error("Failed to create schedule");
       }
@@ -216,7 +216,7 @@ function updateSchedule(event)
       } else {
         form.reset();
         getAllSchedules();
-        alert("Schedule updated successfully");
+        alert("Query executed successfully");
       }
     })
     .catch((error) => {
