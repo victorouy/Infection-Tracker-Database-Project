@@ -53,74 +53,77 @@ function queryFourteen(req, res) {
 }
 
 function queryFifteen(req, res) {
-  const query = `WITH Nurses AS (
-		SELECT DISTINCT Employees.PersonID
-		FROM Employees
-		WHERE Employees.Role = 'Nurse'
-		),
+  const query = `
+  WITH Nurses AS (
+	SELECT DISTINCT Employees.PersonID
+	FROM Employees
+	WHERE Employees.Role = 'Nurse'
+	),
+	
+	WorkTwoFacilities AS (
+	SELECT Employees.PersonID
+	FROM Employees, EmploymentRecord
+	WHERE Employees.EmployeeID = EmploymentRecord.EmployeeID AND Employees.FacilityID = EmploymentRecord.FacilityID AND EmploymentRecord.EndDate IS NULL
+	GROUP BY Employees.PersonID
+	HAVING COUNT(DISTINCT EmploymentRecord.FacilityID) >= 2
+	),
 		
-		WorkTwoFacilities AS (
-		SELECT Employees.PersonID
-		FROM Employees, EmploymentRecord
-		WHERE Employees.EmployeeID = EmploymentRecord.EmployeeID AND Employees.FacilityID = EmploymentRecord.FacilityID AND EmploymentRecord.EndDate IS NULL
-		GROUP BY Employees.PersonID
-		HAVING COUNT(DISTINCT EmploymentRecord.FacilityID) >= 2
-		),
-			
-		InfectedCovidLastTwoWeeks AS (
-		SELECT DISTINCT Infections.PersonID
-		FROM Infections
-		WHERE DATEDIFF(CURDATE(), Infections.InfectionDate) <= 14
-		),
-		
-		FirstDayWorkAsNurse AS (
-		SELECT Persons.PersonID, EmploymentRecord.StartDate
-		FROM Persons
-		INNER JOIN Employees ON Persons.PersonID = Employees.PersonID
-		INNER JOIN EmploymentRecord ON Employees.EmployeeID = EmploymentRecord.EmployeeID AND Employees.FacilityID = EmploymentRecord.FacilityID
-		WHERE Employees.Role = 'Nurse'
-		),
-		
-		AmountInfectedByCOVID AS (
-		SELECT Persons.PersonID, COUNT(Infections.InfectionID) AS CovidInfections
-		FROM Persons
-		INNER JOIN Infections ON Persons.PersonID = Infections.PersonID
-		WHERE Infections.InfectionType = 'COVID-19'
-		GROUP BY Persons.PersonID
-		),
-		
-		AmountVaccines AS (
-		SELECT Persons.PersonID, COUNT(Vaccines.VaccineID) As TotalVaccines
-		FROM Persons
-		INNER JOIN Vaccines ON Persons.PersonID = Vaccines.PersonID
-		GROUP BY Persons.PersonID
-		),
-		
-		TotalHoursScheduled AS (
-		SELECT Persons.PersonID, (SUM(TIMESTAMPDIFF(SECOND, Schedules.StartTime, Schedules.EndTime)) / 3600) AS HoursScheduled
-		FROM Persons
-		INNER JOIN Employees ON Persons.PersonID = Employees.PersonID
-		INNER JOIN Schedules ON Employees.EmployeeID = Schedules.EmployeeID
-		WHERE Date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 28 DAY)
-		),
-		
-		AmountSecondaryResidences AS (
-		SELECT PersonResidences.PersonID, COUNT(PersonResidences.Type) AS SecondaryResidences
-		FROM PersonResidences
-		WHERE PersonResidences.Type = 'Secondary'
-		GROUP BY PersonResidences.PersonID
-		)
-		
-		SELECT FirstName, LastName, StartDate, DateOfBirth, EmailAddress, CovidInfections, TotalVaccines, HoursScheduled, COALESCE(SecondaryResidences, 0) AS SecondaryResidences
-		FROM Persons
-		INNER JOIN Nurses ON Persons.PersonID = Nurses.PersonID
-		INNER JOIN WorkTwoFacilities ON Persons.PersonID = WorkTwoFacilities.PersonID
-		INNER JOIN InfectedCovidLastTwoWeeks ON Persons.PersonID = InfectedCovidLastTwoWeeks.PersonID
-		INNER JOIN FirstDayWorkAsNurse ON Persons.PersonID = FirstDayWorkAsNurse.PersonID
-		INNER JOIN AmountInfectedByCOVID ON Persons.PersonID = AmountInfectedByCOVID.PersonID
-		INNER JOIN AmountVaccines ON Persons.PersonID = AmountVaccines.PersonID
-		INNER JOIN TotalHoursScheduled ON Persons.PersonID = TotalHoursScheduled.PersonID
-		LEFT JOIN AmountSecondaryResidences ON Persons.PersonID = AmountSecondaryResidences.PersonID;`;
+	InfectedCovidLastTwoWeeks AS (
+	SELECT DISTINCT Infections.PersonID
+	FROM Infections
+	WHERE DATEDIFF(CURDATE(), Infections.InfectionDate) <= 14
+	),
+	
+	FirstDayWorkAsNurse AS (
+	SELECT Persons.PersonID, MIN(EmploymentRecord.StartDate) AS StartDate
+	FROM Persons
+	INNER JOIN Employees ON Persons.PersonID = Employees.PersonID
+	INNER JOIN EmploymentRecord ON Employees.EmployeeID = EmploymentRecord.EmployeeID AND Employees.FacilityID = EmploymentRecord.FacilityID
+	WHERE Employees.Role = 'Nurse'
+	GROUP BY PersonID
+	),
+	
+	AmountInfectedByCOVID AS (
+	SELECT Persons.PersonID, COUNT(Infections.InfectionID) AS CovidInfections
+	FROM Persons
+	INNER JOIN Infections ON Persons.PersonID = Infections.PersonID
+	WHERE Infections.InfectionType = 'COVID-19'
+	GROUP BY Persons.PersonID
+	),
+	
+	AmountVaccines AS (
+	SELECT Persons.PersonID, COALESCE(COUNT(Vaccines.VaccineID), 0) As TotalVaccines
+	FROM Persons
+	LEFT JOIN Vaccines ON Persons.PersonID = Vaccines.PersonID
+	GROUP BY Persons.PersonID
+	),
+	
+	TotalHoursScheduled AS (
+	SELECT Persons.PersonID, SUM(CASE WHEN (Date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 28 DAY)) THEN (TIMESTAMPDIFF(SECOND, Schedules.StartTime, Schedules.EndTime) / 3600) ELSE 0 END) AS HoursScheduled
+	FROM Persons
+	LEFT JOIN Employees ON Persons.PersonID = Employees.PersonID
+	LEFT JOIN Schedules ON Employees.EmployeeID = Schedules.EmployeeID
+	GROUP BY Persons.PersonID
+	),
+	
+	AmountSecondaryResidences AS (
+	SELECT Persons.PersonID, COUNT(CASE WHEN Type = 'Secondary' THEN 1 ELSE NULL END) AS SecondaryResidences
+	FROM Persons
+	LEFT JOIN PersonResidences ON Persons.PersonID = PersonResidences.PersonID
+	GROUP BY Persons.PersonID
+	)
+	
+	SELECT FirstName, LastName, StartDate, DateOfBirth, EmailAddress, CovidInfections, TotalVaccines, HoursScheduled, SecondaryResidences
+	FROM Persons
+	INNER JOIN Nurses ON Persons.PersonID = Nurses.PersonID
+	INNER JOIN WorkTwoFacilities ON Persons.PersonID = WorkTwoFacilities.PersonID
+	INNER JOIN InfectedCovidLastTwoWeeks ON Persons.PersonID = InfectedCovidLastTwoWeeks.PersonID
+	INNER JOIN FirstDayWorkAsNurse ON Persons.PersonID = FirstDayWorkAsNurse.PersonID
+	INNER JOIN AmountInfectedByCOVID ON Persons.PersonID = AmountInfectedByCOVID.PersonID
+	INNER JOIN AmountVaccines ON Persons.PersonID = AmountVaccines.PersonID
+	INNER JOIN TotalHoursScheduled ON Persons.PersonID = TotalHoursScheduled.PersonID
+	INNER JOIN AmountSecondaryResidences ON Persons.PersonID = AmountSecondaryResidences.PersonID 
+  `;
 
   db.query(query, [], (error, results, fields) => {
     if (error) {
