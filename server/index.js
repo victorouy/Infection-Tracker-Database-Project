@@ -6,6 +6,8 @@ const infectionsController = require("./api/InfectionsController");
 const tabeshController = require("./api/TabeshController");
 const facilitiesController = require("./api/FacilitiesController");
 const residenceController = require("./api/ResidenceController");
+const emailController = require("./api/EmailController");
+const cron = require("node-cron");
 const express = require("express");
 const cors = require("cors");
 
@@ -49,15 +51,14 @@ app.get("/queryfifteen", tabeshController.queryFifteen);
 app.get("/schedules", tabeshController.getAllSchedules);
 app.delete("/schedules/:scheduleId", tabeshController.deleteSchedule);
 app.post("/schedules", tabeshController.assignSchedule);
-app.put("/schedules/:scheduleId", tabeshController.updateSchedule);
-
+app.put("/schedules/update/:scheduleId", tabeshController.updateSchedule);
 
 // Facilities delete/create/update
 app.get("/facilities", facilitiesController.getAllFacilities);
-app.get("/facilities/:FacilityID", facilitiesController.getFacilities);
 app.post("/facilities", facilitiesController.createFacilities);
 app.delete("/facilities/:FacilityID", facilitiesController.deleteFacilities);
 app.put("/facilities/:FacilityID", facilitiesController.editFacilities);
+
 // residence delete/create/update
 app.get("/residence", residenceController.getAllResidence);
 app.get("/residence/:ResidenceID", residenceController.getResidence);
@@ -65,6 +66,7 @@ app.post("/residence", residenceController.createResidence);
 app.delete("/residence/:ResidenceID", residenceController.deleteResidence);
 app.put("/residence/:ResidenceID", residenceController.editResidence);
 
+app.get("/emails", emailController.getAllEmails);
 
 // Queries
 app.get("/facilities/8", facilitiesController.getQuery8);
@@ -80,6 +82,27 @@ app.get("/employees/16", employeesController.getQuery16);
 app.get("/employees/17", employeesController.getQuery17);
 app.get("/employees/18/:startDate/:endDate", employeesController.getQuery18);
 
+cron.schedule("0 0 * * SUN", async () => {
+  console.log(
+    "Executing task: Sending schedules for upcoming week to all employees."
+  );
+  emailController.emailEmployeeSchedules(
+    getDateWithOffset(0),
+    getDateWithOffset(7)
+  );
+});
+
+function getDateWithOffset(offset) {
+  const currentDate = new Date();
+  const targetDate = new Date(
+    currentDate.getTime() + offset * 24 * 60 * 60 * 1000
+  );
+  const year = targetDate.getFullYear();
+  const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+  const day = String(targetDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -87,4 +110,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-// Yo 

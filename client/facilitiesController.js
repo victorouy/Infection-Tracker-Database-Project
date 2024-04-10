@@ -11,7 +11,7 @@ function getAllFacilities() {
       var headerRow = table.insertRow();
       var headers = [
         "FacilityID",
-        "Name",    
+        "Name",
         "Address",
         "City",
         "Province",
@@ -133,7 +133,8 @@ function fillUpdateFormWithFacilitiesData(facilities) {
   document.getElementById("webAddressToUpdate").value = facilities.WebAddress;
   document.getElementById("typeToUpdate").value = facilities.Type;
   document.getElementById("capacityToUpdate").value = facilities.Capacity;
-  document.getElementById("generalManagerIDToUpdate").value = facilities.GeneralManagerID;
+  document.getElementById("generalManagerIDToUpdate").value =
+    facilities.GeneralManagerID;
 }
 
 function updateFacilities(event) {
@@ -196,6 +197,33 @@ function getQuery13(event){
 	console.error("Error getting query 13", error);
 	});
 }
+
+function getQuery8(event) {
+  event.preventDefault();
+
+  fetch(`${BASE_URL}/facilities/8`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to get query8");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      data.results.forEach((tuple) => {
+        if ("StartDate" in tuple) {
+          tuple.StartDate = formatDate(tuple.StartDate);
+        }
+        if ("DateOfBirth" in tuple) {
+          tuple.DateOfBirth = formatDate(tuple.DateOfBirth);
+        }
+      });
+      displayQueryResult(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 function formatDate(dateToFormat) {
   const date = new Date(dateToFormat);
   const year = date.getFullYear();
