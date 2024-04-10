@@ -706,6 +706,7 @@
         <label>To:</label>
         <input id="queryTenEndDate" type="date" required />
         <button onclick="getSchedule(event)">Display</button>
+        <button onclick="queryTen(event)">Display</button>
         <h4>
           #11. For a given employee, get the details of all the people who live with the employee at
           the primary address and at all the secondary addresses. For every address the employee
@@ -725,8 +726,21 @@
           
         </h4>
         <button onclick="getQuery12(event)">Display</button>
-        <button onclick="queryTen(event)">Display</button>
         
+        <h4>
+          #13:For a given facility, list the emails generated for the 
+          cancellation of assignments during a specific period of time. 
+          The results should be displayed in descending order by the date 
+          of the emails. 
+        </h4>
+        <label>FacilityID</label>
+        <input id="queryThirteenFacilityID" type="number" required />
+        <label>From:</label>
+        <input id="queryThirteenStartDate" type="date" required />
+        <label>To:</label>
+        <input id="queryThirteenEndDate" type="date" required />
+        <button onclick="getQuery13(event)">Display</button>
+
         <h4>
           #14: For a given facility, generate a list of all the employees who have at least three
 		  secondary residences and who have been on schedule to work in the last four weeks.

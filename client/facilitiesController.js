@@ -177,6 +177,26 @@ function updateFacilities(event) {
       console.error("Error creating Facilties:", error);
     });
 }
+function getQuery13(event){
+  
+  const facilityID = document.getElementById("queryThirteenFacilityID").value;
+  const startDate = document.getElementById("queryThirteenStartDate").value;
+  const endDate = document.getElementById("queryThirteenEndDate").value;
+  event.preventDefault();
+  fetch(`${BASE_URL}/facilities/${facilityID}/${startDate}/${endDate}`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+	.then((response) => response.json())
+	.then((data) => {
+	displayQueryResult(data);
+	})
+	.catch((error) => {
+	console.error("Error getting query 13", error);
+	});
+}
 
 function getQuery8(event) {
   event.preventDefault();
