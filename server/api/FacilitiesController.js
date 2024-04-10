@@ -221,6 +221,30 @@ ORDER BY
     res.json({ results });
   });
 }
+function getQuery13(req, res){
+  const facilityID = req.params.facilityID;
+  const startDate = req.params.startDate;
+  const endDate = req.params.endDate;
+  const query = `
+  Select E.*
+  from Facilities AS F
+  join Emails AS E on F.FacilityID =E.FacilityID
+  where F.facilityID = ? and E.Date BETWEEN ? AND ?
+  order by E.date
+  `;
+  db.query(query, [facilityID, startDate, endDate], (error, results, fields) => {
+		if (error) {
+			console.error("Error executing query: " + error.stack);
+			return res.status(500).json({ error: "Internal Server Error" });
+		}
+		
+		if (results.length == 0) {
+			return res.status(404).json({ error: "getQuery 13 not found" });
+		}
+		
+		res.json({ results });
+	});
+}
 module.exports = {
   getAllFacilities,
   getFacilities,
@@ -228,4 +252,5 @@ module.exports = {
   deleteFacilities,
   editFacilities,
   getQuery8,
+  getQuery13,
 };

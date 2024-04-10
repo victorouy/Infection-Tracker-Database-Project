@@ -70,6 +70,7 @@ app.put("/residence/:ResidenceID", residenceController.editResidence);
 app.get("/facilities/8", facilitiesController.getQuery8);
 app.get("/employees/9", employeesController.getQuery9);
 app.get("/infections/12", infectionsController.getQuery12);
+app.get("/facilities/:facilityID/:startDate/:endDate", facilitiesController.getQuery13);
 app.get(
   "/employees/schedule/:employeeId/:startDate/:endDate",
   employeesController.getScheduleForEmployee
