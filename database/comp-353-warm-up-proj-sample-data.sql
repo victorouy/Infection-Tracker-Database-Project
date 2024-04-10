@@ -369,4 +369,87 @@ INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES 
 INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-15', '9:00', '17:00');
 INSERT INTO Schedules (EmployeeID, FacilityID, Date, StartTime, EndTime) VALUES (11, 1, '2024-04-16', '9:35', '17:45');
 
+
+
+#Tabesh's inserts to generate 5 results in each query
+
+#INSERT INTO Employees VALUES (99, 12, 'Regular Employee', 10);
+#INSERT INTO EmploymentRecord VALUES (99, 10, '2012-01-01', NULL);
+#INSERT INTO Vaccines VALUES (100, 12, 1, 'Moderna', '2024-04-01', 1);
+#INSERT INTO Schedules VALUES (111, 99, 10, '2024-06-12', '9:15', '17:20');
+#INSERT INTO Schedules VALUES (112, 99, 10, '2024-06-13', '9:00', '17:00');
+#INSERT INTO Schedules VALUES (113, 99, 10, '2024-06-14', '9:00', '12:00');
+#INSERT INTO Schedules VALUES (114, 99, 10, '2024-06-14', '15:00', '17:45');
+#INSERT INTO Schedules VALUES (115, 99, 10, '2024-06-15', '6:00', '12:00');
+#INSERT INTO Schedules VALUES (116, 99, 10, '2024-05-01', '7:00', '14:00');
+#INSERT INTO Schedules VALUES (117, 99, 10, '2024-06-24', '6:30', '13:45');
+
+/*INSERT INTO PersonResidences VALUES (12, 1, 'Secondary');
+INSERT INTO PersonResidences VALUES (12, 8, 'Secondary');
+INSERT INTO PersonResidences VALUES (12, 13, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (13, 5, 'Secondary');
+INSERT INTO PersonResidences VALUES (13, 10, 'Secondary');
+INSERT INTO PersonResidences VALUES (13, 22, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (14, 11, 'Secondary');
+INSERT INTO PersonResidences VALUES (14, 17, 'Secondary');
+INSERT INTO PersonResidences VALUES (14, 20, 'Secondary');
+INSERT INTO PersonResidences VALUES (14, 30, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (15, 28, 'Secondary');
+INSERT INTO PersonResidences VALUES (15, 30, 'Secondary');
+INSERT INTO PersonResidences VALUES (15, 33, 'Secondary');
+
+INSERT INTO PersonResidences VALUES (16, 22, 'Secondary');
+INSERT INTO PersonResidences VALUES (16, 25, 'Secondary');
+INSERT INTO PersonResidences VALUES (16, 17, 'Secondary');
+INSERT INTO PersonResidences VALUES (16, 18, 'Secondary');
+INSERT INTO PersonResidences VALUES (16, 19, 'Secondary');*/
+
+/*INSERT INTO Employees VALUES (100, 13, 'Regular Employee', 10);
+INSERT INTO Employees VALUES (101, 14, 'Regular Employee', 10);
+INSERT INTO Employees VALUES (102, 15, 'Regular Employee', 10);
+INSERT INTO Employees VALUES (103, 16, 'Regular Employee', 10);*/
+
+/*INSERT INTO EmploymentRecord VALUES (100, 10, '2010-06-17', NULL);
+INSERT INTO EmploymentRecord VALUES (101, 10, '2018-02-11', NULL);
+INSERT INTO EmploymentRecord VALUES (102, 10, '2021-11-23', NULL);
+INSERT INTO EmploymentRecord VALUES (103, 10, '2020-09-13', NULL);*/
+
+
+/*INSERT INTO Schedules VALUES (118, 99, 10, '2024-04-01', '6:00', '12:15');
+INSERT INTO Schedules VALUES (119, 100, 10, '2024-04-02', '7:30', '12:45');
+INSERT INTO Schedules VALUES (120, 101, 10, '2024-04-03', '8:00', '13:30');
+INSERT INTO Schedules VALUES (121, 102, 10, '2024-04-04', '9:20', '17:00');
+INSERT INTO Schedules VALUES (122, 103, 10, '2024-04-05', '11:00', '20:00');*/
+
+#INSERT INTO Infections VALUES (53, 21, '2024-04-01', NULL, 'COVID-19');
+
+/*INSERT INTO Employees VALUES (104, 23, 'Nurse', 2);
+INSERT INTO Employees VALUES (105, 27, 'Nurse', 3);
+INSERT INTO Employees VALUES (106, 31, 'Nurse', 4);
+INSERT INTO Employees VALUES (107, 33, 'Nurse', 5);*/
+/*INSERT INTO Employees VALUES (108, 23, 'Cashier', 1);
+INSERT INTO Employees VALUES (109, 27, 'Cashier', 2);
+INSERT INTO Employees VALUES (110, 28, 'Cashier', 3);
+INSERT INTO Employees VALUES (111, 35, 'Cashier', 7);*/
+
+/*INSERT INTO EmploymentRecord VALUES (104, 2, '2016-08-24', NULL);
+INSERT INTO EmploymentRecord VALUES (108, 1, '2015-12-05', NULL);
+INSERT INTO EmploymentRecord VALUES (105, 3, '2012-07-23', NULL);
+INSERT INTO EmploymentRecord VALUES (109, 2, '2009-03-02', NULL);
+INSERT INTO EmploymentRecord VALUES (110, 3, '2014-01-05', NULL);
+INSERT INTO EmploymentRecord VALUES (18, 8, '2022-06-28', NULL);
+INSERT INTO EmploymentRecord VALUES (111, 7, '2013-02-19', NULL);
+INSERT INTO EmploymentRecord VALUES (25, 5, '2011-07-15', NULL);*/
+
+
+/*INSERT INTO Infections VALUES (54, 23, '2024-04-01', NULL, 'COVID-19');
+INSERT INTO Infections VALUES (55, 27, '2024-04-03', NULL, 'COVID-19');
+INSERT INTO Infections VALUES (56, 28, '2024-04-05', NULL, 'COVID-19');
+INSERT INTO Infections VALUES (57, 23, '2024-04-07', NULL, 'COVID-19');
+INSERT INTO Infections VALUES(58, 35, '2024-04-07', NULL, 'COVID-19');*/
+
+
 SET FOREIGN_KEY_CHECKS = 1;
