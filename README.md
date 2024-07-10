@@ -1,5 +1,7 @@
 # Infection Tracker Database Project
 
+This full-stack project, with a focus on the database aspect, is designed to manage and streamline the operations of a facility management system. The system encompasses various aspects of facilities, residences, employees, and their interactions. The primary goal is to ensure data integrity and efficient handling of information through normalization and the establishment of functional dependencies.
+
 ## Client-side
 
 The user interface was created using JavaScript, HTML, and CSS. The client is responsible for:
